@@ -5,7 +5,6 @@
 DROP TABLE gen_scheme;
 DROP TABLE gen_table_column;
 DROP TABLE gen_table;
-DROP TABLE gen_template; 
 
 
 
@@ -82,24 +81,6 @@ CREATE TABLE gen_table_column
 );
 
 
-CREATE TABLE gen_template
-(
-	id varchar(64) NOT NULL,
-	name varchar(200),
-	category varchar(2000),
-	file_path varchar(500),
-	file_name varchar(200),
-	content text,
-	create_by varchar(64),
-	create_date datetime,
-	update_by varchar(64),
-	update_date datetime,
-	remarks varchar(255),
-	del_flag char(1) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (id)
-);
-
-
 
 /* Create Indexes */
 
@@ -110,7 +91,3 @@ CREATE INDEX gen_table_column_table_id ON gen_table_column (gen_table_id ASC);
 CREATE INDEX gen_table_column_name ON gen_table_column (name ASC);
 CREATE INDEX gen_table_column_sort ON gen_table_column (sort ASC);
 CREATE INDEX gen_table_column_del_flag ON gen_table_column (del_flag ASC);
-CREATE INDEX gen_template_del_falg ON gen_template (del_flag ASC);
-
-
-

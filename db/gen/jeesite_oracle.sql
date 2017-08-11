@@ -4,7 +4,6 @@
 DROP TABLE gen_scheme;
 DROP TABLE gen_table_column;
 DROP TABLE gen_table;
-DROP TABLE gen_template;
 
 
 
@@ -81,24 +80,6 @@ CREATE TABLE gen_table_column
 );
 
 
-CREATE TABLE gen_template
-(
-	id varchar2(64) NOT NULL,
-	name nvarchar2(200),
-	category varchar2(2000),
-	file_path varchar2(500),
-	file_name varchar2(200),
-	content clob,
-	create_by varchar2(64),
-	create_date timestamp,
-	update_by varchar2(64),
-	update_date timestamp,
-	remarks nvarchar2(255),
-	del_flag char(1) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (id)
-);
-
-
 
 /* Create Indexes */
 
@@ -109,7 +90,6 @@ CREATE INDEX gen_table_column_table_id ON gen_table_column (gen_table_id);
 CREATE INDEX gen_table_column_name ON gen_table_column (name);
 CREATE INDEX gen_table_column_sort ON gen_table_column (sort);
 CREATE INDEX gen_table_column_del_flag ON gen_table_column (del_flag);
-CREATE INDEX gen_template_del_falg ON gen_template (del_flag);
 
 
 
@@ -170,19 +150,3 @@ COMMENT ON COLUMN gen_table_column.update_by IS '更新者';
 COMMENT ON COLUMN gen_table_column.update_date IS '更新时间';
 COMMENT ON COLUMN gen_table_column.remarks IS '备注信息';
 COMMENT ON COLUMN gen_table_column.del_flag IS '删除标记（0：正常；1：删除）';
-COMMENT ON TABLE gen_template IS '代码模板表';
-COMMENT ON COLUMN gen_template.id IS '编号';
-COMMENT ON COLUMN gen_template.name IS '名称';
-COMMENT ON COLUMN gen_template.category IS '分类';
-COMMENT ON COLUMN gen_template.file_path IS '生成文件路径';
-COMMENT ON COLUMN gen_template.file_name IS '生成文件名';
-COMMENT ON COLUMN gen_template.content IS '内容';
-COMMENT ON COLUMN gen_template.create_by IS '创建者';
-COMMENT ON COLUMN gen_template.create_date IS '创建时间';
-COMMENT ON COLUMN gen_template.update_by IS '更新者';
-COMMENT ON COLUMN gen_template.update_date IS '更新时间';
-COMMENT ON COLUMN gen_template.remarks IS '备注信息';
-COMMENT ON COLUMN gen_template.del_flag IS '删除标记（0：正常；1：删除）';
-
-
-
