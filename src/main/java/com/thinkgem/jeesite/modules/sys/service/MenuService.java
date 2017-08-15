@@ -51,10 +51,10 @@ public class MenuService extends BaseService<MenuDao, Menu> {
 		// 更新子节点 parentIds
 		Menu m = new Menu();
 		m.setParentIds("%," + menu.getId() + ",%");
-		List<Menu> list = baseMapper.findByParentIdsLike(m);
+		List<Menu> list = dao.findByParentIdsLike(m);
 		for (Menu e : list) {
 			e.setParentIds(e.getParentIds().replace(oldParentIds, menu.getParentIds()));
-			baseMapper.updateParentIds(e);
+			dao.updateParentIds(e);
 		}
 		// 清除用户菜单缓存
 		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
@@ -64,7 +64,7 @@ public class MenuService extends BaseService<MenuDao, Menu> {
 
 	@Transactional(readOnly = false)
 	public void updateMenuSort(Menu menu) {
-		baseMapper.updateSort(menu);
+		dao.updateSort(menu);
 		// 清除用户菜单缓存
 		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
 		// 清除日志相关缓存

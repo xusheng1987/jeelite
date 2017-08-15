@@ -31,7 +31,7 @@ public class DictUtils {
 		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)){
 			for (Dict dict : getDictList(type)){
 				if (type.equals(dict.getType()) && value.equals(dict.getValue())){
-					return dict.getLabel().trim();
+					return dict.getLabel();
 				}
 			}
 		}

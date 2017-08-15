@@ -40,7 +40,7 @@ public class RoleService extends BaseService<RoleDao, Role> {
 	public Role getRoleByName(String name) {
 		Role r = new Role();
 		r.setName(name);
-		return baseMapper.getByName(r);
+		return dao.getByName(r);
 	}
 
 	public List<Role> findRole(Role role) {
@@ -55,14 +55,14 @@ public class RoleService extends BaseService<RoleDao, Role> {
 	public void saveRole(Role role) {
 		super.insertOrUpdate(role);
 		// 更新角色与菜单关联
-		baseMapper.deleteRoleMenu(role);
+		dao.deleteRoleMenu(role);
 		if (role.getMenuList().size() > 0) {
-			baseMapper.insertRoleMenu(role);
+			dao.insertRoleMenu(role);
 		}
 		// 更新角色与部门关联
-		baseMapper.deleteRoleOffice(role);
+		dao.deleteRoleOffice(role);
 		if (role.getOfficeList().size() > 0) {
-			baseMapper.insertRoleOffice(role);
+			dao.insertRoleOffice(role);
 		}
 		// 清除用户角色缓存
 		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);

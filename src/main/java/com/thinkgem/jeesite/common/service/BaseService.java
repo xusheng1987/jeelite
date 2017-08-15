@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.plugins.Page;
@@ -26,6 +27,12 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
  */
 @Transactional(readOnly = true)
 public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>> extends ServiceImpl<M, T> {
+	
+	/**
+	 * 持久层对象
+	 */
+	@Autowired
+	protected M dao;
 
 	/**
 	 * 日志对象
@@ -106,7 +113,7 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	 * @param id
 	 */
 	public T get(String id) {
-		return baseMapper.get(id);
+		return dao.get(id);
 	}
 
 	/**
@@ -115,7 +122,7 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	 * @param entity
 	 */
 	public List<T> findList(T entity) {
-		return baseMapper.findList(entity);
+		return dao.findList(entity);
 	}
 
 	/**
@@ -124,7 +131,7 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	 * @param entity
 	 */
 	public List<T> findAllList(T entity) {
-		return baseMapper.findAllList(entity);
+		return dao.findAllList(entity);
 	}
 
 	/**
@@ -135,7 +142,7 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	 */
 	public Page<T> findPage(Page<T> page, T entity) {
 		entity.setPage(page);
-		page.setRecords(baseMapper.findList(page, entity));
+		page.setRecords(dao.findList(page, entity));
 		return page;
 	}
 

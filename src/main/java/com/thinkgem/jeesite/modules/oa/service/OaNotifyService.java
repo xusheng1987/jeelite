@@ -56,7 +56,7 @@ public class OaNotifyService extends BaseService<OaNotifyDao, OaNotify> {
 	 * @return
 	 */
 	public Long findCount(OaNotify oaNotify) {
-		return baseMapper.findCount(oaNotify);
+		return dao.findCount(oaNotify);
 	}
 
 	@Transactional(readOnly = false)

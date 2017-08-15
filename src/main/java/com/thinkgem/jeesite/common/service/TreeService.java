@@ -61,11 +61,11 @@ public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>>
 			throw new ServiceException(e);
 		}
 		o.setParentIds("%,"+entity.getId()+",%");
-		List<T> list = baseMapper.findByParentIdsLike(o);
+		List<T> list = dao.findByParentIdsLike(o);
 		for (T e : list){
 			if (e.getParentIds() != null && oldParentIds != null){
 				e.setParentIds(e.getParentIds().replace(oldParentIds, entity.getParentIds()));
-				baseMapper.updateParentIds(e);
+				dao.updateParentIds(e);
 			}
 		}
 		

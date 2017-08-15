@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thinkgem.jeesite.common.persistence.dataSource.DBTypeEnum;
+import com.thinkgem.jeesite.common.persistence.dataSource.DataSource;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.modules.sys.dao.DictDao;
@@ -16,19 +18,22 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 字典Service
+ * 
  * @author ThinkGem
  * @version 2014-05-16
  */
 @Service
 @Transactional(readOnly = true)
+//@DataSource(DBTypeEnum.two)
 public class DictService extends BaseService<DictDao, Dict> {
-	
+
 	/**
 	 * 查询字段类型列表
+	 * 
 	 * @return
 	 */
-	public List<String> findTypeList(){
-		return baseMapper.findTypeList(new Dict());
+	public List<String> findTypeList() {
+		return dao.findTypeList(new Dict());
 	}
 
 	@Transactional(readOnly = false)

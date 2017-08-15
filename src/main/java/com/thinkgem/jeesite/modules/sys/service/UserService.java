@@ -95,7 +95,7 @@ public class UserService extends BaseService<UserDao, User> {
 		if (list == null){
 			User user = new User();
 			user.setOffice(new Office(officeId));
-			list = baseMapper.findUserByOfficeId(user);
+			list = dao.findUserByOfficeId(user);
 			CacheUtils.put(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId, list);
 		}
 		return list;
@@ -116,9 +116,9 @@ public class UserService extends BaseService<UserDao, User> {
 		}
 		if (StringUtils.isNotBlank(user.getId())){
 			// 更新用户与角色关联
-			baseMapper.deleteUserRole(user);
+			dao.deleteUserRole(user);
 			if (user.getRoleList() != null && user.getRoleList().size() > 0){
-				baseMapper.insertUserRole(user);
+				dao.insertUserRole(user);
 			}else{
 				throw new ServiceException(user.getLoginName() + "没有设置角色！");
 			}
@@ -129,7 +129,7 @@ public class UserService extends BaseService<UserDao, User> {
 	
 	@Transactional(readOnly = false)
 	public void updateUserInfo(User user) {
-		baseMapper.updateUserInfo(user);
+		dao.updateUserInfo(user);
 		// 清除用户缓存
 		UserUtils.clearCache(user);
 	}
@@ -145,7 +145,7 @@ public class UserService extends BaseService<UserDao, User> {
 	public void updatePasswordById(String id, String loginName, String newPassword) {
 		User user = new User(id);
 		user.setPassword(entryptPassword(newPassword));
-		baseMapper.updatePasswordById(user);
+		dao.updatePasswordById(user);
 		// 清除用户缓存
 		user.setLoginName(loginName);
 		UserUtils.clearCache(user);
@@ -159,7 +159,7 @@ public class UserService extends BaseService<UserDao, User> {
 		// 更新本次登录信息
 		user.setLoginIp(StringUtils.getRemoteAddr(Servlets.getRequest()));
 		user.setLoginDate(new Date());
-		baseMapper.updateLoginInfo(user);
+		dao.updateLoginInfo(user);
 	}
 	
 	/**
