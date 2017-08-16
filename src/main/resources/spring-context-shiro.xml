@@ -51,6 +51,7 @@
 		<property name="realm" ref="systemAuthorizingRealm" />
 		<property name="sessionManager" ref="sessionManager" />
 		<property name="cacheManager" ref="shiroCacheManager" />
+		<property name="rememberMeManager" ref="rememberMeManager" />
 	</bean>
 	
 	<!-- 自定义会话管理配置 -->
@@ -92,6 +93,20 @@
 <!-- 	</bean> -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	
+	<!-- rememberMe管理器 -->
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<!-- cipherKey生成:Encodes.encodeBase64(Arrays.copyOf("jeesite".getBytes("UTF-8"), 16)) -->
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('amVlc2l0ZQAAAAAAAAAAAA==')}" />
+		<property name="cookie" ref="rememberMeCookie" />
+	</bean>
+	<!-- cookie -->
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="rememberMe" />
+		<property name="httpOnly" value="true" />
+		<!-- 默认记住7天（单位：秒） -->
+		<property name="maxAge" value="604800" />
 	</bean>
 	
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->

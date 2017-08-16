@@ -185,7 +185,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	public void initCredentialsMatcher() {
 		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(UserService.HASH_ALGORITHM);
 		matcher.setHashIterations(UserService.HASH_INTERATIONS);
-		matcher.setStoredCredentialsHexEncoded(true);
 		setCredentialsMatcher(matcher);
 	}
 
