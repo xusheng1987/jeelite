@@ -86,11 +86,11 @@ public class RoleController extends BaseController {
 	public String save(Role role, Model model, RedirectAttributes redirectAttributes) {
 		if (!UserUtils.getUser().isAdmin() && role.getSysData().equals(Global.YES)) {
 			addMessage(redirectAttributes, "越权操作，只有超级管理员才能修改此数据！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/sys/role";
 		}
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/sys/role";
 		}
 		if (!beanValidator(model, role)) {
 			return form(role, model);
@@ -101,7 +101,7 @@ public class RoleController extends BaseController {
 		}
 		roleService.saveRole(role);
 		addMessage(redirectAttributes, "保存角色'" + role.getName() + "'成功");
-		return "redirect:" + adminPath + "/sys/role/?repage";
+		return "redirect:" + adminPath + "/sys/role";
 	}
 
 	@RequiresPermissions("sys:role:edit")
@@ -109,15 +109,15 @@ public class RoleController extends BaseController {
 	public String delete(Role role, RedirectAttributes redirectAttributes) {
 		if (!UserUtils.getUser().isAdmin() && role.getSysData().equals(Global.YES)) {
 			addMessage(redirectAttributes, "越权操作，只有超级管理员才能修改此数据！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/sys/role";
 		}
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/sys/role";
 		}
 		roleService.deleteRole(role);
 		addMessage(redirectAttributes, "删除角色成功");
-		return "redirect:" + adminPath + "/sys/role/?repage";
+		return "redirect:" + adminPath + "/sys/role";
 	}
 
 	/**

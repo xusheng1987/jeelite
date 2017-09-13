@@ -19,10 +19,11 @@ else {
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="page-header"><h1>页面不存在.</h1></div>
-		<div><a href="javascript:" onclick="history.go(-1);" class="btn">返回上一页</a></div>
-		<script>try{top.$.jBox.closeTip();}catch(e){}</script>
+	<div style="margin:15px">
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+			<legend>页面不存在.</legend>
+		</fieldset>
+		<a href="javascript:" onclick="history.go(-1);" class="layui-btn">返回上一页</a>
 	</div>
 </body>
 </html>

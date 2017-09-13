@@ -6,7 +6,7 @@ package com.thinkgem.jeesite.common.persistence;
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 
 /**
  * DAO支持类实现
@@ -34,7 +34,7 @@ public interface CrudDao<T> extends BaseMapper<T> {
 	 * @param page
 	 * @param entity
 	 */
-	public List<T> findList(Page<T> page, T entity);
+	public List<T> findList(Pagination page, T entity);
 
 	/**
 	 * 查询所有数据列表

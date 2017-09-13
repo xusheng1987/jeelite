@@ -316,7 +316,7 @@ public class GenUtils {
 	 * @param replaceFile
 	 * @return
 	 */
-	public static String generateToFile(GenTemplate tpl, Map<String, Object> model, boolean isReplaceFile){
+	public static String generateToFile(GenTemplate tpl, Map<String, Object> model, Boolean isReplaceFile){
 		// 获取生成文件
 		String fileName = Global.getProjectPath() + File.separator 
 				+ StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model), 
@@ -329,7 +329,7 @@ public class GenUtils {
 		logger.debug(" content === \r\n" + content);
 		
 		// 如果选择替换文件，则删除原文件
-		if (isReplaceFile){
+		if (isReplaceFile != null && isReplaceFile){
 			FileUtils.deleteFile(fileName);
 		}
 		
@@ -337,10 +337,10 @@ public class GenUtils {
 		if (FileUtils.createFile(fileName)){
 			FileUtils.writeToFile(fileName, content, true);
 			logger.debug(" file create === " + fileName);
-			return "生成成功："+fileName+"<br/>";
+			return "生成成功："+fileName.replace("\\", "/")+"<br/>";
 		}else{
 			logger.debug(" file extents === " + fileName);
-			return "文件已存在："+fileName+"<br/>";
+			return "文件已存在："+fileName.replace("\\", "/")+"<br/>";
 		}
 	}
 	

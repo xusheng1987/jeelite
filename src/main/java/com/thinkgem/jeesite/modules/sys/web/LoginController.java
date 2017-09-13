@@ -14,7 +14,6 @@ import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -135,20 +134,6 @@ public class LoginController extends BaseController {
 		}
 
 		return "modules/sys/sysIndex";
-	}
-
-	/**
-	 * 获取主题方案
-	 */
-	@RequestMapping(value = "/theme/{theme}")
-	public String getThemeInCookie(@PathVariable String theme, HttpServletRequest request,
-			HttpServletResponse response) {
-		if (StringUtils.isNotBlank(theme)) {
-			CookieUtils.setCookie(response, "theme", theme);
-		} else {
-			theme = CookieUtils.getCookie(request, "theme");
-		}
-		return "redirect:" + request.getParameter("url");
 	}
 
 	/**

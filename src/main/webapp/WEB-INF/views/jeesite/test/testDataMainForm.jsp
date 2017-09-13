@@ -8,17 +8,8 @@
 		$(document).ready(function() {
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
+					loading();
 					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
 				}
 			});
 		});
@@ -56,67 +47,63 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/test/testDataMain/">主子表列表</a></li>
-		<li class="active"><a href="${ctx}/test/testDataMain/form?id=${testDataMain.id}">主子表<shiro:hasPermission name="test:testDataMain:edit">${not empty testDataMain.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="test:testDataMain:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	<form:form id="inputForm" modelAttribute="testDataMain" action="${ctx}/test/testDataMain/save" method="post" class="form-horizontal">
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li><a href="${ctx}/test/testDataMain/">主子表列表</a></li>
+			<li class="layui-this"><a href="${ctx}/test/testDataMain/form?id=${testDataMain.id}">主子表<shiro:hasPermission name="test:testDataMain:edit">${not empty testDataMain.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="test:testDataMain:edit">查看</shiro:lacksPermission></a></li>
+		</ul>
+	</div><br/>
+	<form:form id="inputForm" modelAttribute="testDataMain" action="${ctx}/test/testDataMain/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
-			<label class="control-label">归属用户：</label>
-			<div class="controls">
-				<sys:treeselect id="user" name="user.id" value="${testDataMain.user.id}" labelName="user.name" labelValue="${testDataMain.user.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="" allowClear="true" notAllowSelectParent="true"/>
+		<div class="layui-form-item">
+			<label class="layui-form-label">归属用户：</label>
+			<sys:treeselect id="user" name="user.id" value="${testDataMain.user.id}" labelName="user.name" labelValue="${testDataMain.user.name}"
+				title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">归属部门：</label>
+			<sys:treeselect id="office" name="office.id" value="${testDataMain.office.id}" labelName="office.name" labelValue="${testDataMain.office.name}"
+				title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">归属区域：</label>
+			<sys:treeselect id="area" name="area.id" value="${testDataMain.area.id}" labelName="area.name" labelValue="${testDataMain.area.name}"
+				title="区域" url="/sys/area/treeData" allowClear="true" notAllowSelectParent="true"/>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">名称：</label>
+			<div class="layui-input-inline">
+				<form:input path="name" htmlEscape="false" maxlength="100" class="layui-input"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">归属部门：</label>
-			<div class="controls">
-				<sys:treeselect id="office" name="office.id" value="${testDataMain.office.id}" labelName="office.name" labelValue="${testDataMain.office.name}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">归属区域：</label>
-			<div class="controls">
-				<sys:treeselect id="area" name="area.id" value="${testDataMain.area.id}" labelName="area.name" labelValue="${testDataMain.area.name}"
-					title="区域" url="/sys/area/treeData" cssClass="" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">名称：</label>
-			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="100" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">性别：</label>
-			<div class="controls">
-				<form:select path="sex" class="input-xlarge ">
+		<div class="layui-form-item">
+			<label class="layui-form-label">性别：</label>
+			<div class="layui-input-inline">
+				<form:select path="sex">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">加入日期：</label>
-			<div class="controls">
-				<input name="inDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+		<div class="layui-form-item">
+			<label class="layui-form-label">加入日期：</label>
+			<div class="layui-input-inline">
+				<input name="inDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
 					value="<fmt:formatDate value="${testDataMain.inDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注信息：</label>
+			<div class="layui-input-inline">
+				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="layui-textarea"/>
 			</div>
 		</div>
-			<div class="control-group">
-				<label class="control-label">业务数据子表：</label>
-				<div class="controls">
-					<table id="contentTable" class="table table-striped table-bordered table-condensed">
+			<div class="layui-form-item">
+				<label class="layui-form-label">业务数据子表：</label>
+				<div class="layui-input-block">
+					<table id="contentTable" class="layui-table">
 						<thead>
 							<tr>
 								<th class="hide"></th>
@@ -128,7 +115,7 @@
 						<tbody id="testDataChildList">
 						</tbody>
 						<shiro:hasPermission name="test:testDataMain:edit"><tfoot>
-							<tr><td colspan="4"><a href="javascript:" onclick="addRow('#testDataChildList', testDataChildRowIdx, testDataChildTpl);testDataChildRowIdx = testDataChildRowIdx + 1;" class="btn">新增</a></td></tr>
+							<tr><td colspan="4"><a href="javascript:" onclick="addRow('#testDataChildList', testDataChildRowIdx, testDataChildTpl);testDataChildRowIdx = testDataChildRowIdx + 1;" class="layui-btn layui-btn-primary">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table>
 					<script type="text/template" id="testDataChildTpl">//<!--
@@ -138,13 +125,13 @@
 								<input id="testDataChildList{{idx}}_delFlag" name="testDataChildList[{{idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<td>
-								<input id="testDataChildList{{idx}}_name" name="testDataChildList[{{idx}}].name" type="text" value="{{row.name}}" maxlength="100" class="input-small "/>
+								<input id="testDataChildList{{idx}}_name" name="testDataChildList[{{idx}}].name" type="text" value="{{row.name}}" maxlength="100" class="layui-input"/>
 							</td>
 							<td>
-								<input id="testDataChildList{{idx}}_remarks" name="testDataChildList[{{idx}}].remarks" type="text" value="{{row.remarks}}" maxlength="255" class="input-small "/>
+								<input id="testDataChildList{{idx}}_remarks" name="testDataChildList[{{idx}}].remarks" type="text" value="{{row.remarks}}" maxlength="255" class="layui-input"/>
 							</td>
-							<shiro:hasPermission name="test:testDataMain:edit"><td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#testDataChildList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+							<shiro:hasPermission name="test:testDataMain:edit"><td width="10">
+								{{#delBtn}}<a href="javascript:void(0)" onclick="delRow(this, '#testDataChildList{{idx}}')"><i class="layui-icon">&#xe640;</i></a>{{/delBtn}}
 							</td></shiro:hasPermission>
 						</tr>//-->
 					</script>
@@ -160,9 +147,11 @@
 					</script>
 				</div>
 			</div>
-		<div class="form-actions">
-			<shiro:hasPermission name="test:testDataMain:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<shiro:hasPermission name="test:testDataMain:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+			</div>
 		</div>
 	</form:form>
 </body>

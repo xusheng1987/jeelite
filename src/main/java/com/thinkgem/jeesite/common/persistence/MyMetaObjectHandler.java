@@ -23,16 +23,14 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
 			Map map = (Map) obj;
 			obj = map.get("et");
 		}
-		if (obj instanceof DataEntity) {
-			User user = UserUtils.getUser();
-			if (StringUtils.isNotBlank(user.getId())) {
-				setFieldValByName("updateBy", user, metaObject);
-				setFieldValByName("createBy", user, metaObject);
-			}
-			Date date = new Date();
-			setFieldValByName("updateDate", date, metaObject);
-			setFieldValByName("createDate", date, metaObject);
+		User user = UserUtils.getUser();
+		if (StringUtils.isNotBlank(user.getId())) {
+			setFieldValByName("updateBy", user, metaObject);
+			setFieldValByName("createBy", user, metaObject);
 		}
+		Date date = new Date();
+		setFieldValByName("updateDate", date, metaObject);
+		setFieldValByName("createDate", date, metaObject);
 	}
 
 	@Override
@@ -43,12 +41,10 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
 			Map map = (Map) obj;
 			obj = map.get("et");
 		}
-		if (obj instanceof DataEntity) {
-			User user = UserUtils.getUser();
-			if (StringUtils.isNotBlank(user.getId())) {
-				setFieldValByName("updateBy", user, metaObject);
-			}
-			setFieldValByName("updateDate", new Date(), metaObject);
+		User user = UserUtils.getUser();
+		if (StringUtils.isNotBlank(user.getId())) {
+			setFieldValByName("updateBy", user, metaObject);
 		}
+		setFieldValByName("updateDate", new Date(), metaObject);
 	}
 }

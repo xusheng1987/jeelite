@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -143,7 +144,6 @@ public class UserUtils {
 	 * @return
 	 */
 	public static List<Role> getRoleList() {
-		@SuppressWarnings("unchecked")
 		List<Role> roleList = (List<Role>) getCache(CACHE_ROLE_LIST);
 		if (roleList == null) {
 			User user = getUser();
@@ -165,7 +165,6 @@ public class UserUtils {
 	 * @return
 	 */
 	public static List<Menu> getMenuList() {
-		@SuppressWarnings("unchecked")
 		List<Menu> menuList = (List<Menu>) getCache(CACHE_MENU_LIST);
 		if (menuList == null) {
 			User user = getUser();
@@ -182,16 +181,31 @@ public class UserUtils {
 	}
 
 	/**
-	 * 获取当前用户授权的区域
+	 * 获取当前用户授权的所有区域
 	 * 
 	 * @return
 	 */
 	public static List<Area> getAreaList() {
-		@SuppressWarnings("unchecked")
 		List<Area> areaList = (List<Area>) getCache(CACHE_AREA_LIST);
 		if (areaList == null) {
 			areaList = areaDao.findAllList(new Area());
 			putCache(CACHE_AREA_LIST, areaList);
+		}
+		return areaList;
+	}
+	
+	/**
+	 * 获取当前用户授权的区域
+	 * 
+	 * @return
+	 */
+	public static List<Area> getAreaList(String parentId) {
+		List<Area> allList = getAreaList();
+		List<Area> areaList = new ArrayList<Area>();
+		for(Area area:allList) {
+			if (parentId.equals(area.getParentId())) {
+				areaList.add(area);
+			}
 		}
 		return areaList;
 	}
@@ -202,7 +216,6 @@ public class UserUtils {
 	 * @return
 	 */
 	public static List<Office> getOfficeList() {
-		@SuppressWarnings("unchecked")
 		List<Office> officeList = (List<Office>) getCache(CACHE_OFFICE_LIST);
 		if (officeList == null) {
 			User user = getUser();
@@ -224,7 +237,6 @@ public class UserUtils {
 	 * @return
 	 */
 	public static List<Office> getOfficeAllList() {
-		@SuppressWarnings("unchecked")
 		List<Office> officeList = (List<Office>) getCache(CACHE_OFFICE_ALL_LIST);
 		if (officeList == null) {
 			officeList = officeDao.findAllList(new Office());

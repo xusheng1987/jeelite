@@ -48,9 +48,9 @@ public class TestDataMainService extends BaseService<TestDataMainDao, TestDataMa
 	public void save(TestDataMain testDataMain) {
 		super.insertOrUpdate(testDataMain);
 		for (TestDataChild testDataChild : testDataMain.getTestDataChildList()) {
-			// if (StringUtils.isEmpty(testDataChild.getId())) {
-			// continue;
-			// }
+			if (testDataChild.getId() == null) {
+				continue;
+			}
 			if (TestDataChild.DEL_FLAG_NORMAL.equals(testDataChild.getDelFlag())) {
 				if (StringUtils.isBlank(testDataChild.getId())) {
 					testDataChild.setTestDataMain(testDataMain);

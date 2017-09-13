@@ -172,12 +172,14 @@ public abstract class BaseController {
     }
 	
 	/**
-	 * 转换为 bootstrap-table 需要的分页格式 JSON
+	 * 转换为layui table需要的分页数据格式
 	 */
 	protected Map jsonPage(Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("total", page.getTotal());
-		map.put("rows", page.getRecords());
+		map.put("code", 0);
+		map.put("msg", "");
+		map.put("count", page.getTotal());
+		map.put("data", page.getRecords());
 		return map;
 	}
 

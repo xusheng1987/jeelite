@@ -21,7 +21,7 @@ public class Area extends TreeEntity<Area> {
 	@TableField(value="parent_id", el = "parent, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
 	private Area parent;	// 父级编号
 	private String code; 	// 区域编码
-	private String type; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
+	private String type; 	// 区域类型（0：省份、直辖市；1：地市；2：区县）
 	
 	public Area(){
 		super();

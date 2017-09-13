@@ -39,9 +39,9 @@
 		
 	</settings>
 	
-	<!-- 类型别名
+	<!-- 类型别名 -->
 	<typeAliases>
-		<typeAlias alias="user" type="com.thinkgem.jeesite.modules.sys.entity.User" />
-	</typeAliases> -->
+		<typeAlias alias="Page" type="com.baomidou.mybatisplus.plugins.Page" /><!--分页  -->
+	</typeAliases>
 	
 </configuration>

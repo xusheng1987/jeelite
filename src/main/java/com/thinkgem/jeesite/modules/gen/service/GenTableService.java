@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.gen.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,6 +156,15 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 	public void delete(GenTable genTable) {
 		super.delete(genTable);
 		genTableColumnDao.deleteByGenTableId(genTable.getId());
+	}
+
+	@Transactional(readOnly = false)
+	public void batchDelete(String ids) {
+		List<String> idList = Arrays.asList(ids.split(","));
+		super.deleteBatchIds(idList);
+		for (String id:idList) {
+			genTableColumnDao.deleteByGenTableId(id);
+		}
 	}
 
 }

@@ -28,15 +28,16 @@ else {
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="page-header"><h1>操作权限不足.</h1></div>
+	<div style="margin:15px">
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+			<legend>操作权限不足.</legend>
+		</fieldset>
 		<%
 			if (ex!=null && StringUtils.startsWith(ex.getMessage(), "msg:")){
-				out.print("<div>"+StringUtils.replace(ex.getMessage(), "msg:", "")+" <br/> <br/></div>");
+				out.print("<div><blockquote class='layui-elem-quote'>"+StringUtils.replace(ex.getMessage(), "msg:", "")+"</blockquote><br/><br/></div>");
 			}
 		%>
-		<div><a href="javascript:" onclick="history.go(-1);" class="btn">返回上一页</a></div>
-		<script>try{top.$.jBox.closeTip();}catch(e){}</script>
+		<a href="javascript:" onclick="history.go(-1);" class="layui-btn">返回上一页</a>
 	</div>
 </body>
 </html>

@@ -71,4 +71,13 @@ public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>>
 		
 	}
 
+	/**
+	 * 删除数据
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public void delete(T entity) {
+		dao.delete(entity);
+	}
+
 }

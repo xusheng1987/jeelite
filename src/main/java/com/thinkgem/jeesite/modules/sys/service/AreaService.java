@@ -26,6 +26,10 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		return UserUtils.getAreaList();
 	}
 
+	public List<Area> find(String parentId){
+		return UserUtils.getAreaList(parentId);
+	}
+
 	@Transactional(readOnly = false)
 	public void save(Area area) {
 		super.save(area);

@@ -11,26 +11,32 @@ $(document).ready(function() {
 		$("a").bind("focus",function() {
 			if(this.blur) {this.blur()};
 		});
-		//所有下拉框使用select2
-		$("select").select2();
-		$('#table').bootstrapTable({
-			height: 430,
-			striped: true,
-			sortStable: true,
-			pagination: true,
-			pageList: '[10, 25, 50, 100, ALL]',
-			sidePagination: 'server',
-			queryParams: 'queryParams'
+		var table = layui.table;
+		// 监听表格复选框选择
+		table.on('checkbox', function(obj){
+			var length = table.checkStatus('table').data.length;//获取选中数目
+			if(length > 0) {
+				$('#btnDelete').removeClass('layui-btn-disabled');
+			} else {
+				$('#btnDelete').addClass('layui-btn-disabled');
+			}
+			$('#btnDelete').prop('disabled', !table.checkStatus('table').data.length);
 		});
-		$('#table').on('check.bs.table uncheck.bs.table ' +
-	            'check-all.bs.table uncheck-all.bs.table', function () {
-			$('#btnDelete').prop('disabled', !$('#table').bootstrapTable('getSelections').length);
-	    });
-		$('#btnSubmit').click(function () {
-			$('#table').bootstrapTable('refresh');
+		// 监听排序切换
+		table.on('sort', function(obj){
+			var params = queryParams();//请求参数
+			params['field'] = obj.field; //排序字段
+			params['order'] = obj.type; //排序方式：desc（降序）、asc（升序）、null（空对象，默认排序）
+			table.reload('table', {
+				initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态
+				where: params
+			});
+		});
+		// 搜索
+		$('#btnSearch').click(function () {
+			reloadTable();
 		});
 	}catch(e){
-		// blank
 	}
 });
 
@@ -82,82 +88,29 @@ function windowOpen(url, name, width, height){
 	window.open(url ,name , options);
 }
 
-// 恢复提示框显示
+//恢复提示框显示
 function resetTip(){
-	top.$.jBox.tip.mess = null;
-}
-
-// 关闭提示框
-function closeTip(){
-	top.$.jBox.closeTip();
-}
-
-//显示提示框
-function showTip(mess, type, timeout, lazytime){
-	resetTip();
-	setTimeout(function(){
-		top.$.jBox.tip(mess, (type == undefined || type == '' ? 'info' : type), {opacity:0, 
-			timeout:  timeout == undefined ? 2000 : timeout});
-	}, lazytime == undefined ? 500 : lazytime);
+	$(top.msg).val('');
 }
 
 // 显示加载框
-function loading(mess){
-	if (mess == undefined || mess == ""){
-		mess = "正在提交，请稍等...";
-	}
+function loading(){
 	resetTip();
-	top.$.jBox.tip(mess,'loading',{opacity:0});
-}
-
-// 关闭提示框
-function closeLoading(){
-	// 恢复提示框显示
-	resetTip();
-	// 关闭提示框
-	closeTip();
+	var layer = layui.layer;
+	layer.load();
 }
 
 // 确认对话框
-function confirmx(mess, href, closed){
-	top.$.jBox.confirm(mess,'系统提示',function(v,h,f){
-		if(v=='ok'){
-			if (typeof href == 'function') {
-				href();
-			}else{
-				resetTip(); //loading();
-				location = href;
-			}
-		}
-	},{buttonsFocus:1, closed:function(){
-		if (typeof closed == 'function') {
-			closed();
-		}
-	}});
-	top.$('.jbox-body .jbox-icon').css('top','55px');
-	return false;
-}
-
-//确认对话框(异步提交数据)
-function confirmxx(mess, href, closed){
-	top.$.jBox.confirm(mess,'系统提示',function(v,h,f){
-		if(v=='ok'){
-			if (typeof href == 'function') {
-				href();
-			}else{
-				resetTip(); //loading();
-				$.post(href, function(result) {
-					$('#table').bootstrapTable('refresh');
-				});
-			}
-		}
-	},{buttonsFocus:1, closed:function(){
-		if (typeof closed == 'function') {
-			closed();
-		}
-	}});
-	top.$('.jbox-body .jbox-icon').css('top','55px');
-	return false;
+function confirmx(mess, href){
+	var layer = layui.layer;
+	layer.confirm(mess, {icon: 3, title:'提示'}, function(index){
+		resetTip();
+		location = href;
+		//$.post(href, function(result) {
+		//	$('#btnSubmit').click();
+		//});
+		layer.close(index);
+	});
 }
 
 // 添加TAB页面
@@ -275,7 +228,15 @@ function abbr(name, maxLength){
  return nameSub;  
 }
 
-function queryParams(params) {
+function reloadTable() {
+	var table = layui.table;
+	table.reload('table', {
+		where: queryParams()
+	});
+}
+
+function queryParams() {
+	var params = {};
     $('#searchForm').find('input[name]').each(function () {
     	if($(this).is(":checkbox") || $(this).is(":radio")) {
     		if ($(this).is(":checked")) {
@@ -291,8 +252,17 @@ function queryParams(params) {
     return params;
 }
 
-function getIdSelections() {
-    return $.map($('#table').bootstrapTable('getSelections'), function (row) {
-        return row.id;
-    });
+function batchDelete(href) {
+	var layer = layui.layer;
+	layer.confirm('确认要删除选中的项目吗', {icon: 3, title:'提示'}, function(index){
+		resetTip();
+		var table = layui.table;
+		var data = table.checkStatus('table').data;
+		var ids = [];
+		$.each(data, function(index, element) {
+			ids.push(element.id);
+		});
+		location = href + "?ids="+ids.join(",");
+		layer.close(index);
+	});
 }

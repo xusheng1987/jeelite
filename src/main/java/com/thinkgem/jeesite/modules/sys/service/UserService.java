@@ -140,7 +140,16 @@ public class UserService extends BaseService<UserDao, User> {
 		// 清除用户缓存
 		UserUtils.clearCache(user);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void batchDelete(List<String> idList) {
+		super.deleteBatchIds(idList);
+		for(String id:idList) {
+			// 清除用户缓存
+			UserUtils.clearCache(UserUtils.get(id));
+		}
+	}
+
 	@Transactional(readOnly = false)
 	public void updatePasswordById(String id, String loginName, String newPassword) {
 		User user = new User(id);

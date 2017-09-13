@@ -85,14 +85,14 @@ public class DictController extends BaseController {
 	public String save(Dict dict, Model model, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/dict/?repage&type=" + dict.getType();
+			return "redirect:" + adminPath + "/sys/dict?type=" + dict.getType();
 		}
 		if (!beanValidator(model, dict)) {
 			return form(dict, model);
 		}
 		dictService.save(dict);
 		addMessage(redirectAttributes, "保存字典'" + dict.getLabel() + "'成功");
-		return "redirect:" + adminPath + "/sys/dict/?repage&type=" + dict.getType();
+		return "redirect:" + adminPath + "/sys/dict?type=" + dict.getType();
 	}
 
 	@RequiresPermissions("sys:dict:edit")
@@ -100,11 +100,23 @@ public class DictController extends BaseController {
 	public String delete(Dict dict, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/dict/?repage";
+			return "redirect:" + adminPath + "/sys/dict";
 		}
 		dictService.delete(dict);
 		addMessage(redirectAttributes, "删除字典成功");
-		return "redirect:" + adminPath + "/sys/dict/?repage&type=" + dict.getType();
+		return "redirect:" + adminPath + "/sys/dict?type=" + dict.getType();
+	}
+
+	@RequiresPermissions("sys:dict:edit")
+	@RequestMapping(value = "batchDelete")
+	public String batchDelete(String ids, RedirectAttributes redirectAttributes) {
+		if (Global.isDemoMode()) {
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + adminPath + "/sys/dict";
+		}
+		dictService.batchDelete(ids);
+		addMessage(redirectAttributes, "批量删除字典成功");
+		return "redirect:" + adminPath + "/sys/dict";
 	}
 
 	@RequiresPermissions("user")

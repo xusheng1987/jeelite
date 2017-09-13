@@ -3,13 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thinkgem.jeesite.common.persistence.dataSource.DBTypeEnum;
-import com.thinkgem.jeesite.common.persistence.dataSource.DataSource;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.modules.sys.dao.DictDao;
@@ -45,6 +44,13 @@ public class DictService extends BaseService<DictDao, Dict> {
 	@Transactional(readOnly = false)
 	public void delete(Dict dict) {
 		super.delete(dict);
+		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+	}
+
+	@Transactional(readOnly = false)
+	public void batchDelete(String ids) {
+		List<String> idList = Arrays.asList(ids.split(","));
+		super.deleteBatchIds(idList);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 

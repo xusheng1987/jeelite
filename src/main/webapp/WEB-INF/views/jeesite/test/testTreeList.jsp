@@ -40,21 +40,21 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/test/testTree/">树结构列表</a></li>
-		<shiro:hasPermission name="test:testTree:edit"><li><a href="${ctx}/test/testTree/form">树结构添加</a></li></shiro:hasPermission>
-	</ul>
-	<form:form id="searchForm" modelAttribute="testTree" action="${ctx}/test/testTree/" method="post" class="breadcrumb form-search">
-		<ul class="ul-form">
-			<li><label>名称：</label>
-				<form:input path="name" htmlEscape="false" maxlength="100" class="input-medium"/>
-			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
-			<li class="clearfix"></li>
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li class="layui-this"><a href="${ctx}/test/testTree/">树结构列表</a></li>
+			<shiro:hasPermission name="test:testTree:edit"><li><a href="${ctx}/test/testTree/form">树结构添加</a></li></shiro:hasPermission>
 		</ul>
+	</div><br/>
+	<form:form id="searchForm" modelAttribute="testTree" action="${ctx}/test/testTree/" method="post" class="layui-form">
+		<label class="layui-form-label">名称：</label>
+		<div class="layui-input-inline">
+			<form:input path="name" htmlEscape="false" maxlength="100" class="layui-input"/>
+		</div>
+		<input id="btnSubmit" class="layui-btn layui-btn-normal" type="submit" value="查询"/>
 	</form:form>
 	<sys:message content="${message}"/>
-	<table id="treeTable" class="table table-striped table-bordered table-condensed">
+	<table id="treeTable" class="layui-table" lay-even>
 		<thead>
 			<tr>
 				<th>名称</th>
@@ -68,7 +68,7 @@
 	</table>
 	<script type="text/template" id="treeTableTpl">
 		<tr id="{{row.id}}" pId="{{pid}}">
-			<td><a href="${ctx}/test/testTree/form?id={{row.id}}">
+			<td class="layui-text"><a href="${ctx}/test/testTree/form?id={{row.id}}">
 				{{row.name}}
 			</a></td>
 			<td>
@@ -81,9 +81,9 @@
 				{{row.remarks}}
 			</td>
 			<shiro:hasPermission name="test:testTree:edit"><td>
-   				<a href="${ctx}/test/testTree/form?id={{row.id}}">修改</a>
-				<a href="${ctx}/test/testTree/delete?id={{row.id}}" onclick="return confirmx('确认要删除该树结构及所有子树结构吗？', this.href)">删除</a>
-				<a href="${ctx}/test/testTree/form?parent.id={{row.id}}">添加下级树结构</a>
+   				<a class="layui-btn layui-btn-small" href="${ctx}/test/testTree/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-small" onclick="confirmx('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-small" href="${ctx}/test/testTree/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级树结构</a>
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

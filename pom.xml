@@ -633,7 +633,6 @@
 									onerror="continue" encoding="${project.build.sourceEncoding}">
 									<classpath refid="maven.test.classpath" />
 									<transaction src="db/sys/jeesite_${jdbc.type}.sql"/>
-									<transaction src="db/oa/jeesite_${jdbc.type}.sql"/>
 									<transaction src="db/gen/jeesite_${jdbc.type}.sql"/>
 									<transaction src="db/gen/example_${jdbc.type}.sql"/>
 									<transaction src="db/test/jeesite_${jdbc.type}.sql"/>

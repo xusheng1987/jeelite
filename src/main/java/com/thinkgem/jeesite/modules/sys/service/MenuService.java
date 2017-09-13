@@ -73,7 +73,7 @@ public class MenuService extends BaseService<MenuDao, Menu> {
 
 	@Transactional(readOnly = false)
 	public void deleteMenu(Menu menu) {
-		super.delete(menu);
+		dao.delete(menu);
 		// 清除用户菜单缓存
 		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
 		// 清除日志相关缓存

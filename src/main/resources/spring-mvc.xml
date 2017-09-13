@@ -86,7 +86,6 @@
 			<mvc:exclude-mapping path="${adminPath}/login"/>
 			<mvc:exclude-mapping path="${adminPath}/sys/menu/tree"/>
 			<mvc:exclude-mapping path="${adminPath}/sys/menu/treeData"/>
-			<mvc:exclude-mapping path="${adminPath}/oa/oaNotify/self/count"/>
 			<bean class="com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,10 +33,13 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.PageFactory;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.FileUtils;
+import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.web.Servlets;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -104,7 +111,7 @@ public class UserController extends BaseController {
 	public String save(User user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/user/list?repage";
+			return "redirect:" + adminPath + "/sys/user/list";
 		}
 		// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
 		user.setCompany(new Office(request.getParameter("company.id")));
@@ -137,7 +144,7 @@ public class UserController extends BaseController {
 			// UserUtils.getCacheMap().clear();
 		}
 		addMessage(redirectAttributes, "保存用户'" + user.getLoginName() + "'成功");
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/sys/user/list";
 	}
 
 	@RequiresPermissions("sys:user:edit")
@@ -145,7 +152,7 @@ public class UserController extends BaseController {
 	public String delete(User user, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/user/list?repage";
+			return "redirect:" + adminPath + "/sys/user/list";
 		}
 		if (UserUtils.getUser().getId().equals(user.getId())) {
 			addMessage(redirectAttributes, "删除用户失败, 不允许删除当前用户");
@@ -155,7 +162,26 @@ public class UserController extends BaseController {
 			userService.deleteUser(user);
 			addMessage(redirectAttributes, "删除用户成功");
 		}
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/sys/user/list";
+	}
+
+	@RequiresPermissions("sys:user:edit")
+	@RequestMapping(value = "batchDelete")
+	public String batchDelete(String ids, RedirectAttributes redirectAttributes) {
+		if (Global.isDemoMode()) {
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + adminPath + "/sys/user/list";
+		}
+		List<String> idList = Arrays.asList(ids.split(","));
+		if (idList.contains(UserUtils.getUser().getId())) {
+			addMessage(redirectAttributes, "批量删除用户失败, 不允许删除当前用户");
+		} else if (idList.contains("1")) {
+			addMessage(redirectAttributes, "批量删除用户失败, 不允许删除超级管理员用户");
+		} else {
+			userService.batchDelete(idList);
+			addMessage(redirectAttributes, "批量删除用户成功");
+		}
+		return "redirect:" + adminPath + "/sys/user/list";
 	}
 
 	/**
@@ -179,7 +205,7 @@ public class UserController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出用户失败！失败信息：" + e.getMessage());
 		}
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/sys/user/list";
 	}
 
 	/**
@@ -194,7 +220,7 @@ public class UserController extends BaseController {
 	public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/user/list?repage";
+			return "redirect:" + adminPath + "/sys/user/list";
 		}
 		try {
 			int successNum = 0;
@@ -231,7 +257,7 @@ public class UserController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入用户失败！失败信息：" + e.getMessage());
 		}
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/sys/user/list";
 	}
 
 	/**
@@ -253,7 +279,7 @@ public class UserController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
 		}
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/sys/user/list";
 	}
 
 	/**
@@ -359,5 +385,34 @@ public class UserController extends BaseController {
 			mapList.add(map);
 		}
 		return mapList;
+	}
+	
+	/**
+	 * 上传头像
+	 */
+	@RequiresPermissions("user")
+	@RequestMapping(value = "upload", method = RequestMethod.POST)
+	public void upload(HttpServletResponse response, MultipartFile file) {
+		String originalFilename = file.getOriginalFilename();
+		String fileName = IdGen.uuid() + originalFilename.substring(originalFilename.lastIndexOf("."));
+		String src = "";
+		Map map = new HashMap();
+		try {
+			File savefile = new File(Global.getUserfilesBaseDir() + Global.USERFILES_BASE_URL, fileName);
+			if (!savefile.getParentFile().exists()) {
+				savefile.getParentFile().mkdirs();
+			}
+			// 保存
+			file.transferTo(savefile);
+			src = FileUtils.path(Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL + fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		map.put("code", 0);
+		map.put("msg", "");
+		Map dataMap = new HashMap();
+		dataMap.put("src", src);
+		map.put("data", dataMap);
+		renderString(response, map);
 	}
 }

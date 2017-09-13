@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>数据选择</title>
-	<meta name="decorator" content="blank"/>
+	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
 	<script type="text/javascript">
 		var key, lastValue = "", nodeList = [], type = getQueryString("type", "${url}");
@@ -25,9 +25,6 @@
 							//tree.selectNode(nodes[i], false);
 						}
 						selectCheckNode();
-					},onDblClick: function(){//<c:if test="${!checked}">
-						top.$.jBox.getBox().find("button[value='ok']").trigger("click");
-						//$("input[type='text']", top.mainFrame.document).focus();//</c:if>
 					}
 				}
 			};
@@ -179,10 +176,14 @@
 	<div style="position:absolute;right:8px;top:5px;cursor:pointer;" onclick="search();">
 		<i class="icon-search"></i><label id="txt">搜索</label>
 	</div>
-	<div id="search" class="form-search hide" style="padding:10px 0 0 13px;">
-		<label for="key" class="control-label" style="padding:5px 5px 3px 0;">关键字：</label>
-		<input type="text" class="empty" id="key" name="key" maxlength="50" style="width:110px;">
-		<button class="btn" id="btn" onclick="searchNode()">搜索</button>
+	<div id="search" class="layui-inline hide" style="padding:10px 0 0 13px;">
+		<label for="key" class="layui-form-label" style="width:auto;padding:5px 5px 3px 0;">关键字：</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" id="key" name="key" maxlength="50" style="width:110px;height:30px">
+		</div>
+		<div class="layui-input-inline">
+			<button class="layui-btn layui-btn-primary layui-btn-small" id="btn" onclick="searchNode()"><i class="layui-icon">&#xe615;</i>搜索</button>
+		</div>
 	</div>
 	<div id="tree" class="ztree" style="padding:15px 20px;"></div>
 </body>

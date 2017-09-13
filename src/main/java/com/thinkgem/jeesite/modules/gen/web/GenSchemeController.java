@@ -90,7 +90,7 @@ public class GenSchemeController extends BaseController {
 
 		String result = genSchemeService.save(genScheme);
 		addMessage(redirectAttributes, "操作生成方案'" + genScheme.getName() + "'成功<br/>" + result);
-		return "redirect:" + adminPath + "/gen/genScheme/?repage";
+		return "redirect:" + adminPath + "/gen/genScheme";
 	}
 
 	@RequiresPermissions("gen:genScheme:edit")
@@ -98,7 +98,7 @@ public class GenSchemeController extends BaseController {
 	public String delete(GenScheme genScheme, RedirectAttributes redirectAttributes) {
 		genSchemeService.delete(genScheme);
 		addMessage(redirectAttributes, "删除生成方案成功");
-		return "redirect:" + adminPath + "/gen/genScheme/?repage";
+		return "redirect:" + adminPath + "/gen/genScheme";
 	}
 
 }

@@ -50,7 +50,7 @@ public class AreaController extends BaseController {
 	@RequiresPermissions("sys:area:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(Model model) {
-		model.addAttribute("list", areaService.findAll());
+		model.addAttribute("list", areaService.find("0"));
 		return "modules/sys/areaList";
 	}
 
@@ -111,4 +111,13 @@ public class AreaController extends BaseController {
 		}
 		return mapList;
 	}
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "query")
+	public List query(@RequestParam String id) {
+		List<Area> list = areaService.find(id);
+		return list;
+	}
+
 }

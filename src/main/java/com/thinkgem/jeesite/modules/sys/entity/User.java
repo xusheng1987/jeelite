@@ -299,6 +299,13 @@ public class User extends DataEntity<User> {
 	}
 	
 	/**
+	 * 用户拥有的角色ID字符串, 多个角色ID用','分隔.
+	 */
+	public String getRoleIds() {
+		return Collections3.extractToString(roleList, "id", ",");
+	}
+	
+	/**
 	 * 用户拥有的角色名称字符串, 多个角色名称用','分隔.
 	 */
 	public String getRoleNames() {

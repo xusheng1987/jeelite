@@ -4,48 +4,84 @@
 <head>
 	<title>日志管理</title>
 	<meta name="decorator" content="default"/>
-	<%@include file="/WEB-INF/views/include/table.jsp" %>
+	<style type="text/css">
+		.layui-form-item .layui-inline {margin-right: -10px;}
+	</style>
 </head>
 <body>
-	<div id="searchForm" class="breadcrumb form-search">
-		<div>
-			<label>操作菜单：</label><input id="title" name="title" type="text" maxlength="50" class="input-mini"/>
-			<label>用户ID：</label><input id="createBy.id" name="createBy.id" type="text" maxlength="50" class="input-mini"/>
-			<label>URI：</label><input id="requestUri" name="requestUri" type="text" maxlength="50" class="input-mini"/>
-		</div><div style="margin-top:8px;">
-			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-			<label>&nbsp;--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;&nbsp;
-			&nbsp;<label for="exception"><input id="exception" name="exception" type="checkbox" value="1"/>只查询异常信息</label>
-			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li class="layui-this"><a href="${ctx}/sys/log/">日志列表</a></li>
+		</ul>
+	</div><br/>
+	<div id="searchForm" class="layui-form">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">操作菜单：</label>
+				<div class="layui-input-inline">
+					<input id="title" name="title" type="text" maxlength="50" class="layui-input"/>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style="width:60px">用户ID：</label>
+				<div class="layui-input-inline">
+					<input id="createBy.id" name="createBy.id" type="text" maxlength="50" class="layui-input"/>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label" style="width:30px">URI：</label>
+				<div class="layui-input-inline">
+					<input id="requestUri" name="requestUri" type="text" maxlength="50" class="layui-input"/>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">日期范围：&nbsp;</label>
+				<div class="layui-input-inline">
+					<input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
+						value="<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				</div>
+				<div class="layui-form-mid">-</div>
+				<div class="layui-input-inline">
+					<input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
+						value="<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;&nbsp;
+				</div>
+			</div>
+			<div class="layui-inline" style="margin:0 0 30px 10px">
+				<input type="checkbox" lay-skin="primary" id="exception" name="exception" value="1" title="只查询异常信息">
+			</div>
+			<div class="layui-inline" style="margin-bottom:23px">
+				<input id="btnSearch" class="layui-btn layui-btn-normal" type="submit" value="查询"/>
+			</div>
 		</div>
 	</div>
 	<sys:message content="${message}"/>
-	<table id="table" data-detail-view="true" data-detail-formatter="detailFormatter" data-url="${ctx}/sys/log/data">
+	<div style="margin:15px">
+		<table class="layui-table" lay-data="{id:'table', height:488, even:true, url:'${ctx}/sys/log/data', where:queryParams(), request: {pageName: 'pageNo'}, page:true, limit:10}">
 		<thead>
 		<tr>
-			<th data-field="title">操作菜单</th>
-			<th data-field="createBy.name">操作用户</th>
-			<th data-field="createBy.company.name">所在公司</th>
-			<th data-field="createBy.office.name">所在部门</th>
-			<th data-field="requestUri">URI</th>
-			<th data-field="method">提交方式</th>
-			<th data-field="remoteAddr">操作者IP</th>
-			<th data-field="createDate">操作时间</th>
+			<th lay-data="{field:'title', width:300}">操作菜单</th>
+			<th lay-data="{width:150, templet:'#createByNameTpl'}">操作用户</th>
+			<th lay-data="{width:150, templet:'#companyNameTpl'}">所在公司</th>
+			<th lay-data="{width:150, templet:'#officeNameTpl'}">所在部门</th>
+			<th lay-data="{field:'requestUri', width:300}">URI</th>
+			<th lay-data="{field:'method', width:100}">提交方式</th>
+			<th lay-data="{field:'remoteAddr', width:150}">操作者IP</th>
+			<th lay-data="{field:'createDate', width:180}">操作时间</th>
+			<th lay-data="{field:'exception', width:180}">异常</th>
 		</tr>
 		</thead>
-	</table>
-<script>
-    function detailFormatter(index, row) {
-        var html;
-        if(row.exception != '') {
-            html = '异常信息: <br/>' + row.exception;
-        } else {
-            html = '无异常信息';
-        }
-        return html;
-    }
-</script>
+		</table>
+	</div>
+	<script type="text/html" id="createByNameTpl">
+		{{d.createBy.name}}
+	</script>
+	<script type="text/html" id="companyNameTpl">
+		{{d.createBy.company.name}}
+	</script>
+	<script type="text/html" id="officeNameTpl">
+		{{d.createBy.office.name}}
+	</script>
 </body>
 </html>

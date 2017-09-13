@@ -1,1 +1,6 @@
 /target/
+/.externalToolBuilders/
+/.settings/
+/.classpath
+/.project
+/.gitignore

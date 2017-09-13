@@ -6,21 +6,22 @@
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
 	<style type="text/css">
-		.ztree {overflow:auto;margin:0;_margin-top:10px;padding:10px 0 0 10px;}
+		.ztree {display: inline-block; width: 180px; padding: 10px; border: 1px solid #ddd; overflow: auto;}
 	</style>
 </head>
 <body>
 	<sys:message content="${message}"/>
-	<div id="content" class="row-fluid">
-		<div id="left" class="accordion-group">
-			<div class="accordion-heading">
-		    	<a class="accordion-toggle">组织机构<i class="icon-refresh pull-right" onclick="refreshTree();"></i></a>
-		    </div>
-			<div id="ztree" class="ztree"></div>
-		</div>
-		<div id="openClose" class="close">&nbsp;</div>
-		<div id="right">
-			<iframe id="officeContent" src="${ctx}/sys/user/list" width="100%" height="91%" frameborder="0"></iframe>
+	<div id="content" class="layui-fluid">
+		<div class="layui-row">
+			<div class="layui-col-md2">
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;width:200px;">
+					<legend>组织机构</legend>
+				</fieldset>
+				<div id="ztree" class="ztree"></div>
+			</div>
+			<div class="layui-col-md10">
+				<iframe id="officeContent" src="${ctx}/sys/user/list" width="100%" height="645" frameborder="0"></iframe>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -38,20 +39,6 @@
 			});
 		}
 		refreshTree();
-		 
-		var leftWidth = 180; // 左侧窗口大小
-		var htmlObj = $("html"), mainObj = $("#main");
-		var frameObj = $("#left, #openClose, #right, #right iframe");
-		function wSize(){
-			var strs = getWindowSize().toString().split(",");
-			htmlObj.css({"overflow-x":"hidden", "overflow-y":"hidden"});
-			mainObj.css("width","auto");
-			frameObj.height(strs[0] - 5);
-			var leftWidth = ($("#left").width() < 0 ? 0 : $("#left").width());
-			$("#right").width($("#content").width()- leftWidth - $("#openClose").width() -5);
-			$(".ztree").width(leftWidth - 10).height(frameObj.height() - 46);
-		}
 	</script>
-	<script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
 </body>
 </html>

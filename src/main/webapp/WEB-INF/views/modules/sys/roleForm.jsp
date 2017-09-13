@@ -26,17 +26,8 @@
 						ids2.push(nodes2[i].id);
 					}
 					$("#officeIds").val(ids2);
-					loading('正在提交，请稍等...');
+					loading();
 					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
 				}
 			});
 
@@ -95,75 +86,77 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/role/">角色列表</a></li>
-		<li class="active"><a href="${ctx}/sys/role/form?id=${role.id}">角色<shiro:hasPermission name="sys:role:edit">${not empty role.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:role:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	<form:form id="inputForm" modelAttribute="role" action="${ctx}/sys/role/save" method="post" class="form-horizontal">
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li><a href="${ctx}/sys/role/">角色列表</a></li>
+			<li class="layui-this"><a href="${ctx}/sys/role/form?id=${role.id}">角色<shiro:hasPermission name="sys:role:edit">${not empty role.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:role:edit">查看</shiro:lacksPermission></a></li>
+		</ul>
+	</div><br/>
+	<form:form id="inputForm" modelAttribute="role" action="${ctx}/sys/role/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
-			<label class="control-label">归属机构:</label>
-			<div class="controls">
-                <sys:treeselect id="office" name="office.id" value="${role.office.id}" labelName="office.name" labelValue="${role.office.name}"
+		<div class="layui-form-item">
+			<label class="layui-form-label">归属机构:</label>
+            <sys:treeselect id="office" name="office.id" value="${role.office.id}" labelName="office.name" labelValue="${role.office.name}"
 					title="机构" url="/sys/office/treeData" cssClass="required"/>
-			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">角色名称:</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">角色名称:</label>
+			<div class="layui-input-inline">
 				<input id="oldName" name="oldName" type="hidden" value="${role.name}">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="required layui-input"/>
 			</div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">是否系统数据:</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">是否系统数据:</label>
+			<div class="layui-input-inline">
 				<form:select path="sysData">
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline">“是”代表此数据只有超级管理员能进行修改，“否”则表示拥有角色修改人员的权限都能进行修改</span>
 			</div>
+			<div class="layui-form-mid layui-word-aux">“是”代表此数据只有超级管理员能进行修改，“否”则表示拥有角色修改人员的权限都能进行修改</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">是否可用</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">是否可用</label>
+			<div class="layui-input-inline">
 				<form:select path="useable">
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline">“是”代表此数据可用，“否”则表示此数据不可用</span>
 			</div>
+			<div class="layui-form-mid layui-word-aux">“是”代表此数据可用，“否”则表示此数据不可用</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">数据范围:</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">数据范围:</label>
+			<div class="layui-input-inline">
 				<form:select path="dataScope" class="input-medium">
 					<form:options items="${fns:getDictList('sys_data_scope')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline">特殊情况下，设置为“按明细设置”，可进行跨机构授权</span>
 			</div>
+			<div class="layui-form-mid layui-word-aux">特殊情况下，设置为“按明细设置”，可进行跨机构授权</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">角色授权:</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">角色授权:</label>
+			<div class="layui-input-inline">
 				<div id="menuTree" class="ztree" style="margin-top:3px;float:left;"></div>
 				<form:hidden path="menuIds"/>
 				<div id="officeTree" class="ztree" style="margin-left:100px;margin-top:3px;float:left;"></div>
 				<form:hidden path="officeIds"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">备注:</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注:</label>
+			<div class="layui-input-inline">
+				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="layui-textarea"/>
 			</div>
 		</div>
-		<div class="form-actions">
-			<c:if test="${(role.sysData eq fns:getDictValue('是', 'yes_no', '1') && fns:getUser().admin)||!(role.sysData eq fns:getDictValue('是', 'yes_no', '1'))}">
-				<shiro:hasPermission name="sys:role:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			</c:if>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<c:if test="${(role.sysData eq fns:getDictValue('是', 'yes_no', '1') && fns:getUser().admin)||!(role.sysData eq fns:getDictValue('是', 'yes_no', '1'))}">
+					<shiro:hasPermission name="sys:role:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+				</c:if>
+				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+			</div>
 		</div>
 	</form:form>
 </body>

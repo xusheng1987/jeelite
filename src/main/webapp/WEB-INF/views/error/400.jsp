@@ -53,14 +53,16 @@ else {
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="page-header"><h1>参数有误,服务器无法解析.</h1></div>
+	<div style="margin:15px">
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+			<legend>参数有误,服务器无法解析.</legend>
+		</fieldset>
 		<div class="errorMessage">
-			<%=StringUtils.toHtml(sb.toString())%> <br/>
+			<blockquote class="layui-elem-quote">
+				<%=StringUtils.toHtml(sb.toString())%>
+			</blockquote><br/>
 		</div>
-		<a href="javascript:" onclick="history.go(-1);" class="btn">返回上一页</a> &nbsp;
-		<br/> <br/>
-		<script>try{top.$.jBox.closeTip();}catch(e){}</script>
+		<a href="javascript:" onclick="history.go(-1);" class="layui-btn">返回上一页</a>
 	</div>
 </body>
 </html>

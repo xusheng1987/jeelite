@@ -13,7 +13,6 @@
 		<property name="patterns">
 			<list>
 				<value>com.thinkgem.jeesite.modules.gen.service.*</value>
-				<value>com.thinkgem.jeesite.modules.oa.service.*</value>
 				<value>com.thinkgem.jeesite.modules.sys.service.*</value>
 			</list>
 		</property>

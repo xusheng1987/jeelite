@@ -6,6 +6,10 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$.each($("#roleIds").val().split(","), function(index, value) {
+				$("input[name='roleIdList'][value='"+value+"']").attr("checked",true);
+			});
+			layui.form.render('checkbox');
 			$("#no").focus();
 			$("#inputForm").validate({
 				rules: {
@@ -16,145 +20,142 @@
 					confirmNewPassword: {equalTo: "输入与上面相同的密码"}
 				},
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
+					loading();
 					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
 				}
 			});
 		});
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/user/list">用户列表</a></li>
-		<li class="active"><a href="${ctx}/sys/user/form?id=${user.id}">用户<shiro:hasPermission name="sys:user:edit">${not empty user.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:user:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	<form:form id="inputForm" modelAttribute="user" action="${ctx}/sys/user/save" method="post" class="form-horizontal">
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li><a href="${ctx}/sys/user/list">用户列表</a></li>
+			<li class="layui-this"><a href="${ctx}/sys/user/form?id=${user.id}">用户<shiro:hasPermission name="sys:user:edit">${not empty user.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:user:edit">查看</shiro:lacksPermission></a></li>
+		</ul>
+	</div><br/>
+	<form:form id="inputForm" modelAttribute="user" action="${ctx}/sys/user/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
-			<label class="control-label">头像:</label>
-			<div class="controls">
-				<form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+		<div class="layui-form-item">
+			<label class="layui-form-label">头像:</label>
+			<div class="layui-input-inline">
+				<form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="layui-textarea"/>
 				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">归属公司:</label>
-			<div class="controls">
-                <sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
-					title="公司" url="/sys/office/treeData?type=1" cssClass="required"/>
-			</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">归属公司:</label>
+            <sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
+				title="公司" url="/sys/office/treeData?type=1" cssClass="required"/>
 		</div>
-		<div class="control-group">
-			<label class="control-label">归属部门:</label>
-			<div class="controls">
-                <sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="required" notAllowSelectParent="true"/>
-			</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">归属部门:</label>
+            <sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
+				title="部门" url="/sys/office/treeData?type=2" cssClass="required" notAllowSelectParent="true"/>
 		</div>
-		<div class="control-group">
-			<label class="control-label">工号:</label>
-			<div class="controls">
-				<form:input path="no" htmlEscape="false" maxlength="50" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+		<div class="layui-form-item">
+			<label class="layui-form-label">工号:</label>
+			<div class="layui-input-inline">
+				<form:input path="no" htmlEscape="false" maxlength="50" class="required layui-input"/>
 			</div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">姓名:</label>
-			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名:</label>
+			<div class="layui-input-inline">
+				<form:input path="name" htmlEscape="false" maxlength="50" class="required layui-input"/>
 			</div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">登录名:</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">登录名:</label>
+			<div class="layui-input-inline">
 				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-				<form:input path="loginName" htmlEscape="false" maxlength="50" class="required userName"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="loginName" htmlEscape="false" maxlength="50" class="required userName layui-input"/>
+			</div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">密码:</label>
+			<div class="layui-input-inline">
+				<input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''} layui-input"/>
+			</div>
+			<div class="layui-form-mid layui-word-aux">
+				<c:if test="${empty user.id}"><font color="red">*</font></c:if>
+				<c:if test="${not empty user.id}">若不修改密码，请留空。</c:if>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">密码:</label>
-			<div class="controls">
-				<input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}"/>
-				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
-				<c:if test="${not empty user.id}"><span class="help-inline">若不修改密码，请留空。</span></c:if>
+		<div class="layui-form-item">
+			<label class="layui-form-label">确认密码:</label>
+			<div class="layui-input-inline">
+				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword" class="layui-input"/>
+			</div>
+			<c:if test="${empty user.id}">
+				<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
+			</c:if>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">邮箱:</label>
+			<div class="layui-input-inline">
+				<form:input path="email" htmlEscape="false" maxlength="100" class="email layui-input"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">确认密码:</label>
-			<div class="controls">
-				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword"/>
-				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
+		<div class="layui-form-item">
+			<label class="layui-form-label">电话:</label>
+			<div class="layui-input-inline">
+				<form:input path="phone" htmlEscape="false" maxlength="100" class="layui-input"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">邮箱:</label>
-			<div class="controls">
-				<form:input path="email" htmlEscape="false" maxlength="100" class="email"/>
+		<div class="layui-form-item">
+			<label class="layui-form-label">手机:</label>
+			<div class="layui-input-inline">
+				<form:input path="mobile" htmlEscape="false" maxlength="100" class="layui-input"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">电话:</label>
-			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="100"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">手机:</label>
-			<div class="controls">
-				<form:input path="mobile" htmlEscape="false" maxlength="100"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">是否允许登录:</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">是否允许登录:</label>
+			<div class="layui-input-inline">
 				<form:select path="loginFlag">
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline"><font color="red">*</font> “是”代表此账号允许登录，“否”则表示此账号不允许登录</span>
+			</div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">用户角色:</label>
+			<div class="layui-input-block">
+				<input type="hidden" id="roleIds" value="${user.roleIds}"/>
+				<c:forEach items="${allRoles}" var="role">
+					<input type="checkbox" name="roleIdList" value="${role.id}" title="${role.name}">
+				</c:forEach>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">用户角色:</label>
-			<div class="controls">
-				<form:checkboxes path="roleIdList" items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注:</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注:</label>
+			<div class="layui-input-inline">
+				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="layui-textarea"/>
 			</div>
 		</div>
 		<c:if test="${not empty user.id}">
-			<div class="control-group">
-				<label class="control-label">创建时间:</label>
-				<div class="controls">
-					<label class="lbl"><fmt:formatDate value="${user.createDate}" type="both" dateStyle="full"/></label>
+			<div class="layui-form-item">
+				<label class="layui-form-label">创建时间:</label>
+				<div class="layui-input-block">
+					<label class="layui-form-mid"><fmt:formatDate value="${user.createDate}" type="both" dateStyle="full"/></label>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label">最后登陆:</label>
-				<div class="controls">
-					<label class="lbl">IP: ${user.loginIp}&nbsp;&nbsp;&nbsp;&nbsp;时间：<fmt:formatDate value="${user.loginDate}" type="both" dateStyle="full"/></label>
+			<div class="layui-form-item">
+				<label class="layui-form-label">最后登陆:</label>
+				<div class="layui-input-block">
+					<label class="layui-form-mid">IP: ${user.loginIp}&nbsp;&nbsp;&nbsp;&nbsp;时间：<fmt:formatDate value="${user.loginDate}" type="both" dateStyle="full"/></label>
 				</div>
 			</div>
 		</c:if>
-		<div class="form-actions">
-			<shiro:hasPermission name="sys:user:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<shiro:hasPermission name="sys:user:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+			</div>
 		</div>
 	</form:form>
 </body>

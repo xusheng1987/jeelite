@@ -77,7 +77,7 @@ public class TestDataController extends BaseController {
 		}
 		testDataService.save(testData);
 		addMessage(redirectAttributes, "保存单表成功");
-		return "redirect:" + Global.getAdminPath() + "/test/testData/?repage";
+		return "redirect:" + Global.getAdminPath() + "/test/testData";
 	}
 
 	@RequiresPermissions("test:testData:edit")
@@ -85,7 +85,7 @@ public class TestDataController extends BaseController {
 	public String delete(TestData testData, RedirectAttributes redirectAttributes) {
 		testDataService.delete(testData);
 		addMessage(redirectAttributes, "删除单表成功");
-		return "redirect:" + Global.getAdminPath() + "/test/testData/?repage";
+		return "redirect:" + Global.getAdminPath() + "/test/testData";
 	}
 
 }

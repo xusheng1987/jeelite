@@ -14,17 +14,8 @@
 		$(document).ready(function() {
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
+					loading();
 					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
 				}
 			});
 		});
@@ -65,35 +56,58 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
-		<li class="active"><a href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}">${functionNameSimple}<shiro:hasPermission name="${permissionPrefix}:edit">${r"${not empty "+className+".id?'修改':'添加'}"}</shiro:hasPermission><shiro:lacksPermission name="${permissionPrefix}:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	<form:form id="inputForm" modelAttribute="${className}" action="${r"${ctx}"}/${urlPrefix}/save" method="post" class="form-horizontal">
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
+			<li class="layui-this"><a href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}">${functionNameSimple}<shiro:hasPermission name="${permissionPrefix}:edit">${r"${not empty "+className+".id?'修改':'添加'}"}</shiro:hasPermission><shiro:lacksPermission name="${permissionPrefix}:edit">查看</shiro:lacksPermission></a></li>
+		</ul>
+	</div><br/>
+	<form:form id="inputForm" modelAttribute="${className}" action="${r"${ctx}"}/${urlPrefix}/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
 		<sys:message content="${r"${message}"}"/>
 		<#list table.columnList as c>
 			<#if c.isEdit?? && c.isEdit == "1" && (c.isNotBaseField || c.simpleJavaField == 'remarks')>
-		<div class="control-group">
-			<label class="control-label">${c.comments}：</label>
-			<div class="controls">
+		<div class="layui-form-item">
+			<label class="layui-form-label">${c.comments}：</label>
 			<#if c.showType == "input">
-				<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-xlarge <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+			<div class="layui-input-inline">
+				<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+			</div>
 			<#elseif c.showType == "textarea">
-				<form:textarea path="${c.javaFieldId}" htmlEscape="false" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-xxlarge <#if c.isNull != "1">required</#if>"/>
+			<div class="layui-input-inline">
+				<form:textarea path="${c.javaFieldId}" htmlEscape="false" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-textarea <#if c.isNull != "1">required</#if>"/>
+			</div>
 			<#elseif c.showType == "select">
-				<form:select path="${c.javaFieldId}" class="input-xlarge <#if c.isNull != "1">required</#if>">
+			<div class="layui-input-inline">
+				<form:select path="${c.javaFieldId}" class="<#if c.isNull != "1">required</#if>">
 					<form:option value="" label=""/>
 					<form:options items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
+			</div>
 			<#elseif c.showType == "checkbox">
-				<form:checkboxes path="${c.javaFieldId}" items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false" class="<#if c.isNull != "1">required</#if>"/>
+			<div class="layui-input-inline">
+				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+					<input type="checkbox" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+				</c:forEach>
+			</div>
 			<#elseif c.showType == "radiobox">
-				<form:radiobuttons path="${c.javaFieldId}" items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false" class="<#if c.isNull != "1">required</#if>"/>
+			<div class="layui-input-inline">
+				<input id="${c.javaFieldId}" type="hidden" value="${"$"}{${className}.${c.javaFieldId}}"/>
+				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+				</c:forEach>
+			</div>
 			<#elseif c.showType == "dateselect">
-				<input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate <#if c.isNull != "1">required</#if>"
+			<div class="layui-input-inline">
+				<input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate <#if c.isNull != "1">required</#if>"
 					value="<fmt:formatDate value="${"$"}{${className}.${c.javaFieldId}}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</div>
+			<#elseif c.showType == "fileselect">
+			<div class="layui-input-inline">
+				<form:hidden id="${c.simpleJavaField}" path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-textarea"/>
+				<sys:ckfinder input="${c.simpleJavaField}" type="files" uploadPath="/${moduleName}/${className}" selectMultiple="true"/>
+			</div>
 			<#elseif c.showType == "userselect">
 				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
@@ -103,22 +117,18 @@
 			<#elseif c.showType == "areaselect">
 				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
 					title="区域" url="/sys/area/treeData" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
-			<#elseif c.showType == "fileselect">
-				<form:hidden id="${c.simpleJavaField}" path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-xlarge"/>
-				<sys:ckfinder input="${c.simpleJavaField}" type="files" uploadPath="/${moduleName}/${className}" selectMultiple="true"/>
 			</#if>
 			<#if c.isNull != "1">
-				<span class="help-inline"><font color="red">*</font> </span>
+				<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 			</#if>
-			</div>
 		</div>
 			</#if>
 		</#list>
 		<#list table.childList as child>
-			<div class="control-group">
-				<label class="control-label">${child.comments}：</label>
-				<div class="controls">
-					<table id="contentTable" class="table table-striped table-bordered table-condensed">
+			<div class="layui-form-item">
+				<label class="layui-form-label">${child.comments}：</label>
+				<div class="layui-input-block">
+					<table id="contentTable" class="layui-table">
 						<thead>
 							<tr>
 								<th class="hide"></th>
@@ -133,7 +143,7 @@
 						<tbody id="${child.className?uncap_first}List">
 						</tbody>
 						<shiro:hasPermission name="${permissionPrefix}:edit"><tfoot>
-							<tr><td colspan="${childColumnCount + 2}"><a href="javascript:" onclick="addRow('#${child.className?uncap_first}List', ${child.className?uncap_first}RowIdx, ${child.className?uncap_first}Tpl);${child.className?uncap_first}RowIdx = ${child.className?uncap_first}RowIdx + 1;" class="btn">新增</a></td></tr>
+							<tr><td colspan="${childColumnCount + 2}"><a href="javascript:" onclick="addRow('#${child.className?uncap_first}List', ${child.className?uncap_first}RowIdx, ${child.className?uncap_first}Tpl);${child.className?uncap_first}RowIdx = ${child.className?uncap_first}RowIdx + 1;" class="layui-btn layui-btn-primary">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table>
 					<script type="text/template" id="${child.className?uncap_first}Tpl">//<!--
@@ -146,9 +156,9 @@
 								<#if c.isEdit?? && c.isEdit == "1" && (c.isNotBaseField || c.simpleJavaField == 'remarks') && c.name != c.genTable.parentTableFk>
 							<td>
 							<#if c.showType == "input">
-								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="text" value="{{row.${c.javaFieldId}}}"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-small <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="text" value="{{row.${c.javaFieldId}}}"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
 							<#elseif c.showType == "textarea">
-								<textarea id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-small <#if c.isNull != "1">required</#if>">{{row.${c.javaFieldId}}}</textarea>
+								<textarea id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if>">{{row.${c.javaFieldId}}}</textarea>
 							<#elseif c.showType == "select">
 								<select id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" data-value="{{row.${c.javaFieldId}}}" class="input-small <#if c.isNull != "1">required</#if>">
 									<option value=""></option>
@@ -183,8 +193,8 @@
 							</td>
 								</#if>
 							</#list>
-							<shiro:hasPermission name="${permissionPrefix}:edit"><td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#${child.className?uncap_first}List{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+							<shiro:hasPermission name="${permissionPrefix}:edit"><td width="10">
+								{{#delBtn}}<a href="javascript:void(0)" onclick="delRow(this, '#${child.className?uncap_first}List{{idx}}')"><i class="layui-icon">&#xe640;</i></a>{{/delBtn}}
 							</td></shiro:hasPermission>
 						</tr>//-->
 					</script>
@@ -201,9 +211,11 @@
 				</div>
 			</div>
 		</#list>
-		<div class="form-actions">
-			<shiro:hasPermission name="${permissionPrefix}:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<shiro:hasPermission name="${permissionPrefix}:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+			</div>
 		</div>
 	</form:form>
 </body>
