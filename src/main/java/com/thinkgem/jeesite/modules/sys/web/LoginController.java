@@ -46,8 +46,14 @@ public class LoginController extends BaseController {
 	 * 管理登录
 	 */
 	@RequestMapping(value = "${adminPath}/login", method = RequestMethod.GET)
-	public String login(HttpServletResponse response) {
+	public String login(HttpServletRequest request, HttpServletResponse response) {
 		Principal principal = UserUtils.getPrincipal();
+
+		// 默认页签模式
+		String tabmode = CookieUtils.getCookie(request, "tabmode");
+		if (tabmode == null){
+			CookieUtils.setCookie(response, "tabmode", "1");
+		}
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("login, active session size: {}", sessionDAO.getActiveSessions(false).size());

@@ -4,29 +4,15 @@
 <head>
 	<title>${fns:getConfig('productName')}</title>
 	<meta name="decorator" content="default"/><c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
-    <c:if test="${tabmode eq '1'}"><link rel="Stylesheet" href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css" />
-    <script type="text/javascript" src="${ctxStatic}/jerichotab/js/jquery.jerichotab.js"></script></c:if>
 	<script type="text/javascript">
+		var element;
 		$(document).ready(function() {
-			// <c:if test="${tabmode eq '1'}"> 初始化页签
-			$.fn.initJerichoTab({
-                renderTo: '#right', uniqueId: 'jerichotab',
-                contentCss: { 'height': $('#right').height() - tabTitleHeight },
-                tabs: [], loadOnce: true, tabWidth: 110, titleHeight: tabTitleHeight
-            });//</c:if>
+			element = layui.element;
 			// 绑定菜单单击事件
 			$("#menu a.menu").click(function(){
 				// 一级菜单焦点
 				$("#menu li.layui-nav-item").removeClass("layui-this");
 				$(this).parent().addClass("layui-this");
-				// 左侧区域隐藏
-				if ($(this).attr("target") == "mainFrame"){
-					$("#left").hide();
-					// <c:if test="${tabmode eq '1'}"> 隐藏页签
-					$(".jericho_tab").hide();
-					$("#mainFrame").show();//</c:if>
-					return true;
-				}
 				// 左侧区域显示
 				$("#left").show();
 				// 显示二级菜单
@@ -46,7 +32,6 @@
 						$("#left .layui-side").hide();
 						$("#left").append(data);
 						// 使导航的Hover效果生效
-						var element = layui.element;
 						element.init();
 						// 展现三级
 						$(menuId + " .layui-nav-child a").click(function(){
@@ -67,24 +52,32 @@
 			// 初始化点击第一个一级菜单
 			$("#menu a.menu:first").click();
 			// <c:if test="${tabmode eq '1'}"> 下拉菜单以选项卡方式打开
-			$("#userInfo .dropdown-menu a").mouseup(function(){
-				return addTab($(this), true);
+			$("#userInfo a").mouseup(function(){
+				return addTab($(this));
 			});// </c:if>
 		});
 		// <c:if test="${tabmode eq '1'}"> 添加一个页签
-		function addTab($this, refresh){
-			$(".jericho_tab").show();
-			$("#mainFrame").hide();
-			$.fn.jerichoTab.addTab({
-                tabFirer: $this,
-                title: $this.text(),
-                closeable: true,
-                data: {
-                    dataType: 'iframe',
-                    dataLink: $this.attr('href')
+		function addTab($this){
+			$(".layui-tab").show();
+			var layId = $this.attr('data-href').substring(7);//取得tab的lay-id
+			if (getlayId(layId) == -1) {//判断菜单是否已在tab打开
+				element.tabAdd('tab', {
+					title: '<span>'+$this.text()+'</span>',
+					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-link')+'" style="overflow:visible;" scrolling="yes" frameborder="no" width="100%" height="650"></iframe>',
+					id: layId
+				});
+			}
+			element.tabChange('tab', layId);
+		}
+		function getlayId(layId){//查询要添加的tab是否已存在(-1:不存在，0:存在)
+            var id = -1;
+            $("ul.layui-tab-title").find("li").each(function(){//优先查询lay-id
+                if(layId === $(this).attr("lay-id")){
+                	id = 0;
+                	return false;
                 }
-            }).loadData(refresh);
-			return false;
+            });
+            return id;
 		}// </c:if>
 	</script>
 </head>
@@ -112,14 +105,21 @@
 		</c:forEach>
     </ul>
     <ul class="layui-nav layui-layout-right">
-      <li class="layui-nav-item">
+      <li id="userInfo" class="layui-nav-item">
         <a href="javascript:;">
           <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
           ${fns:getUser().name}
         </a>
         <dl class="layui-nav-child">
+        <c:if test="${tabmode eq '1'}">
+          <dd><a href="javascript:;" data-href=".menu3-29" data-link="${ctx}/sys/user/info">个人信息</a></dd>
+          <dd><a href="javascript:;" data-href=".menu3-30" data-link="${ctx}/sys/user/modifyPwd">修改密码</a></dd>
+        </c:if>
+        <c:if test="${tabmode eq '0'}">
           <dd><a href="${ctx}/sys/user/info" target="mainFrame">个人信息</a></dd>
           <dd><a href="${ctx}/sys/user/modifyPwd" target="mainFrame">修改密码</a></dd>
+        </c:if>
+          <dd><a href="javascript:cookie('tabmode','${tabmode eq '1' ? '0' : '1'}');location=location.href">${tabmode eq '1' ? '关闭' : '开启'}页签模式</a></dd>
         </dl>
       </li>
       <li class="layui-nav-item"><a href="${ctx}/logout">退出</a></li>
@@ -128,7 +128,15 @@
   
   <div id="left"></div>
   <div id="right" class="layui-body">
+  <c:if test="${tabmode eq '1'}">
+	<div class="layui-tab" lay-allowClose="true" lay-filter="tab" style="display:none">
+		<ul class="layui-tab-title"></ul>
+		<div class="layui-tab-content"></div>
+	</div>
+  </c:if>
+  <c:if test="${tabmode eq '0'}">
 	<iframe id="mainFrame" name="mainFrame" src="" style="overflow:visible;" scrolling="yes" frameborder="no" width="100%" height="650"></iframe>
+  </c:if>
   </div>
   <div id="footer" class="layui-footer">
 	Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')}

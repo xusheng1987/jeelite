@@ -1,6 +1,10 @@
 .hide {display:none}
 .search {border-left-width: 0}
 /*.layui-input {width:220px}*/
+.layui-body .layui-tab-title .layui-this {background-color:#009688;color:#fff}
+.layui-body .layui-tab {margin-top:0px}
+.layui-tab-content {padding-top:0px}
+/*.layui-tab ul.layui-tab-title li:nth-child(1) i {display: none;}*/
 #inputForm .layui-form-label {width:120px}
 #searchForm .layui-form-item .layui-input-inline {width:120px}
 #inputForm .layui-form-item .layui-input-inline {width:220px}

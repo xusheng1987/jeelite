@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
   <div class="layui-side layui-bg-black" id="menu-${param.parentId}">
 	<c:set var="menuList" value="${fns:getMenuList()}"/><c:set var="firstMenu" value="true"/>
+	<c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
     <div class="layui-side-scroll">
       <ul class="layui-nav layui-nav-tree">
 	<c:forEach items="${menuList}" var="menu" varStatus="idxStatus">
@@ -11,7 +12,14 @@
           <dl class="layui-nav-child">
 			<c:forEach items="${menuList}" var="menu2">
 			<c:if test="${menu2.parent.id eq menu.id&&menu2.isShow eq '1'}">
-            <dd><a data-href=".menu3-${menu2.id}" href="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}" target="${not empty menu2.target ? menu2.target : 'mainFrame'}" ><span>${menu2.name}</span></a></dd>
+            <dd>
+            <c:if test="${tabmode eq '1'}">
+            <a href="javascript:;" data-href=".menu3-${menu2.id}" data-link="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}" >
+            </c:if>
+            <c:if test="${tabmode eq '0'}">
+            <a data-href=".menu3-${menu2.id}" href="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}" target="${not empty menu2.target ? menu2.target : 'mainFrame'}" >
+            </c:if>
+            <span>${menu2.name}</span></a></dd>
             </c:if></c:forEach>
           </dl>
         </li>
