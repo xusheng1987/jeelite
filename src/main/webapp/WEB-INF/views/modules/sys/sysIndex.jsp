@@ -107,7 +107,7 @@
     <ul class="layui-nav layui-layout-right">
       <li id="userInfo" class="layui-nav-item">
         <a href="javascript:;">
-          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          <c:if test="${not empty fns:getUser().photo}"><img src="${fns:getUser().photo}" class="layui-nav-img"></c:if>
           ${fns:getUser().name}
         </a>
         <dl class="layui-nav-child">

@@ -104,10 +104,7 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 			<#elseif c.showType == "fileselect">
-			<div class="layui-input-inline">
-				<form:hidden id="${c.simpleJavaField}" path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-textarea"/>
-				<sys:ckfinder input="${c.simpleJavaField}" type="files" uploadPath="/${moduleName}/${className}" selectMultiple="true"/>
-			</div>
+			<sys:imageupload name="${c.javaFieldId}"/>
 			<#elseif c.showType == "userselect">
 				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
@@ -187,8 +184,7 @@
 								<sys:treeselect id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" value="{{row.${c.javaFieldId}}}" labelName="${child.className?uncap_first}List{{idx}}.${c.javaFieldName}" labelValue="{{row.${c.javaFieldName}}}"
 									title="区域" url="/sys/area/treeData" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
 							<#elseif c.showType == "fileselect">
-								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.simpleJavaField}" type="hidden" value="{{row.${c.javaFieldId}}}"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if>/>
-								<sys:ckfinder input="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" type="files" uploadPath="/${moduleName}/${className}" selectMultiple="true"/>
+								<sys:imageupload name="${c.javaFieldId}"/>
 							</#if>
 							</td>
 								</#if>

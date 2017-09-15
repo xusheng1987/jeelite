@@ -9,10 +9,10 @@ import java.util.Map;
 
 import org.springframework.core.io.DefaultResourceLoader;
 
-import com.ckfinder.connector.ServletContextFactory;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.utils.PropertiesLoader;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.Servlets;
 
 /**
  * 全局配置类
@@ -108,22 +108,14 @@ public class Global {
 	}
 
 	/**
-	 * 获取上传文件的根目录
+	 * TODO 获取上传文件的根目录
 	 * @return
 	 */
 	public static String getUserfilesBaseDir() {
 		String dir = getConfig("userfiles.basedir");
 		if (StringUtils.isBlank(dir)){
-			try {
-				dir = ServletContextFactory.getServletContext().getRealPath("/");
-			} catch (Exception e) {
-				return "";
-			}
+			dir = Servlets.getRequest().getSession().getServletContext().getRealPath("/");
 		}
-		if(!dir.endsWith("/")) {
-			dir += "/";
-		}
-//		System.out.println("userfiles.basedir: " + dir);
 		return dir;
 	}
 	

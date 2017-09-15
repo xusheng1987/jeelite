@@ -4,7 +4,6 @@
 package com.thinkgem.jeesite.modules.sys.web;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,6 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.PageFactory;
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
@@ -396,7 +394,6 @@ public class UserController extends BaseController {
 		String originalFilename = file.getOriginalFilename();
 		String fileName = IdGen.uuid() + originalFilename.substring(originalFilename.lastIndexOf("."));
 		String src = "";
-		Map map = new HashMap();
 		try {
 			File savefile = new File(Global.getUserfilesBaseDir() + Global.USERFILES_BASE_URL, fileName);
 			if (!savefile.getParentFile().exists()) {
@@ -404,15 +401,12 @@ public class UserController extends BaseController {
 			}
 			// 保存
 			file.transferTo(savefile);
-			src = FileUtils.path(Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL + fileName);
-		} catch (IOException e) {
+			src = Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL + fileName;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		map.put("code", 0);
-		map.put("msg", "");
 		Map dataMap = new HashMap();
 		dataMap.put("src", src);
-		map.put("data", dataMap);
-		renderString(response, map);
+		renderString(response, dataMap);
 	}
 }

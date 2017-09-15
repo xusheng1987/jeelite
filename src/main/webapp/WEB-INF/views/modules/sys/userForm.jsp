@@ -39,10 +39,7 @@
 		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">头像:</label>
-			<div class="layui-input-inline">
-				<form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="layui-textarea"/>
-				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
-			</div>
+			<sys:imageupload name="photo"/>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">归属公司:</label>

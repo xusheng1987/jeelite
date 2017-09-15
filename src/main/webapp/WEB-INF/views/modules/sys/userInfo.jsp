@@ -26,19 +26,7 @@
 		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">头像:</label>
-			<div class="layui-input-inline">
-			<!--
-				<div id="uploadImg" style="display:none">
-					<img class="layui-upload-img" id="avatarPreview">
-					<p id="errorText" style="margin-top:10px;margin-bottom:10px"></p>
-				</div>
-				<button type="button" class="layui-btn layui-btn-danger" id="avatar">
-					<i class="layui-icon">&#xe67c;</i>上传图片
-				</button>
-			  -->
-				<form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255"/>
-				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
-			</div>
+			<sys:imageupload name="photo"/>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">归属公司:</label>
@@ -100,41 +88,5 @@
 			</div>
 		</div>
 	</form:form>
-	<!--
-	<script type="text/javascript">
-			var upload = layui.upload
-			,layer = layui.layer;
-			//执行实例
-			  var uploadInst = upload.render({
-			    elem: '#avatar' //绑定元素
-			    ,url: 'upload/' //上传接口
-			    ,size: 10240 //限制文件大小10M，单位 KB
-			    ,before: function(obj){
-			      $("#uploadImg").show();
-			      layer.load(); //上传loading
-			      //图片预览，不支持ie8
-			      obj.preview(function(index, file, result){
-			        $('#avatarPreview').attr('src', result); //图片链接（base64）
-			      });
-			    }
-			    ,done: function(res){
-			      //上传完毕回调
-			      console.log(res);
-			      layer.closeAll('loading'); //关闭loading
-			    }
-			    ,error: function(){
-			      //请求异常回调
-			      layer.msg('上传失败');
-			      layer.closeAll('loading'); //关闭loading
-			      //失败状态，并实现重传
-			      var errorText = $('#errorText');
-			      errorText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini reload">重试</a>');
-			      errorText.find('.reload').on('click', function(){
-			        uploadInst.upload();
-			      });
-			    }
-			  });
-	</script>
-	  -->
 </body>
 </html>
