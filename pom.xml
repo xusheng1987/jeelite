@@ -35,6 +35,7 @@
 		<guava.version>20.0</guava.version>
 		<poi.version>3.14</poi.version>
 		<freemarker.version>2.3.23</freemarker.version>
+		<swagger.version>2.7.0</swagger.version>
 		
 		<!-- jdbc driver setting -->
 		<mysql.driver.version>5.1.42</mysql.driver.version>
@@ -419,6 +420,16 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml-schemas</artifactId>
 			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 		<!-- GENERAL UTILS end -->
 		

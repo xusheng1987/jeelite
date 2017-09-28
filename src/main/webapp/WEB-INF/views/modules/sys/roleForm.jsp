@@ -72,7 +72,7 @@
 			tree2.expandAll(true);
 			// 刷新（显示/隐藏）机构
 			refreshOfficeTree();
-			$("#dataScope").change(function(){
+			layui.form.on('select(dataScope)', function(data){
 				refreshOfficeTree();
 			});
 		});
@@ -129,7 +129,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">数据范围:</label>
 			<div class="layui-input-inline">
-				<form:select path="dataScope" class="input-medium">
+				<form:select path="dataScope" class="input-medium" lay-filter="dataScope">
 					<form:options items="${fns:getDictList('sys_data_scope')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
@@ -137,7 +137,7 @@
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">角色授权:</label>
-			<div class="layui-input-inline">
+			<div class="layui-input-block">
 				<div id="menuTree" class="ztree" style="margin-top:3px;float:left;"></div>
 				<form:hidden path="menuIds"/>
 				<div id="officeTree" class="ztree" style="margin-left:100px;margin-top:3px;float:left;"></div>

@@ -108,7 +108,7 @@ public class Global {
 	}
 
 	/**
-	 * TODO 获取上传文件的根目录
+	 * 获取上传文件的根目录
 	 * @return
 	 */
 	public static String getUserfilesBaseDir() {

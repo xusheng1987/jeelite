@@ -329,18 +329,6 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * 返回用户信息
-	 * 
-	 * @return
-	 */
-	@RequiresPermissions("user")
-	@ResponseBody
-	@RequestMapping(value = "infoData")
-	public User infoData() {
-		return UserUtils.getUser();
-	}
-
-	/**
 	 * 修改个人用户密码
 	 * 
 	 * @param oldPassword

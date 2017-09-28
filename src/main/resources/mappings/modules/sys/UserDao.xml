@@ -153,14 +153,6 @@
 		ORDER BY c.code, o.code, a.name
 	</select>
 	
-	<!-- 查询全部用户数目 -->
-	<select id="findAllCount" resultType="long">
-		SELECT
-			COUNT(1)
-		FROM sys_user a
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-	</select>
-	
 	<!-- 删除用户和角色关联表数据 -->
 	<delete id="deleteUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{id}
