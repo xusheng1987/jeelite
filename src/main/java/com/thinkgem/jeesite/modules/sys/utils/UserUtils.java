@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.sys.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -190,22 +189,6 @@ public class UserUtils {
 		if (areaList == null) {
 			areaList = areaDao.findAllList(new Area());
 			putCache(CACHE_AREA_LIST, areaList);
-		}
-		return areaList;
-	}
-	
-	/**
-	 * 获取当前用户授权的区域
-	 * 
-	 * @return
-	 */
-	public static List<Area> getAreaList(String parentId) {
-		List<Area> allList = getAreaList();
-		List<Area> areaList = new ArrayList<Area>();
-		for(Area area:allList) {
-			if (parentId.equals(area.getParentId())) {
-				areaList.add(area);
-			}
 		}
 		return areaList;
 	}

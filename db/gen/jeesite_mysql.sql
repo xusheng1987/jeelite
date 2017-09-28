@@ -85,9 +85,9 @@ CREATE TABLE gen_table_column
 /* Create Indexes */
 
 CREATE INDEX gen_scheme_del_flag ON gen_scheme (del_flag ASC);
-CREATE INDEX gen_table_name ON gen_table (name ASC);
+/*CREATE INDEX gen_table_name ON gen_table (name ASC);*/
 CREATE INDEX gen_table_del_flag ON gen_table (del_flag ASC);
 CREATE INDEX gen_table_column_table_id ON gen_table_column (gen_table_id ASC);
-CREATE INDEX gen_table_column_name ON gen_table_column (name ASC);
+/*CREATE INDEX gen_table_column_name ON gen_table_column (name ASC);*/
 CREATE INDEX gen_table_column_sort ON gen_table_column (sort ASC);
 CREATE INDEX gen_table_column_del_flag ON gen_table_column (del_flag ASC);

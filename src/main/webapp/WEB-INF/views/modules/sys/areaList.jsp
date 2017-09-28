@@ -9,34 +9,21 @@
 		$(document).ready(function() {
 			var tpl = $("#treeTableTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
 			var data = ${fns:toJson(list)}, rootId = "0";
-			for (var i=0; i<data.length; i++) {
-				$("#treeTableList").append(addRow(tpl, data[i], rootId, true));
-			}
-            var option = {
-                    expandLevel : 1,
-                    beforeExpand : function($treeTable, id) {
-                        //判断id是否已经有了孩子节点，如果有了就不再加载，这样就可以起到缓存的作用
-                        if ($('.' + id, $treeTable).length) { return; }
-                        //动态加载下一级节点
-                        $.get("${ctx}/sys/area/query?id="+id, function(result){
-                			for (var i=0; i<result.length; i++) {
-                				$treeTable.addChilds(addRow(tpl, result[i], id));
-                			}
-                        });
-                    }
-            };
-			$("#treeTable").treeTable(option);
+			addRow("#treeTableList", tpl, data, rootId, true);
+			$("#treeTable").treeTable({expandLevel : 5});
 		});
-		function addRow(tpl, row, pid, root){
-				var rowContent;
+		function addRow(list, tpl, data, pid, root){
+			for (var i=0; i<data.length; i++){
+				var row = data[i];
 				if ((${fns:jsGetVal('row.parentId')}) == pid){
-					rowContent = Mustache.render(tpl, {
+					$(list).append(Mustache.render(tpl, {
 						dict: {
 							type: getDictLabel(${fns:toJson(fns:getDictList('sys_area_type'))}, row.type)
-						}, pid: (root?0:pid), row: row, hasChild:(row.type!='2'?'hasChild="true"':'')
-					});
+						}, pid: (root?0:pid), row: row
+					}));
+					addRow(list, tpl, data, row.id);
 				}
-				return rowContent;
+			}
 		}
 	</script>
 </head>
@@ -55,7 +42,7 @@
 	</table>
 	</div>
 	<script type="text/template" id="treeTableTpl">
-		<tr id="{{row.id}}" pId="{{pid}}" {{hasChild}}>
+		<tr id="{{row.id}}" pId="{{pid}}">
 			<td class="layui-text"><a href="${ctx}/sys/area/form?id={{row.id}}">{{row.name}}</a></td>
 			<td>{{row.code}}</td>
 			<td>{{dict.type}}</td>
