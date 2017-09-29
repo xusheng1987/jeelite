@@ -1,9 +1,6 @@
 
 /* Drop Indexes */
 
-DROP INDEX sys_area_parent_id;
-DROP INDEX sys_area_parent_ids;
-DROP INDEX sys_area_del_flag;
 DROP INDEX sys_dict_value;
 DROP INDEX sys_dict_label;
 DROP INDEX sys_dict_del_flag;
@@ -34,7 +31,6 @@ DROP TABLE sys_user_role CASCADE CONSTRAINTS;
 DROP TABLE sys_user CASCADE CONSTRAINTS;
 DROP TABLE sys_role_office CASCADE CONSTRAINTS;
 DROP TABLE sys_office CASCADE CONSTRAINTS;
-DROP TABLE sys_area CASCADE CONSTRAINTS;
 DROP TABLE sys_dict CASCADE CONSTRAINTS;
 DROP TABLE sys_log CASCADE CONSTRAINTS;
 DROP TABLE sys_role_menu CASCADE CONSTRAINTS;
@@ -45,26 +41,6 @@ DROP TABLE sys_role CASCADE CONSTRAINTS;
 
 
 /* Create Tables */
-
--- 区域表
-CREATE TABLE sys_area
-(
-	id varchar2(64) NOT NULL,
-	parent_id varchar2(64) NOT NULL,
-	parent_ids varchar2(2000) NOT NULL,
-	name nvarchar2(100) NOT NULL,
-	sort number(10,0) NOT NULL,
-	code varchar2(100),
-	type char(1),
-	create_by varchar2(64) NOT NULL,
-	create_date timestamp NOT NULL,
-	update_by varchar2(64) NOT NULL,
-	update_date timestamp NOT NULL,
-	remarks nvarchar2(255),
-	del_flag char(1) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (id)
-);
-
 
 -- 字典表
 CREATE TABLE sys_dict
@@ -135,7 +111,6 @@ CREATE TABLE sys_office
 	parent_ids varchar2(2000) NOT NULL,
 	name nvarchar2(100) NOT NULL,
 	sort number(10,0) NOT NULL,
-	area_id varchar2(64) NOT NULL,
 	code varchar2(100),
 	type char(1) NOT NULL,
 	grade char(1) NOT NULL,
@@ -237,9 +212,6 @@ CREATE TABLE sys_user_role
 
 /* Create Indexes */
 
-CREATE INDEX sys_area_parent_id ON sys_area (parent_id);
-CREATE INDEX sys_area_parent_ids ON sys_area (parent_ids);
-CREATE INDEX sys_area_del_flag ON sys_area (del_flag);
 CREATE INDEX sys_dict_value ON sys_dict (value);
 CREATE INDEX sys_dict_label ON sys_dict (label);
 CREATE INDEX sys_dict_del_flag ON sys_dict (del_flag);

@@ -32,11 +32,6 @@
 				title="机构" url="/sys/office/treeData" extId="${office.id}" allowClear="${office.currentUser.admin}"/>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">归属区域:</label>
-            <sys:treeselect id="area" name="area.id" value="${office.area.id}" labelName="area.name" labelValue="${office.area.name}"
-					title="区域" url="/sys/area/treeData" cssClass="required"/>
-		</div>
-		<div class="layui-form-item">
 			<label class="layui-form-label">机构名称:</label>
 			<div class="layui-input-inline">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required layui-input"/>

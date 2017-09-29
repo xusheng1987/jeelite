@@ -25,11 +25,6 @@
 					title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
 			</div>
 			<div class="layui-inline">
-				<label class="layui-form-label">归属区域：</label>
-				<sys:treeselect id="area" name="area.id" value="${testData.area.id}" labelName="area.name" labelValue="${testData.area.name}"
-					title="区域" url="/sys/area/treeData" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-			<div class="layui-inline">
 				<label class="layui-form-label">名称：</label>
 				<div class="layui-input-inline">
 					<form:input path="name" htmlEscape="false" maxlength="100" class="layui-input input-medium"/>
@@ -69,7 +64,6 @@
 		<tr>
 			<th lay-data="{width:120, templet:'#userTpl'}">归属用户</th>
 			<th lay-data="{width:120, templet:'#officeTpl'}">归属部门</th>
-			<th lay-data="{width:120, templet:'#areaTpl'}">归属区域</th>
 			<th lay-data="{field:'name', width:120}">名称</th>
 			<th lay-data="{field:'updateDate', width:180}">更新时间</th>
 			<th lay-data="{field:'remarks', width:150}">备注信息</th>
@@ -85,9 +79,6 @@
 	</script>
 	<script type="text/html" id="officeTpl">
 		{{d.office.name}}
-	</script>
-	<script type="text/html" id="areaTpl">
-		{{d.area.name}}
 	</script>
 	<script type="text/html" id="bar">
 		<a href="javascript:void(0)" class="layui-btn layui-btn-small" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>

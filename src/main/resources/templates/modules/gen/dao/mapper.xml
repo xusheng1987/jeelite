@@ -23,10 +23,6 @@
 					<#list c.javaFieldAttrs as a>
 		o${c_index + 1}.${a[1]} AS "${c.simpleJavaField}.${a[0]}",
 					</#list>
-				<#elseif c.showType?? && c.showType == "areaselect">
-					<#list c.javaFieldAttrs as a>
-		a${c_index + 1}.${a[1]} AS "${c.simpleJavaField}.${a[0]}",
-					</#list>
 				</#if>
 				<#-- 父表关联字段 -->
 				<#if table.parentExists && table.parentTableFk == c.name>
@@ -51,8 +47,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		LEFT JOIN sys_user u${c_index + 1} ON u${c_index + 1}.id = a.${c.name}
 			<#elseif c.showType?? && c.showType == "officeselect">
 		LEFT JOIN sys_office o${c_index + 1} ON o${c_index + 1}.id = a.${c.name}
-			<#elseif c.showType?? && c.showType == "areaselect">
-		LEFT JOIN sys_area a${c_index + 1} ON a${c_index + 1}.id = a.${c.name}
 			</#if>
 		</#list>
 	</sql>

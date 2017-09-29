@@ -72,9 +72,6 @@ public class OfficeController extends BaseController {
 			office.setParent(user.getOffice());
 		}
 		office.setParent(officeService.get(office.getParent().getId()));
-		if (office.getArea() == null) {
-			office.setArea(user.getOffice().getArea());
-		}
 		// 自动获取排序号
 		if (StringUtils.isBlank(office.getId()) && office.getParent() != null) {
 			int size = 0;
@@ -111,7 +108,6 @@ public class OfficeController extends BaseController {
 				childOffice = new Office();
 				childOffice.setName(DictUtils.getDictLabel(id, "sys_office_common", "未知"));
 				childOffice.setParent(office);
-				childOffice.setArea(office.getArea());
 				childOffice.setType("2");
 				childOffice.setGrade(String.valueOf(Integer.valueOf(office.getGrade()) + 1));
 				childOffice.setUseable(Global.YES);

@@ -79,7 +79,7 @@
 			<td<#if firstListField> class="layui-text"><a href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}"><#else>></#if>
 			<#if c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
 				{{dict.${c.simpleJavaField}}}
-			<#elseif c.showType == "userselect" || c.showType == "officeselect" || c.showType == "areaselect">
+			<#elseif c.showType == "userselect" || c.showType == "officeselect">
 				{{row.${c.javaFieldName}}}
 			<#else>
 				{{row.${c.javaFieldId}}}

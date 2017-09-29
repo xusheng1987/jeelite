@@ -67,14 +67,6 @@
   </function>
   
   <function>
-    <description>获取当前用户的区域对象列表</description>
-    <name>getAreaList</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
-    <function-signature>java.util.List getAreaList()</function-signature>
-    <example>${fns:getAreaList()}</example>  
-  </function>
-  
-  <function>
     <description>获取当前用户的部门对象列表</description>
     <name>getOfficeList</name>
     <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>

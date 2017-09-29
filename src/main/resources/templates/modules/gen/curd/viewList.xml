@@ -71,9 +71,6 @@
 			<#elseif c.showType == "officeselect">
 				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
 					title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
-			<#elseif c.showType == "areaselect">
-				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
-					title="区域" url="/sys/area/treeData" allowClear="true" notAllowSelectParent="true"/>
 			</#if>
 			</div>
 			</#if>
@@ -90,7 +87,7 @@
 		<tr>
 				<#list table.columnList as c>
 					<#if c.isList?? && c.isList == "1">
-						<#if c.showType == "userselect" || c.showType == "officeselect" || c.showType == "areaselect">
+						<#if c.showType == "userselect" || c.showType == "officeselect">
 			<th lay-data="{width:120, templet:'${"#"}${c.simpleJavaField}Tpl'}">${c.comments}</th>
 						<#else>
 			<th lay-data="{field:'${c.javaFieldId}', width:180}">${c.comments}</th>
@@ -107,7 +104,7 @@
 	<#assign firstListField = true>
 	<#list table.columnList as c>
 		<#if c.isList?? && c.isList == "1">
-			<#if c.showType == "userselect" || c.showType == "officeselect" || c.showType == "areaselect">
+			<#if c.showType == "userselect" || c.showType == "officeselect">
 	<script type="text/html" id="${c.simpleJavaField}Tpl">
 		<#if firstListField><a href="${r"${ctx}"}/${urlPrefix}/form?id={{d.id}}" class="layui-table-link"></#if>{{d.${c.javaFieldName}}}<#if firstListField></a></#if>
 	<#assign firstListField = false>

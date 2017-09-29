@@ -16,7 +16,6 @@ CREATE TABLE test_data
 	id varchar2(64) NOT NULL,
 	user_id varchar2(64),
 	office_id varchar2(64),
-	area_id nvarchar2(64),
 	name nvarchar2(100),
 	sex char(1),
 	in_date timestamp,
@@ -50,7 +49,6 @@ CREATE TABLE test_data_main
 	id varchar2(64) NOT NULL,
 	user_id varchar2(64),
 	office_id varchar2(64),
-	area_id nvarchar2(64),
 	name nvarchar2(100),
 	sex char(1),
 	in_date timestamp,
@@ -99,7 +97,6 @@ COMMENT ON TABLE test_data IS '业务数据表';
 COMMENT ON COLUMN test_data.id IS '编号';
 COMMENT ON COLUMN test_data.user_id IS '归属用户';
 COMMENT ON COLUMN test_data.office_id IS '归属部门';
-COMMENT ON COLUMN test_data.area_id IS '归属区域';
 COMMENT ON COLUMN test_data.name IS '名称';
 COMMENT ON COLUMN test_data.sex IS '性别';
 COMMENT ON COLUMN test_data.in_date IS '加入日期';
@@ -123,7 +120,6 @@ COMMENT ON TABLE test_data_main IS '业务数据表';
 COMMENT ON COLUMN test_data_main.id IS '编号';
 COMMENT ON COLUMN test_data_main.user_id IS '归属用户';
 COMMENT ON COLUMN test_data_main.office_id IS '归属部门';
-COMMENT ON COLUMN test_data_main.area_id IS '归属区域';
 COMMENT ON COLUMN test_data_main.name IS '名称';
 COMMENT ON COLUMN test_data_main.sex IS '性别';
 COMMENT ON COLUMN test_data_main.in_date IS '加入日期';

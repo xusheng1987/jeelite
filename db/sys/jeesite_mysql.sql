@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS sys_role_office;
 DROP TABLE IF EXISTS sys_user_role;
 DROP TABLE IF EXISTS sys_user;
 DROP TABLE IF EXISTS sys_office;
-DROP TABLE IF EXISTS sys_area;
 DROP TABLE IF EXISTS sys_dict;
 DROP TABLE IF EXISTS sys_log;
 DROP TABLE IF EXISTS sys_role_menu;
@@ -17,25 +16,6 @@ DROP TABLE IF EXISTS sys_role;
 
 
 /* Create Tables */
-
-CREATE TABLE sys_area
-(
-	id varchar(64) NOT NULL COMMENT '编号',
-	parent_id varchar(64) NOT NULL COMMENT '父级编号',
-	parent_ids varchar(2000) NOT NULL COMMENT '所有父级编号',
-	name varchar(100) NOT NULL COMMENT '名称',
-	sort decimal(10,0) NOT NULL COMMENT '排序',
-	code varchar(100) COMMENT '区域编码',
-	type char(1) COMMENT '区域类型',
-	create_by varchar(64) NOT NULL COMMENT '创建者',
-	create_date datetime NOT NULL COMMENT '创建时间',
-	update_by varchar(64) NOT NULL COMMENT '更新者',
-	update_date datetime NOT NULL COMMENT '更新时间',
-	remarks varchar(255) COMMENT '备注信息',
-	del_flag char(1) DEFAULT '0' NOT NULL COMMENT '删除标记',
-	PRIMARY KEY (id)
-) COMMENT = '区域表';
-
 
 CREATE TABLE sys_dict
 (
@@ -102,8 +82,7 @@ CREATE TABLE sys_office
 	parent_ids varchar(2000) NOT NULL COMMENT '所有父级编号',
 	name varchar(100) NOT NULL COMMENT '名称',
 	sort decimal(10,0) NOT NULL COMMENT '排序',
-	area_id varchar(64) NOT NULL COMMENT '归属区域',
-	code varchar(100) COMMENT '区域编码',
+	code varchar(100) COMMENT '机构编码',
 	type char(1) NOT NULL COMMENT '机构类型',
 	grade char(1) NOT NULL COMMENT '机构等级',
 	address varchar(255) COMMENT '联系地址',
@@ -199,9 +178,6 @@ CREATE TABLE sys_user_role
 
 /* Create Indexes */
 
-CREATE INDEX sys_area_parent_id ON sys_area (parent_id ASC);
-/*CREATE INDEX sys_area_parent_ids ON sys_area (parent_ids ASC);*/
-CREATE INDEX sys_area_del_flag ON sys_area (del_flag ASC);
 CREATE INDEX sys_dict_value ON sys_dict (value ASC);
 CREATE INDEX sys_dict_label ON sys_dict (label ASC);
 CREATE INDEX sys_dict_del_flag ON sys_dict (del_flag ASC);

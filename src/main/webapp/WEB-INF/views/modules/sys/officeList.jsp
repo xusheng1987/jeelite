@@ -37,14 +37,13 @@
 	<sys:message content="${message}"/>
 	<div style="margin:15px">
 	<table id="treeTable" class="layui-table" lay-even>
-		<thead><tr><th>机构名称</th><th>归属区域</th><th>机构编码</th><th>机构类型</th><th>备注</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
+		<thead><tr><th>机构名称</th><th>机构编码</th><th>机构类型</th><th>备注</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
 		<tbody id="treeTableList"></tbody>
 	</table>
 	</div>
 	<script type="text/template" id="treeTableTpl">
 		<tr id="{{row.id}}" pId="{{pid}}">
 			<td class="layui-text"><a href="${ctx}/sys/office/form?id={{row.id}}">{{row.name}}</a></td>
-			<td>{{row.area.name}}</td>
 			<td>{{row.code}}</td>
 			<td>{{dict.type}}</td>
 			<td>{{row.remarks}}</td>

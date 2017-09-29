@@ -31,7 +31,6 @@ import com.thinkgem.jeesite.modules.gen.entity.GenScheme;
 import com.thinkgem.jeesite.modules.gen.entity.GenTable;
 import com.thinkgem.jeesite.modules.gen.entity.GenTableColumn;
 import com.thinkgem.jeesite.modules.gen.entity.GenTemplate;
-import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -139,12 +138,6 @@ public class GenUtils {
 				column.setJavaType(Office.class.getName());
 				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
 				column.setShowType("officeselect");
-			}
-			// 区域
-			else if (StringUtils.startsWithIgnoreCase(column.getName(), "area_id")){
-				column.setJavaType(Area.class.getName());
-				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
-				column.setShowType("areaselect");
 			}
 			// 创建者、更新者
 			else if (StringUtils.startsWithIgnoreCase(column.getName(), "create_by")

@@ -14,12 +14,10 @@ import org.apache.shiro.subject.Subject;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
-import com.thinkgem.jeesite.modules.sys.dao.AreaDao;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
-import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.entity.Menu;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -37,7 +35,6 @@ public class UserUtils {
 	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
 	private static RoleDao roleDao = SpringContextHolder.getBean(RoleDao.class);
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
-	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
 
 	public static final String USER_CACHE = "userCache";
@@ -48,7 +45,6 @@ public class UserUtils {
 	public static final String CACHE_AUTH_INFO = "authInfo";
 	public static final String CACHE_ROLE_LIST = "roleList";
 	public static final String CACHE_MENU_LIST = "menuList";
-	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
 
@@ -99,7 +95,6 @@ public class UserUtils {
 		removeCache(CACHE_AUTH_INFO);
 		removeCache(CACHE_ROLE_LIST);
 		removeCache(CACHE_MENU_LIST);
-		removeCache(CACHE_AREA_LIST);
 		removeCache(CACHE_OFFICE_LIST);
 		removeCache(CACHE_OFFICE_ALL_LIST);
 		UserUtils.clearCache(getUser());
@@ -177,20 +172,6 @@ public class UserUtils {
 			putCache(CACHE_MENU_LIST, menuList);
 		}
 		return menuList;
-	}
-
-	/**
-	 * 获取当前用户授权的所有区域
-	 * 
-	 * @return
-	 */
-	public static List<Area> getAreaList() {
-		List<Area> areaList = (List<Area>) getCache(CACHE_AREA_LIST);
-		if (areaList == null) {
-			areaList = areaDao.findAllList(new Area());
-			putCache(CACHE_AREA_LIST, areaList);
-		}
-		return areaList;
 	}
 
 	/**

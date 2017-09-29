@@ -38,11 +38,6 @@
 				title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">归属区域：</label>
-			<sys:treeselect id="area" name="area.id" value="${testData.area.id}" labelName="area.name" labelValue="${testData.area.name}"
-				title="区域" url="/sys/area/treeData" allowClear="true" notAllowSelectParent="true"/>
-		</div>
-		<div class="layui-form-item">
 			<label class="layui-form-label">名称：</label>
 			<div class="layui-input-inline">
 				<form:input path="name" htmlEscape="false" maxlength="100" class="layui-input"/>

@@ -140,7 +140,7 @@ COMMENT ON COLUMN gen_table_column.is_edit IS '是否编辑字段';
 COMMENT ON COLUMN gen_table_column.is_list IS '是否列表字段';
 COMMENT ON COLUMN gen_table_column.is_query IS '是否查询字段';
 COMMENT ON COLUMN gen_table_column.query_type IS '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）';
-COMMENT ON COLUMN gen_table_column.show_type IS '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）';
+COMMENT ON COLUMN gen_table_column.show_type IS '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择）';
 COMMENT ON COLUMN gen_table_column.dict_type IS '字典类型';
 COMMENT ON COLUMN gen_table_column.settings IS '其它设置（扩展字段JSON）';
 COMMENT ON COLUMN gen_table_column.sort IS '排序（升序）';

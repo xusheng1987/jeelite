@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
-import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
@@ -29,8 +28,6 @@ public class TestData extends DataEntity<TestData> {
 	private User user; // 归属用户
 	@TableField(value = "office_id", el = "office, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
 	private Office office; // 归属部门
-	@TableField(value = "area_id", el = "area, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
-	private Area area; // 归属区域
 	private String name; // 名称
 	private String sex; // 性别
 	private Date inDate; // 加入日期
@@ -61,14 +58,6 @@ public class TestData extends DataEntity<TestData> {
 
 	public void setOffice(Office office) {
 		this.office = office;
-	}
-
-	public Area getArea() {
-		return area;
-	}
-
-	public void setArea(Area area) {
-		this.area = area;
 	}
 
 	@Length(min = 0, max = 100, message = "名称长度必须介于 0 和 100 之间")

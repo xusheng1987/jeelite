@@ -6,7 +6,6 @@ DROP TABLE sys_role_office;
 DROP TABLE sys_user_role;
 DROP TABLE sys_user;
 DROP TABLE sys_office;
-DROP TABLE sys_area;
 DROP TABLE sys_dict;
 DROP TABLE sys_log;
 DROP TABLE sys_role_menu;
@@ -17,25 +16,6 @@ DROP TABLE sys_role;
 
 
 /* Create Tables */
-
-CREATE TABLE sys_area
-(
-	id varchar(64) NOT NULL,
-	parent_id varchar(64) NOT NULL,
-	parent_ids varchar(2000) NOT NULL,
-	name varchar(100) NOT NULL,
-	sort decimal(10,0) NOT NULL,
-	code varchar(100),
-	type char(1),
-	create_by varchar(64) NOT NULL,
-	create_date datetime NOT NULL,
-	update_by varchar(64) NOT NULL,
-	update_date datetime NOT NULL,
-	remarks varchar(255),
-	del_flag char(1) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (id)
-);
-
 
 CREATE TABLE sys_dict
 (
@@ -102,7 +82,6 @@ CREATE TABLE sys_office
 	parent_ids varchar(2000) NOT NULL,
 	name varchar(100) NOT NULL,
 	sort decimal(10,0) NOT NULL,
-	area_id varchar(64) NOT NULL,
 	code varchar(100),
 	type char(1) NOT NULL,
 	grade char(1) NOT NULL,
@@ -199,9 +178,6 @@ CREATE TABLE sys_user_role
 
 /* Create Indexes */
 
-CREATE INDEX sys_area_parent_id ON sys_area (parent_id ASC);
-/*CREATE INDEX sys_area_parent_ids ON sys_area (parent_ids ASC);*/
-CREATE INDEX sys_area_del_flag ON sys_area (del_flag ASC);
 CREATE INDEX sys_dict_value ON sys_dict (value ASC);
 CREATE INDEX sys_dict_label ON sys_dict (label ASC);
 CREATE INDEX sys_dict_del_flag ON sys_dict (del_flag ASC);
