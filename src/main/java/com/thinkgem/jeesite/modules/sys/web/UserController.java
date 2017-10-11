@@ -377,8 +377,9 @@ public class UserController extends BaseController {
 	 * 上传头像
 	 */
 	@RequiresPermissions("user")
+	@ResponseBody
 	@RequestMapping(value = "upload", method = RequestMethod.POST)
-	public void upload(HttpServletResponse response, MultipartFile file) {
+	public Map upload(MultipartFile file) {
 		String originalFilename = file.getOriginalFilename();
 		String fileName = IdGen.uuid() + originalFilename.substring(originalFilename.lastIndexOf("."));
 		String src = "";
@@ -395,6 +396,6 @@ public class UserController extends BaseController {
 		}
 		Map dataMap = new HashMap();
 		dataMap.put("src", src);
-		renderString(response, dataMap);
+		return dataMap;
 	}
 }

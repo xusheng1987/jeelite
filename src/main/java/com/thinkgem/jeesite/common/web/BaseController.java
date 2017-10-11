@@ -4,33 +4,29 @@
 package com.thinkgem.jeesite.common.web;
 
 import java.beans.PropertyEditorSupport;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
-import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 
 /**
@@ -94,16 +90,6 @@ public abstract class BaseController {
 	}
 	
 	/**
-	 * 服务端参数有效性验证
-	 * @param object 验证的实体对象
-	 * @param groups 验证组，不传入此参数时，同@Valid注解验证
-	 * @return 验证成功：继续执行；验证失败：抛出异常跳转400页面。
-	 */
-	protected void beanValidator(Object object, Class<?>... groups) {
-		BeanValidators.validateWithException(validator, object, groups);
-	}
-	
-	/**
 	 * 添加Model消息
 	 * @param message
 	 */
@@ -128,48 +114,38 @@ public abstract class BaseController {
 	}
 	
 	/**
-	 * 客户端返回JSON字符串
-	 * @param response
-	 * @param object
-	 * @return
+	 * 设置客户端成功响应
 	 */
-	protected String renderString(HttpServletResponse response, Object object) {
-		return renderString(response, JsonMapper.toJsonString(object), "application/json");
-	}
-	
-	/**
-	 * 客户端返回字符串
-	 * @param response
-	 * @param string
-	 * @return
-	 */
-	protected String renderString(HttpServletResponse response, String string, String type) {
-		try {
-			response.reset();
-	        response.setContentType(type);
-	        response.setCharacterEncoding("utf-8");
-			response.getWriter().print(string);
-			return null;
-		} catch (IOException e) {
-			return null;
-		}
+	protected ResponseEntity<?> renderSuccess() {
+		return renderSuccess(null);
 	}
 
 	/**
-	 * 参数绑定异常
+	 * 设置客户端成功响应
 	 */
-	@ExceptionHandler({BindException.class, ConstraintViolationException.class, ValidationException.class})
-    public String bindException() {  
-        return "error/400";
-    }
+	protected ResponseEntity<?> renderSuccess(Object data) {
+		return render(HttpStatus.OK, data);
+	}
 	
 	/**
-	 * 授权登录异常
+	 * 设置客户端响应
 	 */
-	@ExceptionHandler({AuthenticationException.class})
-    public String authenticationException() {  
-        return "error/403";
-    }
+	protected ResponseEntity<?> render(HttpStatus status) {
+		return render(status, null);
+	}
+
+	/**
+	 * 设置客户端响应
+	 */
+	protected ResponseEntity<?> render(HttpStatus status, Object data) {
+		Map map = Maps.newHashMap();
+		if (data != null) {
+			map.put("data", data);
+		}
+		map.put("code", status.value());
+		map.put("msg", status.getReasonPhrase());
+		return ResponseEntity.ok(map);
+	}
 	
 	/**
 	 * 转换为layui table需要的分页数据格式
