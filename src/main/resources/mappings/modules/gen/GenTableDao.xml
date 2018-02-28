@@ -57,21 +57,7 @@
 			<include refid="genTableColumns"/>
 		FROM gen_table a
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${page.orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				ORDER BY a.name ASC
-			</otherwise>
-		</choose>
+		ORDER BY a.name ASC
 	</select>
 	
 </mapper>

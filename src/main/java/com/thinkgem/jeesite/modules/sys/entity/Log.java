@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.BaseEntity;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -39,10 +38,9 @@ public class Log extends BaseEntity<Log> {
 	@TableField(exist=false)
 	private Date endDate; // 结束日期
 
-	@TableField(el = "createBy, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler", fill = FieldFill.INSERT)
+	@TableField(el = "createBy, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
 	private User createBy; // 创建者
 
-	@TableField(fill = FieldFill.INSERT)
 	private Date createDate; // 创建日期
 
 	// 日志类型（1：接入日志；2：错误日志）
@@ -159,7 +157,7 @@ public class Log extends BaseEntity<Log> {
 	 * 
 	 * @param paramMap
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("hiding")
 	public void setParams(Map paramMap) {
 		if (paramMap == null) {
 			return;
@@ -168,7 +166,7 @@ public class Log extends BaseEntity<Log> {
 		for (Map.Entry<String, String[]> param : ((Map<String, String[]>) paramMap).entrySet()) {
 			params.append(("".equals(params.toString()) ? "" : "&") + param.getKey() + "=");
 			String paramValue = (param.getValue() != null && param.getValue().length > 0 ? param.getValue()[0] : "");
-			params.append(StringUtils.abbr(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue,
+			params.append(StringUtils.abbreviate(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue,
 					100));
 		}
 		this.params = params.toString();

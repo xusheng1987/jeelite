@@ -50,7 +50,7 @@
 							pre_ids.shift();
 						}
 						if(pre_ids.sort().toString() == ids.sort().toString()){
-							layer.msg("未给角色【${role.name}】分配新成员！", {icon: 0}); 
+							layer.msg("未给角色【${role.name}】分配新成员！", {icon: 0});
 							return false;
 						};
 				    	// 执行保存
@@ -68,7 +68,7 @@
 						layero.find("iframe")[0].contentWindow.clearAssign();
 						return false;
 					}
-				}); 
+				});
 			});
 		</script>
 	<table id="contentTable" class="layui-table" lay-even>
@@ -84,7 +84,7 @@
 				<td>${user.mobile}</td>
 				<shiro:hasPermission name="sys:role:edit">
 					<td>
-						<a class="layui-btn layui-btn-danger layui-btn-small" href="javascript:void(0)" 
+						<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)"
 							onclick="confirmx('确认要将用户<b>[${user.name}]</b>从<b>[${role.name}]</b>角色中移除吗？', '${ctx}/sys/role/outrole?userId=${user.id}&roleId=${role.id}')"><i class="layui-icon">&#xe640;</i>移除</a>
 					</td>
 				</shiro:hasPermission>

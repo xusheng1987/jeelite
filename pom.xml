@@ -2,27 +2,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>com.thinkgem.jeesite</groupId>
 	<artifactId>jeesite-lite</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	
+
 	<!-- 项目属性 -->
 	<properties>
-		
+
 		<!-- main version setting -->
-		<spring.version>4.1.9.RELEASE</spring.version>
+		<spring.version>4.2.9.RELEASE</spring.version>
 		<validator.version>5.2.4.Final</validator.version>
-		<mybatis.version>3.2.8</mybatis.version>
-		<mybatis-spring.version>1.2.5</mybatis-spring.version>
-		<mybatis-plus.version>2.1.0</mybatis-plus.version>
+		<mybatis-plus.version>2.1.6</mybatis-plus.version>
 		<druid.version>1.0.31</druid.version>
 		<ehcache.version>2.6.11</ehcache.version>
 		<shiro.version>1.3.2</shiro.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
 		<aspectj.version>1.8.10</aspectj.version>
-		
+
 		<!-- tools version setting -->
 		<slf4j.version>1.7.25</slf4j.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
@@ -36,46 +34,46 @@
 		<poi.version>3.14</poi.version>
 		<freemarker.version>2.3.23</freemarker.version>
 		<swagger.version>2.7.0</swagger.version>
-		
+
 		<!-- jdbc driver setting -->
 		<mysql.driver.version>5.1.42</mysql.driver.version>
 		<oracle.driver.version>10.2.0.4.0</oracle.driver.version>
 		<mssql.driver.version>1.3.1</mssql.driver.version>
-		
+
 		<!-- environment setting -->
 		<jdk.version>1.7</jdk.version>
 		<tomcat.version>2.2</tomcat.version>
 		<jetty.version>8.1.16.v20140903</jetty.version>
 		<webserver.port>8282</webserver.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 	</properties>
-	
+
 	<!-- 设定主仓库，按设定顺序进行查找。 -->
 	<repositories>
-	
+
 		<repository>
 			<id>jeesite-repos</id>
 			<name>Jeesite Repository</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
-		
+
 	</repositories>
-	
+
 	<!-- 设定插件仓库 -->
-	<pluginRepositories> 
-	
+	<pluginRepositories>
+
 		<pluginRepository>
 			<id>jeesite-repos</id>
 			<name>Jeesite Repository</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</pluginRepository>
-		
-	</pluginRepositories> 
-	
+
+	</pluginRepositories>
+
 	<!-- 依赖项定义 -->
 	<dependencies>
-	
+
 		<!-- SPRING begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -119,7 +117,7 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-			
+
 		<!-- spring orm -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -131,7 +129,7 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- bean validate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -139,7 +137,7 @@
 			<version>${validator.version}</version>
 		</dependency>
 		<!-- SPRING end -->
-		
+
 		<!-- AOP begin -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -151,32 +149,23 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>3.1</version>
-		</dependency> -->
 		<!-- AOP end -->
-		
+
 		<!-- PERSISTENCE begin -->
-		
+
 		<!-- MyBatis -->
-		<!--<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis-spring.version}</version>
-		</dependency> -->
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus</artifactId>
 			<version>${mybatis-plus.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.baomidou</groupId>
+					<artifactId>mybatis-plus-generate</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
+
 		<!-- connection pool -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -193,7 +182,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- jdbc driver -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -203,10 +192,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
+			<artifactId>ojdbc6</artifactId>
 			<version>${oracle.driver.version}</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc14-10.2.0.4.0.jar</systemPath>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.4.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.jtds</groupId>
@@ -215,7 +204,7 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!-- PERSISTENCE end -->
-		
+
 		<!-- WEB begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -269,7 +258,7 @@
 			 <version>2.5.1</version>
 		</dependency>
 		<!-- CACHE end -->
-		
+
 		<!-- SECURITY begin -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -303,7 +292,7 @@
 			<version>${shiro.version}</version>
 		</dependency>
 		<!-- SECURITY end -->
-		
+
 		<!-- LOGGING begin -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -328,7 +317,7 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<!-- LOGGING end -->
-		
+
 		<!-- GENERAL UTILS begin -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -361,14 +350,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- google java lib -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		
+
 		<!-- jackson json -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -385,26 +374,21 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-jaxb-annotations</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-		
+
 		<!-- xstream xml -->
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>${xstream.version}</version>
 		</dependency>
-		
+
 		<!-- freemarker engine -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker.version}</version>
 		</dependency>
-		
+
 		<!-- poi office -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -432,7 +416,7 @@
 			<version>${swagger.version}</version>
 		</dependency>
 		<!-- GENERAL UTILS end -->
-		
+
 		<!-- TEST begin -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -445,7 +429,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<!-- TEST end -->
-		
+
 	</dependencies>
 
 	<build>
@@ -461,7 +445,7 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
-			
+
 			<!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -471,7 +455,7 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			
+
 			<!-- war 打包插件, 设定war包名称不带版本号 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -488,19 +472,19 @@
 					<warName>${project.artifactId}</warName>
 				</configuration>
 			</plugin>
-			
+
 			<!-- tomcat7插件 -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${tomcat.version}</version> 
+				<version>${tomcat.version}</version>
 				<configuration>
 					<port>${webserver.port}</port>
 					<path>/${project.artifactId}</path>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 				</configuration>
 			</plugin>
-			
+
 			<!-- jetty插件 -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -515,7 +499,7 @@
 					<webAppConfig>
 						<contextPath>/${project.artifactId}</contextPath>
 					</webAppConfig>
-					<systemProperties>  
+					<systemProperties>
 						<systemProperty>
 							<name>org.mortbay.util.URI.charset</name>
 							<value>${project.build.sourceEncoding}</value>
@@ -523,28 +507,28 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			
+
 			<!-- resource插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.7</version>
 			</plugin>
-			
+
 			<!-- install插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>2.5.2</version>
 			</plugin>
-			
+
 			<!-- clean插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.6.1</version>
 			</plugin>
-			
+
 			<!-- dependency插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -553,7 +537,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<!-- 初始化数据库 -->
 		<profile>
@@ -578,18 +562,18 @@
 						<version>1.7</version>
 						<configuration>
 							<target>
-								
+
 								<!-- mysql -->
 								<property name="dbunit.datatype" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
-								
+
 								<!-- mssql
 								<property name="dbunit.datatype" value="org.dbunit.ext.mssql.MsSqlDataTypeFactory" /> -->
-								
+
 								<!-- oracle
 								<property name="dbunit.datatype" value="org.dbunit.ext.oracle.Oracle10DataTypeFactory" /> -->
-								
+
 								<property file="src/main/resources/jeesite.properties" />
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}" 
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
 									onerror="continue" encoding="${project.build.sourceEncoding}">
 									<classpath refid="maven.test.classpath" />
 									<transaction src="db/sys/jeesite_${jdbc.type}.sql"/>
@@ -597,25 +581,25 @@
 									<transaction src="db/gen/example_${jdbc.type}.sql"/>
 									<transaction src="db/test/jeesite_${jdbc.type}.sql"/>
 								</sql>
-								
+
 								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath" />
-								
+
 								<!-- mysql、mssql -->
 								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
 									 password="${jdbc.password}">
-								
+
 								<!-- oracle
 								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
 									password="${jdbc.password}" schema="${jdbc.username}" > -->
-									
+
 									<dbconfig>
 										<property name="datatypeFactory" value="${dbunit.datatype}" />
 									</dbconfig>
 									<classpath refid="maven.test.classpath" />
 									<operation type="INSERT" src="db/sys/jeesite_data.xls" format="xls" transaction="true"/>
-									
+
 								</dbunit>
-								
+
 							</target>
 						</configuration>
 					</plugin>
@@ -623,5 +607,5 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 </project>

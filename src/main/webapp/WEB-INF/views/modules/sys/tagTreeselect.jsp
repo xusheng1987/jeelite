@@ -42,7 +42,7 @@
 					+ new Date().getTime(), function(zNodes){
 				// 初始化树结构
 				tree = $.fn.zTree.init($("#tree"), setting, zNodes);
-				
+
 				// 默认展开一级节点
 				var nodes = tree.getNodesByParam("level", 0);
 				for(var i=0; i<nodes.length; i++) {
@@ -60,7 +60,7 @@
 			key.bind('keydown', function (e){if(e.which == 13){searchNode();}});
 			setTimeout("search();", "300");
 		});
-		
+
 		// 默认选择节点
 		function selectCheckNode(){
 			var ids = "${selectIds}".split(",");
@@ -85,26 +85,26 @@
 			}
 			searchNode(e);
 		}
-		
+
 		//搜索节点
 		function searchNode() {
 			// 取得输入的关键字的值
 			var value = $.trim(key.get(0).value);
-			
+
 			// 按名字查询
 			var keyType = "name";<%--
 			if (key.hasClass("empty")) {
 				value = "";
 			}--%>
-			
+
 			// 如果和上次一次，就退出不查了。
 			if (lastValue === value) {
 				return;
 			}
-			
+
 			// 保存最后一次
 			lastValue = value;
-			
+
 			var nodes = tree.getNodes();
 			// 如果要查空字串，就退出不查了。
 			if (value == "") {
@@ -115,17 +115,17 @@
 			nodeList = tree.getNodesByParamFuzzy(keyType, value);
 			updateNodes(nodeList);
 		}
-		
+
 		//隐藏所有节点
-		function hideAllNode(nodes){			
+		function hideAllNode(nodes){
 			nodes = tree.transformToArray(nodes);
 			for(var i=nodes.length-1; i>=0; i--) {
 				tree.hideNode(nodes[i]);
 			}
 		}
-		
+
 		//显示所有节点
-		function showAllNode(nodes){			
+		function showAllNode(nodes){
 			nodes = tree.transformToArray(nodes);
 			for(var i=nodes.length-1; i>=0; i--) {
 				/* if(!nodes[i].isParent){
@@ -141,14 +141,14 @@
 				/* } */
 			}
 		}
-		
+
 		//更新节点状态
 		function updateNodes(nodeList) {
 			tree.showNodes(nodeList);
 			for(var i=0, l=nodeList.length; i<l; i++) {
-				
+
 				//展开当前节点的父节点
-				tree.showNode(nodeList[i].getParentNode()); 
+				tree.showNode(nodeList[i].getParentNode());
 				//tree.expandNode(nodeList[i].getParentNode(), true, false, false);
 				//显示展开符合条件节点的父节点
 				while(nodeList[i].getParentNode()!=null){
@@ -162,14 +162,14 @@
 				tree.expandNode(nodeList[i].getParentNode(), true, false, false);
 			}
 		}
-		
+
 		// 开始搜索
 		function search() {
 			$("#search").slideToggle(200);
 			$("#txt").toggle();
 			$("#key").focus();
 		}
-		
+
 	</script>
 </head>
 <body>
@@ -182,7 +182,7 @@
 			<input type="text" class="layui-input" id="key" name="key" maxlength="50" style="width:110px;height:30px">
 		</div>
 		<div class="layui-input-inline">
-			<button class="layui-btn layui-btn-primary layui-btn-small" id="btn" onclick="searchNode()"><i class="layui-icon">&#xe615;</i>搜索</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm" id="btn" onclick="searchNode()"><i class="layui-icon">&#xe615;</i>搜索</button>
 		</div>
 	</div>
 	<div id="tree" class="ztree" style="padding:15px 20px;"></div>

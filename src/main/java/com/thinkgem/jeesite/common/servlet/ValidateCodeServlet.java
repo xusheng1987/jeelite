@@ -30,8 +30,8 @@ public class ValidateCodeServlet extends HttpServlet {
 	
 	public static final String VALIDATE_CODE = "validateCode";
 	
-	private int w = 70;
-	private int h = 26;
+	private int w = 80;
+	private int h = 40;
 	
 	public ValidateCodeServlet() {
 		super();

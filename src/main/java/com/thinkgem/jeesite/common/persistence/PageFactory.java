@@ -15,7 +15,7 @@ public class PageFactory<T> {
 		HttpServletRequest request = Servlets.getRequest();
 		int limit = Integer.valueOf(request.getParameter("limit"));//每页数据量
 		int pageNo = Integer.valueOf(request.getParameter("pageNo"));//当前页码
-		String field = request.getParameter("field");//排序字段
+		String field = StringUtils.toUnderScoreCase(request.getParameter("field"));//排序字段(需要驼峰命名转换)
 		String order = request.getParameter("order");//排序方式(asc,desc)
 		if (StringUtils.isEmpty(field)) {
 			Page<T> page = new Page<>(pageNo, limit);

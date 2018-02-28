@@ -33,32 +33,12 @@
 		<div class="layui-btn-group">
 			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon">&#xe640;</i>批量删除</button>
 		</div>
-		<table class="layui-table" lay-data="{id:'table', height:471, even:true, url:'${ctx}/sys/dict/data', where:queryParams(), request: {pageName: 'pageNo'}, page:true, limit:10}">
-		<thead>
-		<tr>
-			<th lay-data="{checkbox:true, fixed:true}"></th>
-			<th lay-data="{field:'value', width:120}">键值</th>
-			<th lay-data="{width:180, templet:'#labelTpl'}">标签</th>
-			<th lay-data="{width:180, templet:'#typeTpl'}">类型</th>
-			<th lay-data="{field:'description', width:150}">描述</th>
-			<th lay-data="{field:'sort', width:80}">排序</th>
-			<shiro:hasPermission name="sys:dict:edit">
-				<th lay-data="{fixed:'right', width:300, align:'center', toolbar:'#bar'}">操作</th>
-			</shiro:hasPermission>
-		</tr>
-		</thead>
-		</table>
+		<table class="layui-table"></table>
 	</div>
-	<script type="text/html" id="labelTpl">
-		<a href="${ctx}/sys/dict/form?id={{d.id}}" class="layui-table-link">{{d.label}}</a>
-	</script>
-	<script type="text/html" id="typeTpl">
-		<a href="javascript:void(0)" class="layui-table-link" onclick="typeFilter('{{d.type}}')">{{d.type}}</a>
-	</script>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-small" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-small" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-normal layui-btn-small" lay-event="add"><i class="layui-icon">&#xe608;</i>添加键值</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe608;</i>添加键值</a>
 	</script>
 	<script type="text/javascript">
 	function typeFilter(type) {
@@ -68,6 +48,25 @@
 	}
 	$(document).ready(function() {
 		var table = layui.table;
+		//执行渲染
+		table.render({
+		    url: '${ctx}/sys/dict/data' //数据接口
+		    ,cols: [[ //表头
+		       {type: 'checkbox', fixed:'left'}
+		      ,{field: 'value',title: '键值'}
+		      ,{title: '标签', templet: function(d) {
+		          return '<a href="${ctx}/sys/dict/form?id='+d.id+'" class="layui-table-link">'+d.label+'</a>'
+		       }}
+		      ,{title: '类型', templet: function(d) {
+		          return '<a href="javascript:void(0)" class="layui-table-link" onclick="typeFilter(\''+d.type+'\')">'+d.type+'</a>'
+		       }} 
+		      ,{field: 'description', title: '描述'}
+		      ,{field: 'sort', title: '排序'}
+		      <shiro:hasPermission name="sys:dict:edit">
+		      ,{fixed:'right', align:'center', width:300, title: '操作', toolbar:'#bar'}
+		      </shiro:hasPermission>
+		    ]]
+		});
 		//监听工具条
 		table.on('tool', function(obj){
 		  var data = obj.data; //获得当前行数据

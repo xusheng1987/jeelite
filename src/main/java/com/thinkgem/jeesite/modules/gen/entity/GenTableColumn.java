@@ -31,7 +31,6 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	private String javaField;	// JAVA字段名
 	private String isPk;		// 是否主键（1：主键）
 	private String isNull;		// 是否可为空（1：可为空；0：不为空）
-	private String isInsert;	// 是否为插入字段（1：插入字段）
 	private String isEdit;		// 是否编辑字段（1：编辑字段）
 	private String isList;		// 是否列表字段（1：列表字段）
 	private String isQuery;		// 是否查询字段（1：查询字段）
@@ -115,14 +114,6 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 
 	public void setIsNull(String isNull) {
 		this.isNull = isNull;
-	}
-
-	public String getIsInsert() {
-		return isInsert;
-	}
-
-	public void setIsInsert(String isInsert) {
-		this.isInsert = isInsert;
 	}
 
 	public String getIsEdit() {

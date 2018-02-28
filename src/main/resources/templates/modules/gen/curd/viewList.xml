@@ -82,43 +82,37 @@
 	</form:form>
 	<sys:message content="${r"${message}"}"/>
 	<div style="margin:15px">
-		<table class="layui-table" lay-data="{id:'table', height:450, even:true, url:'${r"${ctx}"}/${urlPrefix}/data', where:queryParams(), request: {pageName: 'pageNo'}, page:true, limit:10}">
-		<thead>
-		<tr>
-				<#list table.columnList as c>
-					<#if c.isList?? && c.isList == "1">
-						<#if c.showType == "userselect" || c.showType == "officeselect">
-			<th lay-data="{width:120, templet:'${"#"}${c.simpleJavaField}Tpl'}">${c.comments}</th>
-						<#else>
-			<th lay-data="{field:'${c.javaFieldId}', width:180}">${c.comments}</th>
-						</#if>
-					</#if>
-				</#list>
-			<shiro:hasPermission name="${permissionPrefix}:edit">
-				<th lay-data="{fixed:'right', width:180, align:'center', toolbar:'#bar'}">操作</th>
-			</shiro:hasPermission>
-		</tr>
-		</thead>
-		</table>
+		<table class="layui-table"></table>
 	</div>
-	<#assign firstListField = true>
-	<#list table.columnList as c>
-		<#if c.isList?? && c.isList == "1">
-			<#if c.showType == "userselect" || c.showType == "officeselect">
-	<script type="text/html" id="${c.simpleJavaField}Tpl">
-		<#if firstListField><a href="${r"${ctx}"}/${urlPrefix}/form?id={{d.id}}" class="layui-table-link"></#if>{{d.${c.javaFieldName}}}<#if firstListField></a></#if>
-	<#assign firstListField = false>
-	</script>
-			</#if>
-		</#if>
-	</#list>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-small" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-small" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 	</script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		var table = layui.table;
+		//执行渲染
+		table.render({
+		    url: '${r"${ctx}"}/${urlPrefix}/data' //数据接口
+		    ,cols: [[ //表头
+			<#assign firstListField = true>
+			<#list table.columnList as c>
+				<#if c.isList?? && c.isList == "1">
+					<#if c.showType == "userselect" || c.showType == "officeselect">
+		       <#if !firstListField>,</#if>{title: '${c.comments}', templet: function(d) {
+		          return <#if firstListField>'<a href="${r"${ctx}"}/${urlPrefix}/form?id='+d.id+'" class="layui-table-link">'+</#if>d.${c.javaFieldName}<#if firstListField>+'</a>'</#if>
+		       }}
+		       <#assign firstListField = false>
+					<#else>
+		       <#if !firstListField>,</#if>{field: '${c.javaFieldId}', title: '${c.comments}'}
+					</#if>
+				</#if>
+			</#list>
+		      <shiro:hasPermission name="${permissionPrefix}:edit">
+		      ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
+		      </shiro:hasPermission>
+		    ]]
+		});
 		//监听工具条
 		table.on('tool', function(obj){
 		  var data = obj.data; //获得当前行数据

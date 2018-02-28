@@ -41,30 +41,30 @@
 	</form:form>
 	<sys:message content="${message}"/>
 	<div style="margin:15px">
-		<table class="layui-table" lay-data="{id:'table', height:471, even:true, url:'${ctx}/test/testDataMain/data', where:queryParams(), request: {pageName: 'pageNo'}, page:true, limit:10}">
-		<thead>
-		<tr>
-			<th lay-data="{width:120, templet:'#userTpl'}">归属用户</th>
-			<th lay-data="{field:'name', width:120}">名称</th>
-			<th lay-data="{field:'updateDate', width:180}">更新时间</th>
-			<th lay-data="{field:'remarks', width:150}">备注信息</th>
-			<shiro:hasPermission name="test:testDataMain:edit">
-				<th lay-data="{fixed:'right', width:180, align:'center', toolbar:'#bar'}">操作</th>
-			</shiro:hasPermission>
-		</tr>
-		</thead>
-		</table>
+		<table class="layui-table"></table>
 	</div>
-	<script type="text/html" id="userTpl">
-		<a href="${ctx}/test/testDataMain/form?id={{d.id}}" class="layui-table-link">{{d.user.name}}</a>
-	</script>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-small" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-small" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 	</script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		var table = layui.table;
+		//执行渲染
+		table.render({
+		    url: '${ctx}/test/testDataMain/data' //数据接口
+		    ,cols: [[ //表头
+		       {title: '归属用户', templet: function(d) {
+		          return '<a href="${ctx}/test/testDataMain/form?id='+d.id+'" class="layui-table-link">'+d.user.name+'</a>'
+		       }}
+		      ,{field: 'name', title: '名称'}
+		      ,{field: 'updateDate', title: '更新时间'}
+		      ,{field: 'remarks', title: '备注信息'}
+		      <shiro:hasPermission name="test:testDataMain:edit">
+		      ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
+		      </shiro:hasPermission>
+		    ]]
+		});
 		//监听工具条
 		table.on('tool', function(obj){
 		  var data = obj.data; //获得当前行数据

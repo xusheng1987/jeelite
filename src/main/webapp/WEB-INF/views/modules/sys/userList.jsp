@@ -44,7 +44,7 @@
 		<div class="layui-form-item" style="margin:0px">
 			<div class="layui-inline">
 				<label class="layui-form-label">归属公司：</label>
-				<sys:treeselect id="company" name="company.id" value="" labelName="company.name" labelValue="" 
+				<sys:treeselect id="company" name="company.id" value="" labelName="company.name" labelValue=""
 					title="公司" url="/sys/office/treeData?type=1" allowClear="true"/>
 			</div>
 			<div class="layui-inline">
@@ -57,7 +57,7 @@
 		<div class="layui-form-item" style="margin:0px">
 			<div class="layui-inline">
 				<label class="layui-form-label">归属部门：</label>
-				<sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}" 
+				<sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
 					title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
 			</div>
 			<div class="layui-inline">
@@ -78,38 +78,37 @@
 		<div class="layui-btn-group">
 			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon">&#xe640;</i>批量删除</button>
 		</div>
-		<table class="layui-table" lay-data="{id:'table', height:471, even:true, url:'${ctx}/sys/user/data', where:queryParams(), request: {pageName: 'pageNo'}, page:true, limit:10}">
-		<thead>
-		<tr>
-			<th lay-data="{checkbox:true, fixed:true}"></th>
-			<th lay-data="{width:150, templet:'#companyTpl'}">归属公司</th>
-			<th lay-data="{width:120, templet:'#officeTpl'}">归属部门</th>
-			<th lay-data="{width:150, sort: true, templet:'#loginNameTpl'}">登录名</th>
-			<th lay-data="{field:'name', width:180, sort: true}">姓名</th>
-			<th lay-data="{field:'phone', width:150}">电话</th>
-			<shiro:hasPermission name="sys:user:edit">
-				<th lay-data="{fixed:'right', width:180, align:'center', toolbar:'#bar'}">操作</th>
-			</shiro:hasPermission>
-		</tr>
-		</thead>
-		</table>
+		<table class="layui-table"></table>
 	</div>
-	<script type="text/html" id="companyTpl">
-		{{d.company.name}}
-	</script>
-	<script type="text/html" id="officeTpl">
-		{{d.office.name}}
-	</script>
-	<script type="text/html" id="loginNameTpl">
-		<a href="${ctx}/sys/user/form?id={{d.id}}" class="layui-table-link">{{d.loginName}}</a>
-	</script>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-small" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-small" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 	</script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		var table = layui.table;
+		//执行渲染
+		table.render({
+		    url: '${ctx}/sys/user/data' //数据接口
+		    ,cols: [[ //表头
+		       {type: 'numbers', fixed:'left'}
+		      ,{type: 'checkbox', fixed:'left'}
+		      ,{title: '归属公司', templet: function(d) {
+		          return d.company.name
+		       }}
+		      ,{title: '归属部门', templet: function(d) {
+		          return d.office.name
+		       }}
+		      ,{field: 'loginName', title: '登录名', sort: true, templet: function(d) {
+		          return '<a href="${ctx}/sys/user/form?id='+d.id+'" class="layui-table-link">'+d.loginName+'</a>'
+		       }}
+		      ,{field: 'name', title: '姓名'}
+		      ,{field: 'phone', title: '电话'}
+		      <shiro:hasPermission name="sys:user:edit">
+		      ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
+		      </shiro:hasPermission>
+		    ]]
+		});
 		//监听工具条
 		table.on('tool', function(obj){
 		  var data = obj.data; //获得当前行数据

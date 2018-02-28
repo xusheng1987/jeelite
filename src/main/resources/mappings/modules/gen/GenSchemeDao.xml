@@ -28,12 +28,4 @@
 		ORDER BY a.update_date DESC
 	</select>
 	
-	<select id="findAllList" resultType="GenScheme">
-		SELECT 
-			<include refid="genSchemeColumns"/>
-		FROM gen_scheme a
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
-		ORDER BY a.update_date DESC
-	</select>
-	
 </mapper>

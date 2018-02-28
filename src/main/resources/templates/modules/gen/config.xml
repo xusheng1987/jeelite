@@ -24,7 +24,7 @@
 			<template>dao/entity.xml</template>
 			<template>dao/mapper.xml</template>
 		</category>
-		<category value="treeTable" label="树结构表（一体）">
+		<category value="treeTable" label="树结构表">
 			<template>treetable/controller.xml</template>
 			<template>treetable/service.xml</template>
 			<template>treetable/dao.xml</template>
@@ -32,9 +32,6 @@
 			<template>treetable/mapper.xml</template>
 			<template>treetable/viewForm.xml</template>
 			<template>treetable/viewList.xml</template>
-		</category>
-		<category value="treeTableAndList" label="树结构表（左树右表）">
-			<template>category-ref:dao</template>
 		</category>
 	</category>
 	<!-- java类型 -->

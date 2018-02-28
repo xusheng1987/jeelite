@@ -48,9 +48,9 @@
 			<td>{{dict.type}}</td>
 			<td>{{row.remarks}}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
-				<a class="layui-btn layui-btn-small" href="${ctx}/sys/office/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-small" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-small" href="${ctx}/sys/office/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级机构</a> 
+				<a class="layui-btn layui-btn-sm" href="${ctx}/sys/office/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/sys/office/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级机构</a>
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

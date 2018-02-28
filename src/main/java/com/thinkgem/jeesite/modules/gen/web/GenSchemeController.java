@@ -23,8 +23,6 @@ import com.thinkgem.jeesite.modules.gen.entity.GenScheme;
 import com.thinkgem.jeesite.modules.gen.service.GenSchemeService;
 import com.thinkgem.jeesite.modules.gen.service.GenTableService;
 import com.thinkgem.jeesite.modules.gen.util.GenUtils;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 生成方案Controller
@@ -61,10 +59,6 @@ public class GenSchemeController extends BaseController {
 	@RequiresPermissions("gen:genScheme:view")
 	@RequestMapping(value = "data")
 	public Map data(GenScheme genScheme) {
-		User user = UserUtils.getUser();
-		if (!user.isAdmin()) {
-			genScheme.setCreateBy(user);
-		}
 		Page<GenScheme> page = genSchemeService.findPage(new PageFactory<GenScheme>().defaultPage(), genScheme);
 		return jsonPage(page);
 	}

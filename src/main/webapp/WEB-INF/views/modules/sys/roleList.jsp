@@ -22,12 +22,12 @@
 				<td>${role.office.name}</td>
 				<td>${fns:getDictLabel(role.dataScope, 'sys_data_scope', '无')}</td>
 				<shiro:hasPermission name="sys:role:edit"><td>
-					<a class="layui-btn layui-btn-normal layui-btn-small" href="${ctx}/sys/role/assign?id=${role.id}"><i class="layui-icon">&#xe608;</i>分配</a>
+					<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/sys/role/assign?id=${role.id}"><i class="layui-icon">&#xe608;</i>分配</a>
 					<c:if test="${(role.sysData eq fns:getDictValue('是', 'yes_no', '1') && fns:getUser().admin)||!(role.sysData eq fns:getDictValue('是', 'yes_no', '1'))}">
-						<a class="layui-btn layui-btn-small" href="${ctx}/sys/role/form?id=${role.id}"><i class="layui-icon">&#xe642;</i>修改</a>
+						<a class="layui-btn layui-btn-sm" href="${ctx}/sys/role/form?id=${role.id}"><i class="layui-icon">&#xe642;</i>修改</a>
 					</c:if>
-					<a class="layui-btn layui-btn-danger layui-btn-small" href="javascript:void(0)" onclick="confirmx('确认要删除该角色吗？', '${ctx}/sys/role/delete?id=${role.id}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				</td></shiro:hasPermission>	
+					<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('确认要删除该角色吗？', '${ctx}/sys/role/delete?id=${role.id}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 	</table>

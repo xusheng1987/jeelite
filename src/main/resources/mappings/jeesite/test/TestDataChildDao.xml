@@ -43,46 +43,6 @@
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 		</where>
-		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${page.orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				ORDER BY a.create_date ASC
-			</otherwise>
-		</choose>
-	</select>
-
-	<select id="findAllList" resultType="TestDataChild">
-		SELECT
-			<include refid="testDataChildColumns"/>
-		FROM test_data_child a
-		<include refid="testDataChildJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>
-		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${page.orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				ORDER BY a.create_date ASC
-			</otherwise>
-		</choose>
 	</select>
 
 	<update id="delete">

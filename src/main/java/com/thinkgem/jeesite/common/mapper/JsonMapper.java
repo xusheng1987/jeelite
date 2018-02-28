@@ -15,17 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -134,10 +131,9 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 反序列化复杂Collection如List<Bean>, 先使用函數createCollectionType构造类型,然后调用本函数.
+	 * 反序列化复杂Collection如List<Bean>, 先使用函数createCollectionType构造类型,然后调用本函数.
 	 * @see #createCollectionType(Class, Class...)
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> T fromJson(String jsonString, JavaType javaType) {
 		if (StringUtils.isEmpty(jsonString)) {
 			return null;
@@ -151,55 +147,12 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 構造泛型的Collection Type如:
+	 * 构造泛型的Collection Type如:
 	 * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
 	 * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
 	 */
 	public JavaType createCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
 		return this.getTypeFactory().constructParametricType(collectionClass, elementClasses);
-	}
-
-	/**
-	 * 當JSON裡只含有Bean的部分屬性時，更新一個已存在Bean，只覆蓋該部分的屬性.
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T update(String jsonString, T object) {
-		try {
-			return (T) this.readerForUpdating(object).readValue(jsonString);
-		} catch (JsonProcessingException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
-		} catch (IOException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
-		}
-		return null;
-	}
-
-	/**
-	 * 輸出JSONP格式數據.
-	 */
-	public String toJsonP(String functionName, Object object) {
-		return toJson(new JSONPObject(functionName, object));
-	}
-
-	/**
-	 * 設定是否使用Enum的toString函數來讀寫Enum,
-	 * 為False時時使用Enum的name()函數來讀寫Enum, 默認為False.
-	 * 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
-	 */
-	public JsonMapper enableEnumUseToString() {
-		this.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
-		this.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
-		return this;
-	}
-
-	/**
-	 * 支持使用Jaxb的Annotation，使得POJO上的annotation不用与Jackson耦合。
-	 * 默认会先查找jaxb的annotation，如果找不到再找jackson的。
-	 */
-	public JsonMapper enableJaxbAnnotation() {
-		JaxbAnnotationModule module = new JaxbAnnotationModule();
-		this.registerModule(module);
-		return this;
 	}
 
 	/**
@@ -209,13 +162,6 @@ public class JsonMapper extends ObjectMapper {
 	public JsonMapper enableSimple() {
 		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
 		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-		return this;
-	}
-	
-	/**
-	 * 取出Mapper做进一步的设置或使用其他序列化API.
-	 */
-	public ObjectMapper getMapper() {
 		return this;
 	}
 

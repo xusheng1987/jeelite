@@ -1,6 +1,6 @@
 /*!
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- * 
+ *
  * 通用公共方法
  * @author ThinkGem
  * @version 2014-4-29
@@ -12,6 +12,15 @@ $(document).ready(function() {
 			if(this.blur) {this.blur()};
 		});
 		var table = layui.table;
+		// 设定表格全局默认参数
+		table.set({
+		    elem: '.layui-table'
+		    ,id: 'table'
+		    ,even: true //开启隔行背景
+		    ,page: true //开启分页
+		    ,where: queryParams() //接口的其它参数
+		    ,request: {pageName: 'pageNo'} //对分页请求的参数重新设定名称
+		});
 		// 监听表格复选框选择
 		table.on('checkbox', function(obj){
 			var length = table.checkStatus('table').data.length;//获取选中数目
@@ -62,7 +71,7 @@ function getQueryString(name, url) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     if (!url || url == ""){
 	    url = window.location.search;
-    }else{	
+    }else{
     	url = url.substring(url.indexOf("?"));
     }
     r = url.substr(1).match(reg)
@@ -88,14 +97,8 @@ function windowOpen(url, name, width, height){
 	window.open(url ,name , options);
 }
 
-//恢复提示框显示
-function resetTip(){
-	$(top.msg).val('');
-}
-
 // 显示加载框
 function loading(){
-	resetTip();
 	var layer = layui.layer;
 	layer.load();
 }
@@ -104,7 +107,6 @@ function loading(){
 function confirmx(mess, href){
 	var layer = layui.layer;
 	layer.confirm(mess, {icon: 3, title:'提示'}, function(index){
-		resetTip();
 		location = href;
 		//$.post(href, function(result) {
 		//	$('#btnSubmit').click();
@@ -164,55 +166,55 @@ function pad(num, n) {
 }
 
 //截取字符串，区别汉字和英文
-function abbr(name, maxLength){  
- if(!maxLength){  
-     maxLength = 20;  
- }  
- if(name==null||name.length<1){  
-     return "";  
- }  
- var w = 0;//字符串长度，一个汉字长度为2   
- var s = 0;//汉字个数   
- var p = false;//判断字符串当前循环的前一个字符是否为汉字   
- var b = false;//判断字符串当前循环的字符是否为汉字   
- var nameSub;  
- for (var i=0; i<name.length; i++) {  
-    if(i>1 && b==false){  
-         p = false;  
-    }  
-    if(i>1 && b==true){  
-         p = true;  
-    }  
-    var c = name.charCodeAt(i);  
-    //单字节加1   
-    if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {  
-         w++;  
-         b = false;  
-    }else {  
-         w+=2;  
-         s++;  
-         b = true;  
-    }  
-    if(w>maxLength && i<=name.length-1){  
-         if(b==true && p==true){  
-             nameSub = name.substring(0,i-2)+"...";  
-         }  
-         if(b==false && p==false){  
-             nameSub = name.substring(0,i-3)+"...";  
-         }  
-         if(b==true && p==false){  
-             nameSub = name.substring(0,i-2)+"...";  
-         }  
-         if(p==true){  
-             nameSub = name.substring(0,i-2)+"...";  
-         }  
-         break;  
-    }  
- }  
- if(w<=maxLength){  
-     return name;  
- }  
- return nameSub;  
+function abbr(name, maxLength){
+ if(!maxLength){
+     maxLength = 20;
+ }
+ if(name==null||name.length<1){
+     return "";
+ }
+ var w = 0;//字符串长度，一个汉字长度为2
+ var s = 0;//汉字个数
+ var p = false;//判断字符串当前循环的前一个字符是否为汉字
+ var b = false;//判断字符串当前循环的字符是否为汉字
+ var nameSub;
+ for (var i=0; i<name.length; i++) {
+    if(i>1 && b==false){
+         p = false;
+    }
+    if(i>1 && b==true){
+         p = true;
+    }
+    var c = name.charCodeAt(i);
+    //单字节加1
+    if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
+         w++;
+         b = false;
+    }else {
+         w+=2;
+         s++;
+         b = true;
+    }
+    if(w>maxLength && i<=name.length-1){
+         if(b==true && p==true){
+             nameSub = name.substring(0,i-2)+"...";
+         }
+         if(b==false && p==false){
+             nameSub = name.substring(0,i-3)+"...";
+         }
+         if(b==true && p==false){
+             nameSub = name.substring(0,i-2)+"...";
+         }
+         if(p==true){
+             nameSub = name.substring(0,i-2)+"...";
+         }
+         break;
+    }
+ }
+ if(w<=maxLength){
+     return name;
+ }
+ return nameSub;
 }
 
 function reloadTable() {
@@ -242,7 +244,6 @@ function queryParams() {
 function batchDelete(href) {
 	var layer = layui.layer;
 	layer.confirm('确认要删除选中的项目吗', {icon: 3, title:'提示'}, function(index){
-		resetTip();
 		var table = layui.table;
 		var data = table.checkStatus('table').data;
 		var ids = [];

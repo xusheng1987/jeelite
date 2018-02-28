@@ -25,13 +25,6 @@
     <function-signature>java.lang.String getConfig(java.lang.String)</function-signature>
     <example>${fns:getConfig(key)}</example>
   </function>
-  <function>
-    <description>获取常量</description>
-    <name>getConst</name>
-    <function-class>com.thinkgem.jeesite.common.config.Global</function-class>
-    <function-signature>java.lang.Object getConst(java.lang.String)</function-signature>
-    <example>${fns:getConst(key)}</example>
-  </function>
   
   <!-- UserUtils -->
   <function>
@@ -43,43 +36,11 @@
   </function>
   
   <function>
-    <description>根据编码获取用户对象</description>
-    <name>getUserById</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
-    <function-signature>com.thinkgem.jeesite.modules.sys.entity.User get(java.lang.String)</function-signature>
-    <example>${fns:getUserById(id)}</example>  
-  </function>
-  
-  <function>
-    <description>获取授权用户信息</description>
-    <name>getPrincipal</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
-    <function-signature>com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal getPrincipal()</function-signature>
-    <example>${fns:getPrincipal()}</example>  
-  </function>
-  
-  <function>
     <description>获取当前用户的菜单对象列表</description>
     <name>getMenuList</name>
     <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
     <function-signature>java.util.List getMenuList()</function-signature>
     <example>${fns:getMenuList()}</example>  
-  </function>
-  
-  <function>
-    <description>获取当前用户的部门对象列表</description>
-    <name>getOfficeList</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
-    <function-signature>java.util.List getOfficeList()</function-signature>
-    <example>${fns:getOfficeList()}</example>  
-  </function>
-  
-  <function>
-    <description>获取当前用户缓存</description>
-    <name>getCache</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
-    <function-signature>java.lang.Object getCache(java.lang.String, java.lang.Object)</function-signature>
-    <example>${fns:getCache(cacheName, defaultValue)}</example>  
   </function>
 	
   <!-- DictUtils -->
@@ -125,20 +86,6 @@
   
   <!-- Encodes -->
   <function>
-    <description>URL编码</description>
-    <name>urlEncode</name>
-    <function-class>com.thinkgem.jeesite.common.utils.Encodes</function-class>
-    <function-signature>java.lang.String urlEncode(java.lang.String)</function-signature>
-    <example>${fns:urlEncode(part)}</example>  
-  </function>
-  <function>
-    <description>URL解码</description>
-    <name>urlDecode</name>
-    <function-class>com.thinkgem.jeesite.common.utils.Encodes</function-class>
-    <function-signature>java.lang.String urlDecode(java.lang.String)</function-signature>
-    <example>${fns:urlDecode(part)}</example>  
-  </function>
-  <function>
     <description>HTML编码</description>
     <name>escapeHtml</name>
     <function-class>com.thinkgem.jeesite.common.utils.Encodes</function-class>
@@ -155,39 +102,11 @@
   
   <!-- StringUtils -->
   <function>
-    <description>从后边开始截取字符串</description>
-    <name>substringAfterLast</name>
-    <function-class>org.apache.commons.lang3.StringUtils</function-class>
-    <function-signature>java.lang.String substringAfterLast(java.lang.String, java.lang.String)</function-signature>
-    <example>${fns:substringAfterLast(str,separator)}</example>  
-  </function>
-  <function>
-    <description>判断字符串是否以某某开头</description>
-    <name>startsWith</name>
-    <function-class>org.apache.commons.lang3.StringUtils</function-class>
-    <function-signature>boolean startsWith(java.lang.CharSequence, java.lang.CharSequence)</function-signature>
-    <example>${fns:startsWith(str,prefix)}</example> 
-  </function>
-  <function>
-    <description>判断字符串是否以某某结尾</description>
-    <name>endsWith</name>
-    <function-class>org.apache.commons.lang3.StringUtils</function-class>
-    <function-signature>boolean endsWith(java.lang.CharSequence, java.lang.CharSequence)</function-signature>
-    <example>${fns:endsWith(str,suffix)}</example> 
-  </function>
-  <function>
     <description>缩写字符串，超过最大宽度用“...”表示</description>
-    <name>abbr</name>
-    <function-class>com.thinkgem.jeesite.common.utils.StringUtils</function-class>
-    <function-signature>java.lang.String abbr(java.lang.String, int)</function-signature>
-    <example>${fns:abbr(str,length)}</example>  
-  </function>
-  <function>
-    <description>替换掉HTML标签</description>
-    <name>replaceHtml</name>
-    <function-class>com.thinkgem.jeesite.common.utils.StringUtils</function-class>
-    <function-signature>java.lang.String replaceHtml(java.lang.String)</function-signature>
-    <example>${fns:replaceHtml(html)}</example>  
+    <name>abbreviate</name>
+    <function-class>org.apache.commons.lang3.StringUtils</function-class>
+    <function-signature>java.lang.String abbreviate(java.lang.String, int)</function-signature>
+    <example>${fns:abbreviate(str,length)}</example>  
   </function>
   <function>
     <description>转换为JS获取对象值，生成三目运算返回结果。</description>
@@ -195,22 +114,6 @@
     <function-class>com.thinkgem.jeesite.common.utils.StringUtils</function-class>
     <function-signature>java.lang.String jsGetVal(java.lang.String)</function-signature>
     <example>${fns:jsGetVal('row.user.id')}  返回：!row?'':!row.user?'':!row.user.id?'':row.user.id</example>  
-  </function>
-  
-  <!-- DateUtils -->
-  <function>
-    <description>获取当前日期</description>
-    <name>getDate</name>
-    <function-class>com.thinkgem.jeesite.common.utils.DateUtils</function-class>
-    <function-signature>java.lang.String getDate(java.lang.String)</function-signature>
-    <example>${fns:getDate(pattern)}</example>  
-  </function>
-  <function>
-    <description>获取过去的天数</description>
-    <name>pastDays</name>
-    <function-class>com.thinkgem.jeesite.common.utils.DateUtils</function-class>
-    <function-signature>long pastDays(java.util.Date)</function-signature>
-    <example>${fns:pastDays(date)}</example>  
   </function>
   
   <!-- JsonMapper -->

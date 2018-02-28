@@ -42,15 +42,6 @@
 		ORDER BY a.sort ASC
 	</select>
 	
-	<select id="findAllList" resultType="GenTableColumn">
-		SELECT 
-			<include refid="genTableColumnColumns"/>
-		FROM gen_table_column a
-		<include refid="genTableColumnJoins"/>
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
-		ORDER BY a.sort ASC
-	</select>
-	
 	<update id="deleteByGenTableId">
 		UPDATE gen_table_column SET 
 			del_flag = '1'

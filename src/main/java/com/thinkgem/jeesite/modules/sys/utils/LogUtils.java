@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.sys.utils;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Menu;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
- * 字典工具类
+ * 日志工具类
  * @author ThinkGem
  * @version 2014-11-7
  */
@@ -58,6 +59,8 @@ public class LogUtils {
 			log.setRequestUri(request.getRequestURI());
 			log.setParams(request.getParameterMap());
 			log.setMethod(request.getMethod());
+			log.setCreateBy(user);
+			log.setCreateDate(new Date());
 			// 异步保存日志
 			new SaveLogThread(log, handler, ex).start();
 		}

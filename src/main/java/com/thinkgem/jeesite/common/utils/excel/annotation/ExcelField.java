@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 public @interface ExcelField {
 
 	/**
-	 * 导出字段名（默认调用当前字段的“get”方法，如指定导出字段为对象，请填写“对象名.对象属性”，例：“area.name”、“office.name”）
+	 * 导出字段名（默认调用当前字段的“get”方法，如指定导出字段为对象，请填写“对象名.对象属性”，例：“office.name”）
 	 */
 	String value() default "";
 	

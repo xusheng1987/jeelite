@@ -116,13 +116,6 @@ public class MenuController extends BaseController {
 		return "modules/sys/menuTree";
 	}
 
-	@RequiresPermissions("user")
-	@RequestMapping(value = "treeselect")
-	public String treeselect(String parentId, Model model) {
-		model.addAttribute("parentId", parentId);
-		return "modules/sys/menuTreeselect";
-	}
-
 	/**
 	 * 批量修改菜单排序
 	 */

@@ -58,30 +58,33 @@
 	</div>
 	<sys:message content="${message}"/>
 	<div style="margin:15px">
-		<table class="layui-table" lay-data="{id:'table', height:488, even:true, url:'${ctx}/sys/log/data', where:queryParams(), request: {pageName: 'pageNo'}, page:true, limit:10}">
-		<thead>
-		<tr>
-			<th lay-data="{field:'title', width:300}">操作菜单</th>
-			<th lay-data="{width:150, templet:'#createByNameTpl'}">操作用户</th>
-			<th lay-data="{width:150, templet:'#companyNameTpl'}">所在公司</th>
-			<th lay-data="{width:150, templet:'#officeNameTpl'}">所在部门</th>
-			<th lay-data="{field:'requestUri', width:300}">URI</th>
-			<th lay-data="{field:'method', width:100}">提交方式</th>
-			<th lay-data="{field:'remoteAddr', width:150}">操作者IP</th>
-			<th lay-data="{field:'createDate', width:180}">操作时间</th>
-			<th lay-data="{field:'exception', width:180}">异常</th>
-		</tr>
-		</thead>
-		</table>
+		<table class="layui-table"></table>
 	</div>
-	<script type="text/html" id="createByNameTpl">
-		{{d.createBy.name}}
-	</script>
-	<script type="text/html" id="companyNameTpl">
-		{{d.createBy.company.name}}
-	</script>
-	<script type="text/html" id="officeNameTpl">
-		{{d.createBy.office.name}}
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var table = layui.table;
+		//执行渲染
+		table.render({
+		    url: '${ctx}/sys/log/data' //数据接口
+		    ,cols: [[ //表头
+		       {field: 'title',title: '操作菜单'}
+		      ,{title: '操作用户', templet: function(d) {
+		          return d.createBy.name
+		       }}
+		      ,{title: '所在公司', templet: function(d) {
+		          return d.createBy.company.name
+		       }} 
+		      ,{title: '所在部门', templet: function(d) {
+		          return d.createBy.office.name
+		       }} 
+		      ,{field: 'requestUri', title: 'URI'}
+		      ,{field: 'method', title: '提交方式'}
+		      ,{field: 'remoteAddr', title: '操作者IP'}
+		      ,{field: 'createDate', title: '操作时间'}
+		      ,{field: 'exception', title: '异常'}
+		    ]]
+		});
+	});
 	</script>
 </body>
 </html>

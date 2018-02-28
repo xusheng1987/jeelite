@@ -93,9 +93,6 @@ public class GenUtils {
 			
 			// 是否是主键
 			column.setIsPk(genTable.getPkList().contains(column.getName())?"1":"0");
-
-			// 插入字段
-			column.setIsInsert("1");
 			
 			// 编辑字段
 			if (!StringUtils.equalsIgnoreCase(column.getName(), "id")

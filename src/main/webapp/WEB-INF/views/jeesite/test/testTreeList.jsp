@@ -81,9 +81,9 @@
 				{{row.remarks}}
 			</td>
 			<shiro:hasPermission name="test:testTree:edit"><td>
-   				<a class="layui-btn layui-btn-small" href="${ctx}/test/testTree/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-small" onclick="confirmx('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-small" href="${ctx}/test/testTree/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级树结构</a>
+   				<a class="layui-btn layui-btn-sm" href="${ctx}/test/testTree/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/test/testTree/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级树结构</a>
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

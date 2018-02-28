@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.PageFactory;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -117,25 +115,6 @@ public class DictController extends BaseController {
 		dictService.batchDelete(ids);
 		addMessage(redirectAttributes, "批量删除字典成功");
 		return "redirect:" + adminPath + "/sys/dict";
-	}
-
-	@RequiresPermissions("user")
-	@ResponseBody
-	@RequestMapping(value = "treeData")
-	public List<Map<String, Object>> treeData(@RequestParam(required = false) String type) {
-		List<Map<String, Object>> mapList = Lists.newArrayList();
-		Dict dict = new Dict();
-		dict.setType(type);
-		List<Dict> list = dictService.findList(dict);
-		for (int i = 0; i < list.size(); i++) {
-			Dict e = list.get(i);
-			Map<String, Object> map = Maps.newHashMap();
-			map.put("id", e.getId());
-			map.put("pId", e.getParentId());
-			map.put("name", StringUtils.replace(e.getLabel(), " ", ""));
-			mapList.add(map);
-		}
-		return mapList;
 	}
 
 }

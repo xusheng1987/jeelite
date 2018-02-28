@@ -89,9 +89,9 @@
 				</#if>
 			</#list>
 			<shiro:hasPermission name="${permissionPrefix}:edit"><td>
-   				<a class="layui-btn layui-btn-small" href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-small" onclick="confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-small" href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级${functionNameSimple}</a>
+   				<a class="layui-btn layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级${functionNameSimple}</a>
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

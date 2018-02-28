@@ -20,12 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.security.shiro.session.SessionDAO;
-import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.CookieUtils;
-import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.web.Servlets;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -75,7 +74,7 @@ public class LoginController extends BaseController {
 	 * 登录失败，真正登录的POST请求由Filter完成
 	 */
 	@RequestMapping(value = "${adminPath}/login", method = RequestMethod.POST)
-	public String loginFail(HttpServletRequest request, Model model) {
+	public String loginFail(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 
 		// 如果已经登录，则跳转到管理首页
@@ -106,10 +105,11 @@ public class LoginController extends BaseController {
 		if (!UnauthorizedException.class.getName().equals(exception)) {
 			model.addAttribute("isValidateCodeLogin", isValidateCodeLogin(username, true, false));
 		}
-
-		// 验证失败清空验证码
-		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGen.uuid());
-
+		
+		// 登录操作如果是Ajax操作，直接返回登录信息字符串。
+		if (Servlets.isAjaxRequest(request)) {
+			return renderString(response, model);
+		}
 		return "modules/sys/sysLogin";
 	}
 
@@ -137,6 +137,10 @@ public class LoginController extends BaseController {
 				UserUtils.getSubject().logout();
 				return "redirect:" + adminPath + "/login";
 			}
+		}
+		// 登录操作如果是Ajax操作，直接返回登录信息字符串。
+		if (Servlets.isAjaxRequest(request)) {
+			return renderString(response, principal);
 		}
 
 		return "modules/sys/sysIndex";

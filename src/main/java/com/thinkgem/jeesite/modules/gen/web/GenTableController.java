@@ -23,8 +23,6 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.gen.entity.GenTable;
 import com.thinkgem.jeesite.modules.gen.service.GenTableService;
 import com.thinkgem.jeesite.modules.gen.util.GenUtils;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 业务表Controller
@@ -58,10 +56,6 @@ public class GenTableController extends BaseController {
 	@RequiresPermissions("gen:genTable:view")
 	@RequestMapping(value = "data")
 	public Map data(GenTable genTable) {
-		User user = UserUtils.getUser();
-		if (!user.isAdmin()) {
-			genTable.setCreateBy(user);
-		}
 		Page<GenTable> page = genTableService.findPage(new PageFactory<GenTable>().defaultPage(), genTable);
 		return jsonPage(page);
 	}
