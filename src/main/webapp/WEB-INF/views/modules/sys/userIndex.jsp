@@ -11,7 +11,7 @@
 </head>
 <body>
 	<sys:message content="${message}"/>
-	<div id="content" class="layui-fluid">
+	<div id="content">
 		<div class="layui-row">
 			<div class="layui-col-md2">
 				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;width:200px;">

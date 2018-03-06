@@ -74,7 +74,7 @@
 		</div>
 	</form:form>
 	<sys:message content="${message}"/>
-	<div style="margin:0px">
+	<div style="margin-right:10px">
 		<div class="layui-btn-group">
 			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon">&#xe640;</i>批量删除</button>
 		</div>

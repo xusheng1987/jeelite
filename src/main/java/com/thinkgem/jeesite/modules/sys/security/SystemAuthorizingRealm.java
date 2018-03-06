@@ -16,7 +16,6 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
@@ -158,26 +157,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 	}
 	
-	@Override
-	protected void checkPermission(Permission permission, AuthorizationInfo info) {
-		super.checkPermission(permission, info);
-	}
-	
-	@Override
-	protected boolean[] isPermitted(List<Permission> permissions, AuthorizationInfo info) {
-		return super.isPermitted(permissions, info);
-	}
-	
-	@Override
-	public boolean isPermitted(PrincipalCollection principals, Permission permission) {
-		return super.isPermitted(principals, permission);
-	}
-	
-	@Override
-	protected boolean isPermittedAll(Collection<Permission> permissions, AuthorizationInfo info) {
-		return super.isPermittedAll(permissions, info);
-	}
-	
 	/**
 	 * 设定密码校验的Hash算法与迭代次数
 	 */
@@ -225,17 +204,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 		public String getName() {
 			return name;
-		}
-
-		/**
-		 * 获取SESSIONID
-		 */
-		public String getSessionid() {
-			try{
-				return (String) UserUtils.getSession().getId();
-			}catch (Exception e) {
-				return "";
-			}
 		}
 		
 		@Override

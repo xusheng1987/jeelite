@@ -63,10 +63,9 @@
 			if (getlayId(layId) == -1) {//判断菜单是否已在tab打开
 				element.tabAdd('tab', {
 					title: '<span>'+$this.text()+'</span>',
-					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-link')+'" scrolling="yes" frameborder="0" width="100%" height="650"></iframe>',
+					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-link')+'" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>',
 					id: layId
 				});
-				wSize();
 			}
 			element.tabChange('tab', layId);
 		}
@@ -137,7 +136,7 @@
   </c:if>
   <c:if test="${tabmode eq '0'}">
 	<div class="layui-tab-content">
-		<iframe id="mainFrame" name="mainFrame" src="" scrolling="yes" frameborder="0" width="100%" height="650"></iframe>
+		<iframe id="mainFrame" name="mainFrame" src="" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>
 	</div>
   </c:if>
   </div>
@@ -145,22 +144,5 @@
 	Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')}
   </div>
 </div>
-<script type="text/javascript"> 
-	var leftWidth = 200; // 左侧窗口大小
-	var tabTitleHeight = 41; // 页签的高度
-	var htmlObj = $("html"), mainObj = $("#main");
-	var headerObj = $("#header"), footerObj = $("#footer");
-	function wSize() {
-		var minHeight = 500, minWidth = 980;
-		var strs = getWindowSize().toString().split(",");
-		htmlObj.css({"overflow-x":strs[1] < minWidth ? "auto" : "hidden", "overflow-y":strs[0] < minHeight ? "auto" : "hidden"});
-		mainObj.css("width",strs[1] < minWidth ? minWidth - 10 : "auto");
-		var frameHeight = (strs[0] < minHeight ? minHeight : strs[0]) - headerObj.height() - footerObj.height();
-		$("#left, #right iframe").height(frameHeight);
-		$("#right").height(frameHeight + 3);// <c:if test="${tabmode eq '1'}">
-		$("#right iframe").height($("#right").height() - tabTitleHeight - 3);// </c:if>
-	}
-</script>
-<script src="${ctxStatic}/common/wsize.js" type="text/javascript"></script>
 </body>
 </html>
