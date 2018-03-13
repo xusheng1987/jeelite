@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>viewForm</name>
+	<filePath>src/main/webapp/WEB-INF/views/${lastPackageName}/${moduleName}</filePath>
+	<fileName>${className}Form.jsp</fileName>
+	<content><![CDATA[
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>${functionNameSimple}管理</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#inputForm").validate({
+				submitHandler: function(form){
+					loading();
+					form.submit();
+				}
+			});
+		});
+	<#list table.childList as c>
+		function addRow(list, idx, tpl, row){
+			$(list).append(Mustache.render(tpl, {
+				idx: idx, delBtn: true, row: row
+			}));
+			$(list+idx).find("select").each(function(){
+				$(this).val($(this).attr("data-value"));
+			});
+			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
+				var ss = $(this).attr("data-value").split(',');
+				for (var i=0; i<ss.length; i++){
+					if($(this).val() == ss[i]){
+						$(this).attr("checked","checked");
+					}
+				}
+			});
+		}
+		function delRow(obj, prefix){
+			var id = $(prefix+"_id");
+			var delFlag = $(prefix+"_delFlag");
+			if (id.val() == ""){
+				$(obj).parent().parent().remove();
+			}else if(delFlag.val() == "0"){
+				delFlag.val("1");
+				$(obj).html("&divide;").attr("title", "撤销删除");
+				$(obj).parent().parent().addClass("error");
+			}else if(delFlag.val() == "1"){
+				delFlag.val("0");
+				$(obj).html("&times;").attr("title", "删除");
+				$(obj).parent().parent().removeClass("error");
+			}
+		}
+		<#break/>
+	</#list>
+	</script>
+</head>
+<body>
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
+			<li class="layui-this"><a href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}">${functionNameSimple}<shiro:hasPermission name="${permissionPrefix}:edit">${r"${not empty "+className+".id?'修改':'添加'}"}</shiro:hasPermission><shiro:lacksPermission name="${permissionPrefix}:edit">查看</shiro:lacksPermission></a></li>
+		</ul>
+	</div><br/>
+	<form:form id="inputForm" modelAttribute="${className}" action="${r"${ctx}"}/${urlPrefix}/save" method="post" class="layui-form">
+		<form:hidden path="id"/>
+		<sys:message content="${r"${message}"}"/>
+		<#list table.columnList as c>
+			<#if c.isEdit?? && c.isEdit == "1" && (c.isNotBaseField || c.simpleJavaField == 'remarks')>
+		<div class="layui-form-item">
+			<label class="layui-form-label">${c.comments}：</label>
+			<#if c.showType == "input">
+			<div class="layui-input-inline">
+				<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+			</div>
+			<#elseif c.showType == "textarea">
+			<div class="layui-input-inline">
+				<form:textarea path="${c.javaFieldId}" htmlEscape="false" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-textarea <#if c.isNull != "1">required</#if>"/>
+			</div>
+			<#elseif c.showType == "select">
+			<div class="layui-input-inline">
+				<form:select path="${c.javaFieldId}" class="<#if c.isNull != "1">required</#if>">
+					<form:option value="" label=""/>
+					<form:options items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			<#elseif c.showType == "checkbox">
+			<div class="layui-input-inline">
+				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+					<input type="checkbox" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+				</c:forEach>
+			</div>
+			<#elseif c.showType == "radiobox">
+			<div class="layui-input-inline">
+				<input id="${c.javaFieldId}" type="hidden" value="${"$"}{${className}.${c.javaFieldId}}"/>
+				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+				</c:forEach>
+			</div>
+			<#elseif c.showType == "dateselect">
+			<div class="layui-input-inline">
+				<input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate <#if c.isNull != "1">required</#if>"
+					value="<fmt:formatDate value="${"$"}{${className}.${c.javaFieldId}}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</div>
+			<#elseif c.showType == "fileselect">
+			<sys:imageupload name="${c.javaFieldId}"/>
+			<#elseif c.showType == "userselect">
+				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
+					title="用户" url="/sys/office/treeData?type=3" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
+			<#elseif c.showType == "officeselect">
+				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
+					title="部门" url="/sys/office/treeData?type=2" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
+			</#if>
+			<#if c.isNull != "1">
+				<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
+			</#if>
+		</div>
+			</#if>
+		</#list>
+		<#list table.childList as child>
+			<div class="layui-form-item">
+				<label class="layui-form-label">${child.comments}：</label>
+				<div class="layui-input-block">
+					<table id="contentTable" class="layui-table">
+						<thead>
+							<tr>
+								<th class="hide"></th>
+								<#assign childColumnCount = 0 /><#list child.columnList as c>
+									<#if c.isEdit?? && c.isEdit == "1" && (c.isNotBaseField || c.simpleJavaField == 'remarks') && c.name != c.genTable.parentTableFk>
+								<th>${c.comments}</th><#assign childColumnCount = childColumnCount + 1 />
+									</#if>
+								</#list>
+								<shiro:hasPermission name="${permissionPrefix}:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
+							</tr>
+						</thead>
+						<tbody id="${child.className?uncap_first}List">
+						</tbody>
+						<shiro:hasPermission name="${permissionPrefix}:edit"><tfoot>
+							<tr><td colspan="${childColumnCount + 2}"><a href="javascript:" onclick="addRow('#${child.className?uncap_first}List', ${child.className?uncap_first}RowIdx, ${child.className?uncap_first}Tpl);${child.className?uncap_first}RowIdx = ${child.className?uncap_first}RowIdx + 1;" class="layui-btn layui-btn-primary">新增</a></td></tr>
+						</tfoot></shiro:hasPermission>
+					</table>
+					<script type="text/template" id="${child.className?uncap_first}Tpl">//<!--
+						<tr id="${child.className?uncap_first}List{{idx}}">
+							<td class="hide">
+								<input id="${child.className?uncap_first}List{{idx}}_id" name="${child.className?uncap_first}List[{{idx}}].id" type="hidden" value="{{row.id}}"/>
+								<input id="${child.className?uncap_first}List{{idx}}_delFlag" name="${child.className?uncap_first}List[{{idx}}].delFlag" type="hidden" value="0"/>
+							</td>
+							<#list child.columnList as c>
+								<#if c.isEdit?? && c.isEdit == "1" && (c.isNotBaseField || c.simpleJavaField == 'remarks') && c.name != c.genTable.parentTableFk>
+							<td>
+							<#if c.showType == "input">
+								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="text" value="{{row.${c.javaFieldId}}}"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+							<#elseif c.showType == "textarea">
+								<textarea id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if>">{{row.${c.javaFieldId}}}</textarea>
+							<#elseif c.showType == "select">
+								<select id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" data-value="{{row.${c.javaFieldId}}}" class="input-small <#if c.isNull != "1">required</#if>">
+									<option value=""></option>
+									<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+										<option value="${"$"}{dict.value}">${"$"}{dict.label}</option>
+									</c:forEach>
+								</select>
+							<#elseif c.showType == "checkbox">
+								<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict" varStatus="dictStatus">
+									<span><input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="checkbox" value="${"$"}{dict.value}" data-value="{{row.${c.javaFieldId}}}"><label for="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}">${"$"}{dict.label}</label></span>
+								</c:forEach>
+							<#elseif c.showType == "radiobox">
+								<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict" varStatus="dictStatus">
+									<span><input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="radio" value="${"$"}{dict.value}" data-value="{{row.${c.javaFieldId}}}"><label for="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}">${"$"}{dict.label}</label></span>
+								</c:forEach>
+							<#elseif c.showType == "dateselect">
+								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate <#if c.isNull != "1">required</#if>"
+									value="{{row.${c.javaFieldId}}}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+							<#elseif c.showType == "userselect">
+								<sys:treeselect id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" value="{{row.${c.javaFieldId}}}" labelName="${child.className?uncap_first}List{{idx}}.${c.javaFieldName}" labelValue="{{row.${c.javaFieldName}}}"
+									title="用户" url="/sys/office/treeData?type=3" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
+							<#elseif c.showType == "officeselect">
+								<sys:treeselect id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" value="{{row.${c.javaFieldId}}}" labelName="${child.className?uncap_first}List{{idx}}.${c.javaFieldName}" labelValue="{{row.${c.javaFieldName}}}"
+									title="部门" url="/sys/office/treeData?type=2" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
+							<#elseif c.showType == "fileselect">
+								<sys:imageupload name="${c.javaFieldId}"/>
+							</#if>
+							</td>
+								</#if>
+							</#list>
+							<shiro:hasPermission name="${permissionPrefix}:edit"><td width="10">
+								{{#delBtn}}<a href="javascript:void(0)" onclick="delRow(this, '#${child.className?uncap_first}List{{idx}}')"><i class="layui-icon">&#xe640;</i></a>{{/delBtn}}
+							</td></shiro:hasPermission>
+						</tr>//-->
+					</script>
+					<script type="text/javascript">
+						var ${child.className?uncap_first}RowIdx = 0, ${child.className?uncap_first}Tpl = $("#${child.className?uncap_first}Tpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						$(document).ready(function() {
+							var data = ${"$"}{fns:toJson(${className}.${child.className?uncap_first}List)};
+							for (var i=0; i<data.length; i++){
+								addRow('#${child.className?uncap_first}List', ${child.className?uncap_first}RowIdx, ${child.className?uncap_first}Tpl, data[i]);
+								${child.className?uncap_first}RowIdx = ${child.className?uncap_first}RowIdx + 1;
+							}
+						});
+					</script>
+				</div>
+			</div>
+		</#list>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<shiro:hasPermission name="${permissionPrefix}:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+			</div>
+		</div>
+	</form:form>
+</body>
+</html>]]>
+	</content>
+</template>

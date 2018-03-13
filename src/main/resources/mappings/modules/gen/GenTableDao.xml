@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.gen.dao.GenTableDao">
+    
+    <sql id="genTableColumns">
+		a.*
+	</sql>
+	
+    <select id="get" resultType="GenTable">
+		SELECT 
+			<include refid="genTableColumns"/>
+		FROM gen_table a
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="GenTable">
+		SELECT 
+			<include refid="genTableColumns"/>
+		FROM gen_table a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		<if test="name != null and name != ''">
+			AND a.name = #{name}
+		</if>
+		<if test="nameLike != null and nameLike != ''">
+			AND a.name LIKE 
+				<if test="dbName == 'oracle'">'%'||#{nameLike}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nameLike}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nameLike},'%')</if>
+		</if>
+		<if test="comments != null and comments != ''">
+			AND a.comments LIKE 
+				<if test="dbName == 'oracle'">'%'||#{comments}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{comments}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{comments},'%')</if>
+		</if>
+		<if test="parentTable != null and parentTable != ''">
+			AND a.parent_table = #{parentTable}
+		</if>
+		<choose>
+			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
+				<choose>
+					<when test="page.isAsc == true">
+						ORDER BY ${page.orderByField} ASC
+					</when>
+					<otherwise>
+						ORDER BY ${page.orderByField} DESC
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				ORDER BY a.name ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findAllList" resultType="GenTable">
+		SELECT 
+			<include refid="genTableColumns"/>
+		FROM gen_table a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY a.name ASC
+	</select>
+	
+</mapper>
