@@ -18,7 +18,6 @@
 			<div class="layui-col-md3">归属机构: ${role.office.name}</div>
 		</div>
 		<div class="layui-row">
-			<div class="layui-col-md3">角色类型: ${role.roleType}</div>
 			<c:set var="dictvalue" value="${role.dataScope}" scope="page" />
 			<div class="layui-col-md3">数据范围: ${fns:getDictLabel(dictvalue, 'sys_data_scope', '')}</div>
 		</div>

@@ -36,7 +36,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 	private GenDataBaseDictDao genDataBaseDictDao;
 
 	public GenTable get(String id) {
-		GenTable genTable = super.get(id);
+		GenTable genTable = super.selectById(id);
 		GenTableColumn genTableColumn = new GenTableColumn();
 		genTableColumn.setGenTable(new GenTable(genTable.getId()));
 		genTable.setColumnList(genTableColumnDao.findList(genTableColumn));

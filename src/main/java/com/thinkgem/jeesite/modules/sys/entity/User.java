@@ -31,9 +31,9 @@ import com.thinkgem.jeesite.common.utils.excel.fieldtype.RoleListType;
 public class User extends DataEntity<User> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="company_id", el = "company, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="company_id", el = "company.id")
 	private Office company;	// 归属公司
-	@TableField(value="office_id", el = "office, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="office_id", el = "office.id")
 	private Office office;	// 归属部门
 	private String loginName;// 登录名
 	private String password;// 密码

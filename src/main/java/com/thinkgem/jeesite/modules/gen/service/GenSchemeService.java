@@ -66,7 +66,7 @@ public class GenSchemeService extends BaseService<GenSchemeDao, GenScheme> {
 		StringBuilder result = new StringBuilder();
 
 		// 查询主表及字段列
-		GenTable genTable = genTableDao.get(genScheme.getGenTable().getId());
+		GenTable genTable = genTableDao.selectById(genScheme.getGenTable().getId());
 		genTable.setColumnList(genTableColumnDao.findList(new GenTableColumn(new GenTable(genTable.getId()))));
 
 		// 获取所有代码模板

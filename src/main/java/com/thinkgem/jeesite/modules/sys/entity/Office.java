@@ -20,7 +20,7 @@ import com.thinkgem.jeesite.common.persistence.TreeEntity;
 public class Office extends TreeEntity<Office> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="parent_id", el = "parent, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="parent_id", el = "parent.id")
 	private Office parent;	// 父级编号
 	private String code; 	// 机构编码
 	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
@@ -32,10 +32,6 @@ public class Office extends TreeEntity<Office> {
 	private String fax; 	// 传真
 	private String email; 	// 邮箱
 	private String useable;//是否可用
-	@TableField(value="primary_person", el = "primaryPerson, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
-	private User primaryPerson;//主负责人
-	@TableField(value="deputy_person", el = "deputyPerson, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
-	private User deputyPerson;//副负责人
 	@TableField(exist=false)
 	private List<String> childDeptList;//快速添加子部门
 	
@@ -62,22 +58,6 @@ public class Office extends TreeEntity<Office> {
 
 	public void setUseable(String useable) {
 		this.useable = useable;
-	}
-
-	public User getPrimaryPerson() {
-		return primaryPerson;
-	}
-
-	public void setPrimaryPerson(User primaryPerson) {
-		this.primaryPerson = primaryPerson;
-	}
-
-	public User getDeputyPerson() {
-		return deputyPerson;
-	}
-
-	public void setDeputyPerson(User deputyPerson) {
-		this.deputyPerson = deputyPerson;
 	}
 
 	public Office getParent() {

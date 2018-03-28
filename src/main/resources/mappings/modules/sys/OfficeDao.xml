@@ -11,12 +11,12 @@
 		a.sort,
 		a.type,
 		a.grade,
-		a.address, 
-		a.zip_code, 
-		a.master, 
-		a.phone, 
-		a.fax, 
-		a.email, 
+		a.address,
+		a.zip_code,
+		a.master,
+		a.phone,
+		a.fax,
+		a.email,
 		a.remarks,
 		a.create_by AS "createBy.id",
 		a.create_date,
@@ -24,19 +24,13 @@
 		a.update_date,
 		a.del_flag,
 		a.useable AS useable,
-		a.primary_person AS "primaryPerson.id",
-		a.deputy_person AS "deputyPerson.id",
-		p.name AS "parent.name",
-		pp.name AS "primaryPerson.name",
-		dp.name AS "deputyPerson.name"
+		p.name AS "parent.name"
 	</sql>
-	
+
 	<sql id="officeJoins">
 		LEFT JOIN sys_office p ON p.id = a.parent_id
-		LEFT JOIN SYS_USER pp ON pp.id = a.primary_person
-		LEFT JOIN SYS_USER dp ON dp.id = a.deputy_person
     </sql>
-	
+
 	<select id="get" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
@@ -44,7 +38,7 @@
 		<include refid="officeJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
@@ -56,7 +50,7 @@
 		OR a.id = #{currentUser.office.id}
 		ORDER BY a.code
 	</select>
-			
+
 	<select id="findAllList" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
@@ -65,7 +59,7 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.code
 	</select>
-	
+
 	<select id="findByParentIdsLike" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
@@ -74,21 +68,21 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.code
 	</select>
-	
+
 	<update id="updateParentIds">
-		UPDATE sys_office SET 
-			parent_id = #{parent.id}, 
+		UPDATE sys_office SET
+			parent_id = #{parent.id},
 			parent_ids = #{parentIds}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE sys_office SET 
+		UPDATE sys_office SET
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id} OR parent_ids LIKE 
+		WHERE id = #{id} OR parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>
 					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
 	</update>
-	
+
 </mapper>

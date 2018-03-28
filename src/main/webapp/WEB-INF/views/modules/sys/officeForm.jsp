@@ -69,16 +69,6 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">主负责人:</label>
-			<sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${office.primaryPerson.id}" labelName="office.primaryPerson.name" labelValue="${office.primaryPerson.name}"
-				title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
-		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">副负责人:</label>
-			<sys:treeselect id="deputyPerson" name="deputyPerson.id" value="${office.deputyPerson.id}" labelName="office.deputyPerson.name" labelValue="${office.deputyPerson.name}"
-				title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
-		</div>
-		<div class="layui-form-item">
 			<label class="layui-form-label">联系地址:</label>
 			<div class="layui-input-inline">
 				<form:input path="address" htmlEscape="false" maxlength="50" class="layui-input"/>

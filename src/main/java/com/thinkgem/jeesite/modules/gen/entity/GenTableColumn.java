@@ -22,7 +22,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 public class GenTableColumn extends DataEntity<GenTableColumn> {
 	
 	private static final long serialVersionUID = 1L;
-	@TableField(value="gen_table_id", el = "genTable, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="gen_table_id", el = "genTable.id")
 	private GenTable genTable;	// 归属表
 	private String name; 		// 列名
 	private String comments;	// 描述

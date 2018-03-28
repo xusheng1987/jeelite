@@ -2,20 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.gen.dao.GenTableDao">
     
-    <sql id="genTableColumns">
-		a.*
-	</sql>
-	
-    <select id="get" resultType="GenTable">
-		SELECT 
-			<include refid="genTableColumns"/>
-		FROM gen_table a
-		WHERE a.id = #{id}
-	</select>
-	
 	<select id="findList" resultType="GenTable">
-		SELECT 
-			<include refid="genTableColumns"/>
+		SELECT *
 		FROM gen_table a
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
 		<if test="name != null and name != ''">
@@ -53,8 +41,7 @@
 		</choose>
 	</select>
 	<select id="findAllList" resultType="GenTable">
-		SELECT 
-			<include refid="genTableColumns"/>
+		SELECT *
 		FROM gen_table a
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.name ASC
