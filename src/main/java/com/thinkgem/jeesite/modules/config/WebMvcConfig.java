@@ -18,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.google.common.collect.Lists;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
 import com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor;
@@ -41,14 +42,16 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LogInterceptor()).addPathPatterns("/a/**").excludePathPatterns("/a/")
-				.excludePathPatterns("/a/login").excludePathPatterns("/a/sys/menu/tree")
-				.excludePathPatterns("/a/sys/menu/treeData");
+		String adminPath = Global.getAdminPath();
+		registry.addInterceptor(new LogInterceptor()).addPathPatterns(adminPath + "/**")
+				.excludePathPatterns(adminPath + "/").excludePathPatterns(adminPath + "/login")
+				.excludePathPatterns(adminPath + "/sys/menu/tree")
+				.excludePathPatterns(adminPath + "/sys/menu/treeData");
 	}
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("redirect:/a");
+		registry.addViewController("/").setViewName("redirect:" + Global.getAdminPath());
 	}
 
 	@Bean
@@ -65,7 +68,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
 		SiteMeshFilter sitemeshFilter = new SiteMeshFilter();
 		filterRegistration.setFilter(sitemeshFilter);
-		filterRegistration.addUrlPatterns("/a/*");
+		filterRegistration.addUrlPatterns(Global.getAdminPath() + "/*");
 		return filterRegistration;
 	}
 

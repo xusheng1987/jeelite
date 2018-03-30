@@ -31,12 +31,12 @@ public class ${ClassName} extends DataEntity<${ClassName}> {
 		<#if c.isNotBaseField>
 			<#-- 父类对象 -->
 			<#if table.parentExists && table.parentTableFk == c.name>
-	@TableField(value = "${c.name}", el = "${c.simpleJavaField}, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value = "${c.name}", el = "${c.simpleJavaField}.id")
 	private ${table.parent.className?cap_first} ${c.simpleJavaField};<#if c.comments??> // ${c.comments} 父类</#if>
 			<#-- 其它字段 -->
 			<#else>
 			<#if c.isSelfType>
-	@TableField(value = "${c.name}", el = "${c.simpleJavaField}, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value = "${c.name}", el = "${c.simpleJavaField}.id")
 			</#if>
 	private ${c.simpleJavaType} ${c.simpleJavaField};<#if c.comments??> // ${c.comments}</#if>
 			</#if>

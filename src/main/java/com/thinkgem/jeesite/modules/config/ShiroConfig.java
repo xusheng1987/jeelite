@@ -17,6 +17,7 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.security.shiro.session.CacheSessionDAO;
 import com.thinkgem.jeesite.common.security.shiro.session.SessionManager;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -36,15 +37,16 @@ public class ShiroConfig {
 		filtersMap.put("authc", formAuthenticationFilter);
 		shiroFilterFactoryBean.setFilters(filtersMap);
 		// 配置登录的url和登录成功的url
-		shiroFilterFactoryBean.setLoginUrl("/a/login");
-		shiroFilterFactoryBean.setSuccessUrl("/a");
+		String adminPath = Global.getAdminPath();
+		shiroFilterFactoryBean.setLoginUrl(adminPath + "/login");
+		shiroFilterFactoryBean.setSuccessUrl(adminPath);
 		// 配置访问权限
 		LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/userfiles/**", "anon");
-		filterChainDefinitionMap.put("/a/login", "authc");
-		filterChainDefinitionMap.put("/a/logout", "logout");
-		filterChainDefinitionMap.put("/a/**", "user");
+		filterChainDefinitionMap.put(adminPath + "/login", "authc");
+		filterChainDefinitionMap.put(adminPath + "/logout", "logout");
+		filterChainDefinitionMap.put(adminPath + "/**", "user");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}
@@ -60,39 +62,39 @@ public class ShiroConfig {
 		securityManager.setRememberMeManager(rememberMeManager());
 		return securityManager;
 	}
-	
+
 	/**
-     * 身份认证realm
-     */
-    @Bean
-    public SystemAuthorizingRealm systemAuthorizingRealm() {
-    	SystemAuthorizingRealm systemAuthorizingRealm = new SystemAuthorizingRealm();
-    	systemAuthorizingRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return systemAuthorizingRealm;
-    }
-    
+	 * 身份认证realm
+	 */
+	@Bean
+	public SystemAuthorizingRealm systemAuthorizingRealm() {
+		SystemAuthorizingRealm systemAuthorizingRealm = new SystemAuthorizingRealm();
+		systemAuthorizingRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+		return systemAuthorizingRealm;
+	}
+
 	/**
 	 * 设定密码校验的Hash算法与迭代次数
 	 */
-    @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+	@Bean
+	public HashedCredentialsMatcher hashedCredentialsMatcher() {
 		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher("SHA-1");
 		matcher.setHashIterations(1024);
-        return matcher;
-    }
-    
-//    @Bean(name="lifecycleBeanPostProcessor")
-//	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-//		return new LifecycleBeanPostProcessor();
-//	}
-//	
-//    @Bean
-//    @DependsOn({ "lifecycleBeanPostProcessor" })
-//    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-//        DefaultAdvisorAutoProxyCreator bean = new DefaultAdvisorAutoProxyCreator();
-//        bean.setProxyTargetClass(true);
-//        return bean;
-//    }
+		return matcher;
+	}
+
+	// @Bean(name="lifecycleBeanPostProcessor")
+	// public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+	// return new LifecycleBeanPostProcessor();
+	// }
+	//
+	// @Bean
+	// @DependsOn({ "lifecycleBeanPostProcessor" })
+	// public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+	// DefaultAdvisorAutoProxyCreator bean = new DefaultAdvisorAutoProxyCreator();
+	// bean.setProxyTargetClass(true);
+	// return bean;
+	// }
 
 	@Bean
 	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
