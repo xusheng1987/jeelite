@@ -17,7 +17,6 @@ CREATE TABLE gen_scheme
 	category varchar2(2000),
 	package_name varchar2(500),
 	module_name varchar2(30),
-	sub_module_name varchar2(30),
 	function_name nvarchar2(500),
 	function_name_simple nvarchar2(100),
 	function_author nvarchar2(100),
@@ -68,7 +67,6 @@ CREATE TABLE gen_table_column
 	query_type varchar2(200),
 	show_type varchar2(200),
 	dict_type varchar2(200),
-	settings nvarchar2(2000),
 	sort number,
 	create_by varchar2(64),
 	create_date timestamp,
@@ -101,7 +99,6 @@ COMMENT ON COLUMN gen_scheme.name IS '名称';
 COMMENT ON COLUMN gen_scheme.category IS '分类';
 COMMENT ON COLUMN gen_scheme.package_name IS '生成包路径';
 COMMENT ON COLUMN gen_scheme.module_name IS '生成模块名';
-COMMENT ON COLUMN gen_scheme.sub_module_name IS '生成子模块名';
 COMMENT ON COLUMN gen_scheme.function_name IS '生成功能名';
 COMMENT ON COLUMN gen_scheme.function_name_simple IS '生成功能名（简写）';
 COMMENT ON COLUMN gen_scheme.function_author IS '生成功能作者';
@@ -142,7 +139,6 @@ COMMENT ON COLUMN gen_table_column.is_query IS '是否查询字段';
 COMMENT ON COLUMN gen_table_column.query_type IS '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）';
 COMMENT ON COLUMN gen_table_column.show_type IS '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择）';
 COMMENT ON COLUMN gen_table_column.dict_type IS '字典类型';
-COMMENT ON COLUMN gen_table_column.settings IS '其它设置（扩展字段JSON）';
 COMMENT ON COLUMN gen_table_column.sort IS '排序（升序）';
 COMMENT ON COLUMN gen_table_column.create_by IS '创建者';
 COMMENT ON COLUMN gen_table_column.create_date IS '创建时间';

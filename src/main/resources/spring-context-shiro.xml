@@ -16,7 +16,6 @@
 			<value>
 				/static/** = anon
 				/userfiles/** = anon
-				${adminPath}/cas = cas
 				${adminPath}/login = authc
 				${adminPath}/logout = logout
 				${adminPath}/** = user
@@ -26,24 +25,17 @@
 
 	<!-- 安全认证过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" /><!--
-		<property name="loginUrl" value="${cas.server.url}?service=${cas.project.url}${adminPath}/cas" /> -->
+		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="${adminPath}/login" />
 		<property name="successUrl" value="${adminPath}?login" />
 		<property name="filters">
             <map>
-                <entry key="cas" value-ref="casFilter"/>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
             </map>
         </property>
 		<property name="filterChainDefinitions">
 			<ref bean="shiroFilterChainDefinitions"/>
 		</property>
-	</bean>
-
-	<!-- CAS认证过滤器 -->
-	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
-		<property name="failureUrl" value="${adminPath}/login"/>
 	</bean>
 
 	<!-- 定义Shiro安全管理配置 -->

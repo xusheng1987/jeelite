@@ -25,7 +25,7 @@ public class GenScheme extends DataEntity<GenScheme> {
 	private String functionName;		// 生成功能名
 	private String functionNameSimple;		// 生成功能名（简写）
 	private String functionAuthor;		// 生成功能作者
-	@TableField(value="gen_table_id", el = "genTable, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="gen_table_id", el = "genTable.id")
 	private GenTable genTable;		// 业务表名
 	
 	@TableField(exist=false)

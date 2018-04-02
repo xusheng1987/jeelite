@@ -19,8 +19,8 @@
 				</fieldset>
 				<div id="ztree" class="ztree"></div>
 			</div>
-			<div class="layui-col-md10">
-				<iframe id="officeContent" src="${ctx}/sys/user/list" width="100%" height="645" frameborder="0"></iframe>
+			<div class="layui-col-md10 layui-tab-content" style="left:unset">
+				<iframe id="officeContent" src="${ctx}/sys/user/list" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>
 			</div>
 		</div>
 	</div>

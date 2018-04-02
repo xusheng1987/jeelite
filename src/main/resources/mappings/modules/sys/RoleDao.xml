@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.sys.dao.RoleDao">
-    
+
     <resultMap id="roleResult" type="Role">
 		<id property="id" column="id" />
 		<result property="office.id" column="office.id" />
 		<result property="office.name" column="office.name" />
 		<result property="name" column="name" />
-		<result property="roleType" column="roleType" />
 		<result property="dataScope" column="dataScope" />
 		<result property="remarks" column="remarks" />
 		<result property="useable" column="useable" />
@@ -19,12 +18,11 @@
 			<id property="id" column="officeList.id" />
 		</collection>
 	</resultMap>
-	
+
     <sql id="roleColumns">
     	a.id,
     	a.office_id AS "office.id",
     	a.name,
-    	a.role_type AS roleType,
 		a.data_scope AS dataScope,
 		a.remarks,
 		a.create_by AS "createBy.id",
@@ -37,7 +35,7 @@
     	a.useable AS useable,
     	a.sys_data AS sysData
     </sql>
-    
+
 	<select id="get" resultMap="roleResult">
 		SELECT
 			<include refid="roleColumns"/>,
@@ -49,7 +47,7 @@
 		LEFT JOIN sys_role_office ro ON ro.role_id = a.id
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="getByName" resultType="Role">
 		SELECT
 			<include refid="roleColumns"/>
@@ -57,7 +55,7 @@
 		JOIN sys_office o ON o.id = a.office_id
 		WHERE a.name = #{name} AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
-	
+
 	<select id="findList" resultMap="roleResult">
 		SELECT <!-- DISTINCT -->
 			<include refid="roleColumns"/>,
@@ -78,7 +76,7 @@
 		${sqlMap.dsf}
 		ORDER BY o.code, a.name
 	</select>
-	
+
 	<select id="findAllList" resultType="Role">
 		SELECT
 			<include refid="roleColumns"/>
@@ -87,11 +85,11 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY o.code, a.name
 	</select>
-	
+
 	<delete id="deleteRoleMenu">
 		DELETE FROM sys_role_menu WHERE role_id = #{id}
 	</delete>
-	
+
 	<insert id="insertRoleMenu">
 		INSERT INTO sys_role_menu(role_id, menu_id)
 		<foreach collection="menuList" item="menu" separator=" union all ">
@@ -101,11 +99,11 @@
 			</if>
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteRoleOffice">
 		DELETE FROM sys_role_office WHERE role_id = #{id}
 	</delete>
-	
+
 	<insert id="insertRoleOffice">
 		INSERT INTO sys_role_office(role_id, office_id)
 		<foreach collection="officeList" item="office" separator=" union all ">
@@ -115,5 +113,5 @@
 			</if>
 		</foreach>
 	</insert>
-	
+
 </mapper>

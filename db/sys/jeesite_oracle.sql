@@ -16,7 +16,6 @@ DROP INDEX sys_office_parent_ids;
 DROP INDEX sys_office_del_flag;
 DROP INDEX sys_office_type;
 DROP INDEX sys_role_del_flag;
-DROP INDEX sys_role_enname;
 DROP INDEX sys_user_office_id;
 DROP INDEX sys_user_login_name;
 DROP INDEX sys_user_company_id;
@@ -51,7 +50,6 @@ CREATE TABLE sys_dict
 	type varchar2(100) NOT NULL,
 	description nvarchar2(100) NOT NULL,
 	sort number(10,0) NOT NULL,
-	parent_id varchar2(64) DEFAULT '0',
 	create_by varchar2(64) NOT NULL,
 	create_date timestamp NOT NULL,
 	update_by varchar2(64) NOT NULL,
@@ -121,8 +119,6 @@ CREATE TABLE sys_office
 	fax nvarchar2(200),
 	email nvarchar2(200),
 	useable varchar2(64),
-	primary_person varchar2(64),
-	deputy_person varchar2(64),
 	create_by varchar2(64) NOT NULL,
 	create_date timestamp NOT NULL,
 	update_by varchar2(64) NOT NULL,
@@ -139,8 +135,6 @@ CREATE TABLE sys_role
 	id varchar2(64) NOT NULL,
 	office_id varchar2(64),
 	name nvarchar2(100) NOT NULL,
-	enname varchar2(255),
-	role_type varchar2(255),
 	data_scope char(1),
 	sys_data varchar2(64),
 	useable varchar2(64),
@@ -185,7 +179,6 @@ CREATE TABLE sys_user
 	email nvarchar2(200),
 	phone varchar2(200),
 	mobile varchar2(200),
-	user_type char(1),
 	photo varchar2(1000),
 	login_ip varchar2(100),
 	login_date timestamp,
@@ -227,7 +220,6 @@ CREATE INDEX sys_office_parent_ids ON sys_office (parent_ids);
 CREATE INDEX sys_office_del_flag ON sys_office (del_flag);
 CREATE INDEX sys_office_type ON sys_office (type);
 CREATE INDEX sys_role_del_flag ON sys_role (del_flag);
-CREATE INDEX sys_role_enname ON sys_role (enname);
 CREATE INDEX sys_user_office_id ON sys_user (office_id);
 CREATE INDEX sys_user_login_name ON sys_user (login_name);
 CREATE INDEX sys_user_company_id ON sys_user (company_id);

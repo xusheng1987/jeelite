@@ -23,7 +23,6 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
  */
 @Service
 @Transactional(readOnly = true)
-//@DataSource(DBTypeEnum.two)
 public class DictService extends BaseService<DictDao, Dict> {
 
 	/**

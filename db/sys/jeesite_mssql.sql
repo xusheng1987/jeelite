@@ -25,7 +25,6 @@ CREATE TABLE sys_dict
 	type varchar(100) NOT NULL,
 	description varchar(100) NOT NULL,
 	sort decimal(10,0) NOT NULL,
-	parent_id varchar(64) DEFAULT '0',
 	create_by varchar(64) NOT NULL,
 	create_date datetime NOT NULL,
 	update_by varchar(64) NOT NULL,
@@ -92,8 +91,6 @@ CREATE TABLE sys_office
 	fax varchar(200),
 	email varchar(200),
 	useable varchar(64),
-	primary_person varchar(64),
-	deputy_person varchar(64),
 	create_by varchar(64) NOT NULL,
 	create_date datetime NOT NULL,
 	update_by varchar(64) NOT NULL,
@@ -109,8 +106,6 @@ CREATE TABLE sys_role
 	id varchar(64) NOT NULL,
 	office_id varchar(64),
 	name varchar(100) NOT NULL,
-	enname varchar(255),
-	role_type varchar(255),
 	data_scope char(1),
 	sys_data varchar(64),
 	useable varchar(64),
@@ -152,7 +147,6 @@ CREATE TABLE sys_user
 	email varchar(200),
 	phone varchar(200),
 	mobile varchar(200),
-	user_type char(1),
 	photo varchar(1000),
 	login_ip varchar(100),
 	login_date datetime,
@@ -193,7 +187,6 @@ CREATE INDEX sys_office_parent_id ON sys_office (parent_id ASC);
 CREATE INDEX sys_office_del_flag ON sys_office (del_flag ASC);
 CREATE INDEX sys_office_type ON sys_office (type ASC);
 CREATE INDEX sys_role_del_flag ON sys_role (del_flag ASC);
-CREATE INDEX sys_role_enname ON sys_role (enname ASC);
 CREATE INDEX sys_user_office_id ON sys_user (office_id ASC);
 CREATE INDEX sys_user_login_name ON sys_user (login_name ASC);
 CREATE INDEX sys_user_company_id ON sys_user (company_id ASC);

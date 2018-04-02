@@ -25,7 +25,6 @@ CREATE TABLE sys_dict
 	type varchar(100) NOT NULL COMMENT '类型',
 	description varchar(100) NOT NULL COMMENT '描述',
 	sort decimal(10,0) NOT NULL COMMENT '排序（升序）',
-	parent_id varchar(64) DEFAULT '0' COMMENT '父级编号',
 	create_by varchar(64) NOT NULL COMMENT '创建者',
 	create_date datetime NOT NULL COMMENT '创建时间',
 	update_by varchar(64) NOT NULL COMMENT '更新者',
@@ -92,8 +91,6 @@ CREATE TABLE sys_office
 	fax varchar(200) COMMENT '传真',
 	email varchar(200) COMMENT '邮箱',
 	useable varchar(64) COMMENT '是否启用',
-	primary_person varchar(64) COMMENT '主负责人',
-	deputy_person varchar(64) COMMENT '副负责人',
 	create_by varchar(64) NOT NULL COMMENT '创建者',
 	create_date datetime NOT NULL COMMENT '创建时间',
 	update_by varchar(64) NOT NULL COMMENT '更新者',
@@ -109,8 +106,6 @@ CREATE TABLE sys_role
 	id varchar(64) NOT NULL COMMENT '编号',
 	office_id varchar(64) COMMENT '归属机构',
 	name varchar(100) NOT NULL COMMENT '角色名称',
-	enname varchar(255) COMMENT '英文名称',
-	role_type varchar(255) COMMENT '角色类型',
 	data_scope char(1) COMMENT '数据范围',
 	sys_data varchar(64) COMMENT '是否系统数据',
 	useable varchar(64) COMMENT '是否可用',
@@ -152,7 +147,6 @@ CREATE TABLE sys_user
 	email varchar(200) COMMENT '邮箱',
 	phone varchar(200) COMMENT '电话',
 	mobile varchar(200) COMMENT '手机',
-	user_type char(1) COMMENT '用户类型',
 	photo varchar(1000) COMMENT '用户头像',
 	login_ip varchar(100) COMMENT '最后登陆IP',
 	login_date datetime COMMENT '最后登陆时间',
@@ -193,7 +187,6 @@ CREATE INDEX sys_office_parent_id ON sys_office (parent_id ASC);
 CREATE INDEX sys_office_del_flag ON sys_office (del_flag ASC);
 CREATE INDEX sys_office_type ON sys_office (type ASC);
 CREATE INDEX sys_role_del_flag ON sys_role (del_flag ASC);
-/*CREATE INDEX sys_role_enname ON sys_role (enname ASC);*/
 CREATE INDEX sys_user_office_id ON sys_user (office_id ASC);
 CREATE INDEX sys_user_login_name ON sys_user (login_name ASC);
 CREATE INDEX sys_user_company_id ON sys_user (company_id ASC);

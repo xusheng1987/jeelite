@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.collect.Maps;
-import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.security.shiro.session.SessionDAO;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.CookieUtils;
@@ -36,6 +35,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  * @version 2013-5-31
  */
 @Controller
+@RequestMapping(value = "${adminPath}")
 public class LoginController extends BaseController {
 
 	@Autowired
@@ -44,7 +44,7 @@ public class LoginController extends BaseController {
 	/**
 	 * 管理登录
 	 */
-	@RequestMapping(value = "${adminPath}/login", method = RequestMethod.GET)
+	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String login(HttpServletRequest request, HttpServletResponse response) {
 		Principal principal = UserUtils.getPrincipal();
 
@@ -58,11 +58,6 @@ public class LoginController extends BaseController {
 			logger.debug("login, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
 
-		// 如果已登录，再次访问主页，则退出原账号。
-		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))) {
-			CookieUtils.setCookie(response, "LOGINED", "false");
-		}
-
 		// 如果已经登录，则跳转到管理首页
 		if (principal != null) {
 			return "redirect:" + adminPath;
@@ -73,7 +68,7 @@ public class LoginController extends BaseController {
 	/**
 	 * 登录失败，真正登录的POST请求由Filter完成
 	 */
-	@RequestMapping(value = "${adminPath}/login", method = RequestMethod.POST)
+	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String loginFail(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 
@@ -117,7 +112,7 @@ public class LoginController extends BaseController {
 	 * 登录成功，进入管理首页
 	 */
 	@RequiresPermissions("user")
-	@RequestMapping(value = "${adminPath}")
+	@RequestMapping(value = "")
 	public String index(HttpServletRequest request, HttpServletResponse response) {
 		Principal principal = UserUtils.getPrincipal();
 
@@ -128,16 +123,6 @@ public class LoginController extends BaseController {
 			logger.debug("show index, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
 
-		// 如果已登录，再次访问主页，则退出原账号。
-		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))) {
-			String logined = CookieUtils.getCookie(request, "LOGINED");
-			if (StringUtils.isBlank(logined) || "false".equals(logined)) {
-				CookieUtils.setCookie(response, "LOGINED", "true");
-			} else if (StringUtils.equals(logined, "true")) {
-				UserUtils.getSubject().logout();
-				return "redirect:" + adminPath + "/login";
-			}
-		}
 		// 登录操作如果是Ajax操作，直接返回登录信息字符串。
 		if (Servlets.isAjaxRequest(request)) {
 			return renderString(response, principal);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.sys.dao.UserDao">
-	
+
     <sql id="userColumns">
     	a.id,
     	a.company_id AS "company.id",
@@ -28,26 +28,14 @@
     	c.parent_ids AS "company.parentIds",
     	o.name AS "office.name",
     	o.parent_id AS "office.parent.id",
-    	o.parent_ids AS "office.parentIds",
-    	cu.id AS "company.primaryPerson.id",
-    	cu.name AS "company.primaryPerson.name",
-    	cu2.id AS "company.deputyPerson.id",
-    	cu2.name AS "company.deputyPerson.name",
-    	ou.id AS "office.primaryPerson.id",
-    	ou.name AS "office.primaryPerson.name",
-    	ou2.id AS "office.deputyPerson.id",
-    	ou2.name AS "office.deputyPerson.name"
+    	o.parent_ids AS "office.parentIds"
     </sql>
-    
+
     <sql id="userJoins">
 		LEFT JOIN sys_office c ON c.id = a.company_id
 		LEFT JOIN sys_office o ON o.id = a.office_id
-		LEFT JOIN sys_user cu ON cu.id = c.primary_person
-		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
-		LEFT JOIN sys_user ou ON ou.id = o.primary_person
-		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person
     </sql>
-	
+
 	<!-- 根据编号获得用户 -->
 	<select id="get" resultType="User">
 		SELECT
@@ -56,7 +44,7 @@
 		<include refid="userJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<!-- 根据登录名查询用户 -->
 	<select id="getByLoginName" resultType="User" parameterType="User">
 		SELECT
@@ -65,7 +53,7 @@
 		<include refid="userJoins"/>
 		WHERE a.login_name = #{loginName} AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
-	
+
 	<!-- 分页查询用户信息 -->
 	<select id="findList" resultType="User">
 		SELECT
@@ -77,13 +65,13 @@
 		</if>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<if test="company != null and company.id != null and company.id != ''">
-			AND (c.id = #{company.id} OR c.parent_ids LIKE 
+			AND (c.id = #{company.id} OR c.parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||#{company.id}||',%')</if>
 					<if test="dbName == 'mssql'">'%,'+#{company.id}+',%')</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{company.id}, ',%'))</if>
 		</if>
 		<if test="office != null and office.id != null and office.id != ''">
-			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+			AND (o.id = #{office.id} OR o.parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
 					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
@@ -93,13 +81,13 @@
 			AND a.id != '1'
 		</if>
 		<if test="loginName != null and loginName != ''">
-			AND a.login_name like 
+			AND a.login_name like
 					<if test="dbName == 'oracle'">'%'||#{loginName}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{loginName}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
 		</if>
 		<if test="name != null and name != ''">
-			AND a.name like 
+			AND a.name like
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
@@ -122,7 +110,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<!-- 根据OfficeId获取用户（树查询用户时用） -->
 	<select id="findUserByOfficeId" resultType="User" useCache="true">
 		SELECT
@@ -132,7 +120,7 @@
 			AND a.office_id = #{office.id}
 		ORDER BY a.name
 	</select>
-	
+
 	<!-- 查询全部用户 -->
 	<select id="findAllList" resultType="User">
 		SELECT
@@ -142,12 +130,12 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY c.code, o.code, a.name
 	</select>
-	
+
 	<!-- 删除用户和角色关联表数据 -->
 	<delete id="deleteUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{id}
 	</delete>
-	
+
 	<!-- 插入用户和角色关联表数据 -->
 	<insert id="insertUserRole">
 		INSERT INTO sys_user_role(user_id, role_id)
@@ -158,33 +146,33 @@
 			</if>
 		</foreach>
 	</insert>
-	
+
 	<!-- 更新用户信息  -->
 	<update id="updateUserInfo">
-		UPDATE sys_user SET 
-			email = #{email}, 
-			phone = #{phone}, 
-			mobile = #{mobile}, 
-			update_by = #{updateBy.id}, 
-			update_date = #{updateDate}, 
+		UPDATE sys_user SET
+			email = #{email},
+			phone = #{phone},
+			mobile = #{mobile},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
 			remarks = #{remarks},
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 更新用户密码 -->
 	<update id="updatePasswordById">
-		UPDATE sys_user SET 
-			password = #{password} 
+		UPDATE sys_user SET
+			password = #{password}
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 更新登录信息，如登录IP、登录时间 -->
 	<update id="updateLoginInfo">
-		UPDATE sys_user SET 
-			login_ip = #{loginIp}, 
-			login_Date = #{loginDate} 
+		UPDATE sys_user SET
+			login_ip = #{loginIp},
+			login_Date = #{loginDate}
 		WHERE id = #{id}
 	</update>
-	
+
 </mapper>

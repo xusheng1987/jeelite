@@ -24,7 +24,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class Menu extends DataEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="parent_id", el = "parent, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="parent_id", el = "parent.id")
 	private Menu parent;	// 父级菜单
 	private String parentIds; // 所有父级编号
 	private String name; 	// 名称

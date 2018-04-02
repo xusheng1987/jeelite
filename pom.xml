@@ -14,7 +14,7 @@
 		<!-- main version setting -->
 		<spring.version>4.2.9.RELEASE</spring.version>
 		<validator.version>5.2.4.Final</validator.version>
-		<mybatis-plus.version>2.1.6</mybatis-plus.version>
+		<mybatis-plus.version>2.2.0</mybatis-plus.version>
 		<druid.version>1.0.31</druid.version>
 		<ehcache.version>2.6.11</ehcache.version>
 		<shiro.version>1.3.2</shiro.version>
@@ -33,7 +33,6 @@
 		<guava.version>20.0</guava.version>
 		<poi.version>3.14</poi.version>
 		<freemarker.version>2.3.23</freemarker.version>
-		<swagger.version>2.7.0</swagger.version>
 
 		<!-- jdbc driver setting -->
 		<mysql.driver.version>5.1.42</mysql.driver.version>
@@ -41,7 +40,7 @@
 		<mssql.driver.version>1.3.1</mssql.driver.version>
 
 		<!-- environment setting -->
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<tomcat.version>2.2</tomcat.version>
 		<jetty.version>8.1.16.v20140903</jetty.version>
 		<webserver.port>8282</webserver.port>
@@ -272,17 +271,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-cas</artifactId>
-			<version>${shiro.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-web</artifactId>
 			<version>${shiro.version}</version>
 		</dependency>
@@ -404,16 +392,6 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml-schemas</artifactId>
 			<version>${poi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
 		</dependency>
 		<!-- GENERAL UTILS end -->
 

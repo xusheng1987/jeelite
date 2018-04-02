@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.baomidou.mybatisplus.enums.FieldFill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -24,14 +25,16 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	
 	protected String remarks;	// 备注
 	
-	@TableField(el = "createBy, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(el = "createBy.id", fill = FieldFill.INSERT)
 	protected User createBy;	// 创建者
 	
+	@TableField(fill = FieldFill.INSERT)
 	protected Date createDate;	// 创建日期
 	
-	@TableField(el = "updateBy, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(el = "updateBy.id", fill = FieldFill.INSERT_UPDATE)
 	protected User updateBy;	// 更新者
 	
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	protected Date updateDate;	// 更新日期
 	
 	@TableLogic

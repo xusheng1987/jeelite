@@ -26,9 +26,9 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 public class TestDataMain extends DataEntity<TestDataMain> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value = "user_id", el = "user, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value = "user_id", el = "user.id")
 	private User user; // 归属用户
-	@TableField(value = "office_id", el = "office, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value = "office_id", el = "office.id")
 	private Office office; // 归属部门
 	private String name; // 名称
 	private String sex; // 性别

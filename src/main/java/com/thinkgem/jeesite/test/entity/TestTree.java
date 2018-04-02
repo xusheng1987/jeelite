@@ -20,7 +20,7 @@ import com.thinkgem.jeesite.common.persistence.TreeEntity;
 public class TestTree extends TreeEntity<TestTree> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value = "parent_id", el = "parent, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value = "parent_id", el = "parent.id")
 	private TestTree parent; // 父级编号
 
 	public TestTree() {

@@ -23,10 +23,9 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class Role extends DataEntity<Role> {
 	
 	private static final long serialVersionUID = 1L;
-	@TableField(value="office_id", el = "office, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value="office_id", el = "office.id")
 	private Office office;	// 归属机构
 	private String name; 	// 角色名称
-	private String roleType;// 权限类型
 	private String dataScope;// 数据范围
 	
 	@TableField(exist=false)
@@ -97,15 +96,6 @@ public class Role extends DataEntity<Role> {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Length(min=1, max=100)
-	public String getRoleType() {
-		return roleType;
-	}
-
-	public void setRoleType(String roleType) {
-		this.roleType = roleType;
 	}
 
 	public String getDataScope() {

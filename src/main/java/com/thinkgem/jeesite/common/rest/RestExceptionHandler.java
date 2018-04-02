@@ -2,7 +2,7 @@ package com.thinkgem.jeesite.common.rest;
 
 import java.util.Map;
 
-import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
@@ -28,13 +28,14 @@ import com.google.common.collect.Maps;
  * 控制层异常统一处理
  */
 @ControllerAdvice
+@SuppressWarnings("unused")
 public class RestExceptionHandler {
 
 	/**
-	 * 授权登录异常
+	 * 授权异常
 	 */
-	@ExceptionHandler({ AuthenticationException.class })
-	public String authenticationException() {
+	@ExceptionHandler(UnauthorizedException.class)
+	public String unauthorizedException(UnauthorizedException ex) {
 		return "error/403";
 	}
 

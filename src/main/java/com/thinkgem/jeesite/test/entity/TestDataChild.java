@@ -19,7 +19,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class TestDataChild extends DataEntity<TestDataChild> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value = "test_data_main_id", el = "testDataMain, typeHandler=com.thinkgem.jeesite.common.persistence.typeHandler.EntityTypeHandler")
+	@TableField(value = "test_data_main_id", el = "testDataMain.id")
 	private TestDataMain testDataMain; // 业务主表 父类
 	private String name; // 名称
 

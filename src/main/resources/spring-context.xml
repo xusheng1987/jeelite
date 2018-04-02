@@ -56,6 +56,10 @@
         </property>
         <property name="logicDeleteValue" value="1" />
         <property name="logicNotDeleteValue" value="0" />
+        <!-- 公共字段填充处理器 -->
+        <property name="metaObjectHandler">
+            <bean class="com.thinkgem.jeesite.common.persistence.MyMetaObjectHandler" />
+        </property>
 	</bean>
 
     <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->

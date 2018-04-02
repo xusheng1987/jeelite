@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.common.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,11 +15,9 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.BaseEntity;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
-import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * Service基类
@@ -147,26 +144,6 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 		entity.setPage(page);
 		page.setRecords(dao.findList(page, entity));
 		return page;
-	}
-
-	@Transactional(readOnly = false)
-	public boolean insertOrUpdate(T entity) {
-		if (entity instanceof DataEntity) {
-			DataEntity de = (DataEntity) entity;
-			Date date = new Date();
-			User user = UserUtils.getUser();
-			if (StringUtils.isBlank(de.getId())) {// 插入之前执行操作
-				if (StringUtils.isNotBlank(user.getId())){
-					de.setCreateBy(user);
-				}
-				de.setCreateDate(date);
-			}
-			if (StringUtils.isNotBlank(user.getId())){
-				de.setUpdateBy(user);
-			}
-			de.setUpdateDate(date);
-		}
-		return super.insertOrUpdate(entity);
 	}
 
 	/**
