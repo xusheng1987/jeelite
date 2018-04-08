@@ -21,7 +21,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 角色管理
- * 
+ *
  * @author ThinkGem
  * @version 2013-12-05
  */
@@ -31,11 +31,6 @@ public class RoleService extends BaseService<RoleDao, Role> {
 
 	@Autowired
 	private UserDao userDao;
-
-	public Role getRole(String id) {
-		Role role = super.get(id);
-		return role;
-	}
 
 	public Role getRoleByName(String name) {
 		Role r = new Role();
@@ -53,7 +48,7 @@ public class RoleService extends BaseService<RoleDao, Role> {
 
 	@Transactional(readOnly = false)
 	public void saveRole(Role role) {
-		super.insertOrUpdate(role);
+		super.save(role);
 		// 更新角色与菜单关联
 		dao.deleteRoleMenu(role);
 		if (role.getMenuList().size() > 0) {

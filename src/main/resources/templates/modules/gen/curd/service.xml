@@ -9,12 +9,9 @@
  */
 package ${packageName}.${moduleName}.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import com.thinkgem.jeesite.common.service.BaseService;
 import ${packageName}.${moduleName}.dao.${ClassName}Dao;
 import ${packageName}.${moduleName}.entity.${ClassName};
@@ -28,28 +25,6 @@ import ${packageName}.${moduleName}.entity.${ClassName};
 @Service
 @Transactional(readOnly = true)
 public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassName}> {
-
-	public ${ClassName} get(String id) {
-		return super.get(id);
-	}
-
-	public List<${ClassName}> findList(${ClassName} ${className}) {
-		return super.findList(${className});
-	}
-
-	public Page<${ClassName}> findPage(Page<${ClassName}> page, ${ClassName} ${className}) {
-		return super.findPage(page, ${className});
-	}
-
-	@Transactional(readOnly = false)
-	public void save(${ClassName} ${className}) {
-		super.insertOrUpdate(${className});
-	}
-
-	@Transactional(readOnly = false)
-	public void delete(${ClassName} ${className}) {
-		super.delete(${className});
-	}
 
 }]]>
 	</content>

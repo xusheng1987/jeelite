@@ -17,17 +17,13 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 菜单管理
- * 
+ *
  * @author ThinkGem
  * @version 2013-12-05
  */
 @Service
 @Transactional(readOnly = true)
 public class MenuService extends BaseService<MenuDao, Menu> {
-
-	public Menu getMenu(String id) {
-		return super.get(id);
-	}
 
 	public List<Menu> findAllMenu() {
 		return UserUtils.getMenuList();
@@ -37,7 +33,7 @@ public class MenuService extends BaseService<MenuDao, Menu> {
 	public void saveMenu(Menu menu) {
 
 		// 获取父节点实体
-		menu.setParent(this.getMenu(menu.getParent().getId()));
+		menu.setParent(this.get(menu.getParent().getId()));
 
 		// 获取修改前的parentIds，用于更新子节点的parentIds
 		String oldParentIds = menu.getParentIds();
@@ -46,7 +42,7 @@ public class MenuService extends BaseService<MenuDao, Menu> {
 		menu.setParentIds(menu.getParent().getParentIds() + menu.getParent().getId() + ",");
 
 		// 保存或更新实体
-		super.insertOrUpdate(menu);
+		super.save(menu);
 
 		// 更新子节点 parentIds
 		Menu m = new Menu();

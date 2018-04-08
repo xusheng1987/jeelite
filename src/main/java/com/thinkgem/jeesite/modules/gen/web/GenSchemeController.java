@@ -82,7 +82,7 @@ public class GenSchemeController extends BaseController {
 			return form(genScheme, model);
 		}
 
-		String result = genSchemeService.save(genScheme);
+		String result = genSchemeService.saveScheme(genScheme);
 		addMessage(redirectAttributes, "操作生成方案'" + genScheme.getName() + "'成功<br/>" + result);
 		return "redirect:" + adminPath + "/gen/genScheme";
 	}

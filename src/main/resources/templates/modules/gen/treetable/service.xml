@@ -29,25 +29,11 @@ import ${packageName}.${moduleName}.entity.${ClassName};
 @Transactional(readOnly = true)
 public class ${ClassName}Service extends TreeService<${ClassName}Dao, ${ClassName}> {
 
-	public ${ClassName} get(String id) {
-		return super.get(id);
-	}
-
 	public List<${ClassName}> findList(${ClassName} ${className}) {
 		if (StringUtils.isNotBlank(${className}.getParentIds())) {
 			${className}.setParentIds("," + ${className}.getParentIds() + ",");
 		}
 		return super.findList(${className});
-	}
-
-	@Transactional(readOnly = false)
-	public void save(${ClassName} ${className}) {
-		super.save(${className});
-	}
-
-	@Transactional(readOnly = false)
-	public void delete(${ClassName} ${className}) {
-		super.delete(${className});
 	}
 
 }]]>

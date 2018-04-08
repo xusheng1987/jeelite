@@ -55,7 +55,7 @@ public class RoleController extends BaseController {
 	@ModelAttribute("role")
 	public Role get(@RequestParam(required = false) String id) {
 		if (StringUtils.isNotBlank(id)) {
-			return roleService.getRole(id);
+			return roleService.get(id);
 		} else {
 			return new Role();
 		}
@@ -193,7 +193,7 @@ public class RoleController extends BaseController {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
 			return "redirect:" + adminPath + "/sys/role/assign?id=" + roleId;
 		}
-		Role role = roleService.getRole(roleId);
+		Role role = roleService.get(roleId);
 		User user = userService.getUser(userId);
 		if (UserUtils.getUser().getId().equals(userId)) {
 			addMessage(redirectAttributes, "无法从角色【" + role.getName() + "】中移除用户【" + user.getName() + "】自己！");

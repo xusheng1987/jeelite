@@ -17,7 +17,7 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 字典Service
- * 
+ *
  * @author ThinkGem
  * @version 2014-05-16
  */
@@ -27,7 +27,7 @@ public class DictService extends BaseService<DictDao, Dict> {
 
 	/**
 	 * 查询字段类型列表
-	 * 
+	 *
 	 * @return
 	 */
 	public List<String> findTypeList() {
@@ -36,7 +36,7 @@ public class DictService extends BaseService<DictDao, Dict> {
 
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
-		super.insertOrUpdate(dict);
+		super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 

@@ -147,6 +147,16 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	}
 
 	/**
+	 * 保存数据
+	 * 
+	 * @param entity
+	 */
+	@Transactional(readOnly = false)
+	public void save(T entity) {
+		super.insertOrUpdate(entity);
+	}
+
+	/**
 	 * 删除数据（逻辑删除，更新del_flag字段为1）
 	 * 
 	 * @param entity

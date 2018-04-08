@@ -3,13 +3,10 @@
  */
 package com.thinkgem.jeesite.test.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.test.dao.TestDataChildDao;
@@ -19,7 +16,7 @@ import com.thinkgem.jeesite.test.entity.TestDataMain;
 
 /**
  * 主子表生成Service
- * 
+ *
  * @author ThinkGem
  * @version 2015-04-06
  */
@@ -36,17 +33,9 @@ public class TestDataMainService extends BaseService<TestDataMainDao, TestDataMa
 		return testDataMain;
 	}
 
-	public List<TestDataMain> findList(TestDataMain testDataMain) {
-		return super.findList(testDataMain);
-	}
-
-	public Page<TestDataMain> findPage(Page<TestDataMain> page, TestDataMain testDataMain) {
-		return super.findPage(page, testDataMain);
-	}
-
 	@Transactional(readOnly = false)
 	public void save(TestDataMain testDataMain) {
-		super.insertOrUpdate(testDataMain);
+		super.save(testDataMain);
 		for (TestDataChild testDataChild : testDataMain.getTestDataChildList()) {
 			if (testDataChild.getId() == null) {
 				continue;

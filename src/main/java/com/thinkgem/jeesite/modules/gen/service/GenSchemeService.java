@@ -24,7 +24,7 @@ import com.thinkgem.jeesite.modules.gen.util.GenUtils;
 
 /**
  * 生成方案Service
- * 
+ *
  * @author ThinkGem
  * @version 2013-10-15
  */
@@ -37,28 +37,19 @@ public class GenSchemeService extends BaseService<GenSchemeDao, GenScheme> {
 	@Autowired
 	private GenTableColumnDao genTableColumnDao;
 
-	public GenScheme get(String id) {
-		return super.get(id);
-	}
-
 	public Page<GenScheme> find(Page<GenScheme> page, GenScheme genScheme) {
 		GenUtils.getTemplatePath();
 		return super.findPage(page, genScheme);
 	}
 
 	@Transactional(readOnly = false)
-	public String save(GenScheme genScheme) {
-		super.insertOrUpdate(genScheme);
+	public String saveScheme(GenScheme genScheme) {
+		super.save(genScheme);
 		// 生成代码
 		if ("1".equals(genScheme.getFlag())) {
 			return generateCode(genScheme);
 		}
 		return "";
-	}
-
-	@Transactional(readOnly = false)
-	public void delete(GenScheme genScheme) {
-		super.delete(genScheme);
 	}
 
 	private String generateCode(GenScheme genScheme) {

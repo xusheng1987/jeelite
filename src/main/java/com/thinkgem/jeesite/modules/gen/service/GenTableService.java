@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao;
@@ -22,7 +21,7 @@ import com.thinkgem.jeesite.modules.gen.util.GenUtils;
 
 /**
  * 业务表Service
- * 
+ *
  * @author ThinkGem
  * @version 2013-10-15
  */
@@ -43,17 +42,13 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 		return genTable;
 	}
 
-	public Page<GenTable> find(Page<GenTable> page, GenTable genTable) {
-		return super.findPage(page, genTable);
-	}
-
 	public List<GenTable> findAll() {
 		return super.findAllList(new GenTable());
 	}
 
 	/**
 	 * 获取物理数据表列表
-	 * 
+	 *
 	 * @param genTable
 	 * @return
 	 */
@@ -63,7 +58,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	/**
 	 * 验证表名是否可用，如果已存在，则返回false
-	 * 
+	 *
 	 * @param genTable
 	 * @return
 	 */
@@ -79,7 +74,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	/**
 	 * 获取物理数据表列表
-	 * 
+	 *
 	 * @param genTable
 	 * @return
 	 */
@@ -140,7 +135,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	@Transactional(readOnly = false)
 	public void save(GenTable genTable) {
-		super.insertOrUpdate(genTable);
+		super.save(genTable);
 		// 保存列
 		for (GenTableColumn column : genTable.getColumnList()) {
 			column.setGenTable(genTable);

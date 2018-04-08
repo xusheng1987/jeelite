@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldFill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.BaseEntity;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -39,9 +38,8 @@ public class Log extends BaseEntity<Log> {
 	@TableField(exist=false)
 	private Date endDate; // 结束日期
 
-	@TableField(el = "createBy.id", fill = FieldFill.INSERT)
+	@TableField(el = "createBy.id")
 	private User createBy; // 创建者
-	@TableField(fill = FieldFill.INSERT)
 	private Date createDate; // 创建日期
 
 	// 日志类型（1：接入日志；2：错误日志）

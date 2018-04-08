@@ -43,7 +43,7 @@ public class MenuController extends BaseController {
 	@ModelAttribute("menu")
 	public Menu get(@RequestParam(required = false) String id) {
 		if (StringUtils.isNotBlank(id)) {
-			return menuService.getMenu(id);
+			return menuService.get(id);
 		} else {
 			return new Menu();
 		}
@@ -65,7 +65,7 @@ public class MenuController extends BaseController {
 		if (menu.getParent() == null || StringUtils.isEmpty(menu.getParent().getId())) {
 			menu.setParent(new Menu(Menu.getRootId()));
 		}
-		menu.setParent(menuService.getMenu(menu.getParent().getId()));
+		menu.setParent(menuService.get(menu.getParent().getId()));
 		// 获取排序号，最末节点排序号+30
 		if (StringUtils.isBlank(menu.getId())) {
 			List<Menu> list = Lists.newArrayList();
