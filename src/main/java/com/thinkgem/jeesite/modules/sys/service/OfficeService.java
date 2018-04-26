@@ -23,7 +23,8 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 public class OfficeService extends TreeService<OfficeDao, Office> {
 
 	public List<Office> findAll(){
-		return UserUtils.getOfficeList();
+		List<Office> list = UserUtils.getOfficeList();
+		return buildTree(list);
 	}
 
 	public List<Office> findList(Boolean isAll){
@@ -32,11 +33,6 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		}else{
 			return UserUtils.getOfficeList();
 		}
-	}
-	
-	@Transactional(readOnly = true)
-	public List<Office> findList(){
-		return dao.findByParentIdsLike(new Office());
 	}
 	
 	@Transactional(readOnly = false)

@@ -7,24 +7,13 @@
 	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var tpl = $("#treeTableTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-			var data = ${fns:toJson(list)}, rootId = "${not empty office.id ? office.id : '0'}";
-			addRow("#treeTableList", tpl, data, rootId, true);
+			var laytpl = layui.laytpl;
+			var data = ${fns:toJson(list)};
+			laytpl(treeTableTpl.innerHTML).render(data, function(html){
+				$("#treeTableList").html(html);
+			});
 			$("#treeTable").treeTable({expandLevel : 5});
 		});
-		function addRow(list, tpl, data, pid, root){
-			for (var i=0; i<data.length; i++){
-				var row = data[i];
-				if ((${fns:jsGetVal('row.parentId')}) == pid){
-					$(list).append(Mustache.render(tpl, {
-						dict: {
-							type: getDictLabel(${fns:toJson(fns:getDictList('sys_office_type'))}, row.type)
-						}, pid: (root?0:pid), row: row
-					}));
-					addRow(list, tpl, data, row.id);
-				}
-			}
-		}
 	</script>
 </head>
 <body>
@@ -41,18 +30,20 @@
 		<tbody id="treeTableList"></tbody>
 	</table>
 	</div>
-	<script type="text/template" id="treeTableTpl">
-		<tr id="{{row.id}}" pId="{{pid}}">
-			<td class="layui-text"><a href="${ctx}/sys/office/form?id={{row.id}}">{{row.name}}</a></td>
-			<td>{{row.code}}</td>
-			<td>{{dict.type}}</td>
-			<td>{{row.remarks}}</td>
+	<script type="text/html" id="treeTableTpl">
+	{{#  layui.each(d, function(index, item){ }}
+		<tr id="{{item.id}}" pId="{{item.parentId}}">
+			<td class="layui-text"><a href="${ctx}/sys/office/form?id={{item.id}}">{{item.name}}</a></td>
+			<td>{{item.code}}</td>
+			<td>{{# getDictLabel(${fns:toJson(fns:getDictList('sys_office_type'))}, item.type)}}</td>
+			<td>{{item.remarks}}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
-				<a class="layui-btn layui-btn-sm" href="${ctx}/sys/office/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/sys/office/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级机构</a>
+				<a class="layui-btn layui-btn-sm" href="${ctx}/sys/office/form?id={{item.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{item.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/sys/office/form?parent.id={{item.id}}"><i class="layui-icon">&#xe608;</i>添加下级机构</a>
 			</td></shiro:hasPermission>
 		</tr>
+	{{#  }); }}
 	</script>
 </body>
 </html>

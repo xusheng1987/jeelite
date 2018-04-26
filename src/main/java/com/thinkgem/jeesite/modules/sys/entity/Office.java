@@ -3,12 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.sys.entity;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.thinkgem.jeesite.common.persistence.TreeEntity;
 
 /**
@@ -24,7 +25,6 @@ public class Office extends TreeEntity<Office> {
 	private Office parent;	// 父级编号
 	private String code; 	// 机构编码
 	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
-	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
 	private String address; // 联系地址
 	private String zipCode; // 邮政编码
 	private String master; 	// 负责人
@@ -32,8 +32,6 @@ public class Office extends TreeEntity<Office> {
 	private String fax; 	// 传真
 	private String email; 	// 邮箱
 	private String useable;//是否可用
-	@TableField(exist=false)
-	private List<String> childDeptList;//快速添加子部门
 	
 	public Office(){
 		super();
@@ -42,14 +40,6 @@ public class Office extends TreeEntity<Office> {
 
 	public Office(String id){
 		super(id);
-	}
-	
-	public List<String> getChildDeptList() {
-		return childDeptList;
-	}
-
-	public void setChildDeptList(List<String> childDeptList) {
-		this.childDeptList = childDeptList;
 	}
 
 	public String getUseable() {
@@ -60,6 +50,8 @@ public class Office extends TreeEntity<Office> {
 		this.useable = useable;
 	}
 
+	@JsonBackReference
+	@NotNull
 	public Office getParent() {
 		return parent;
 	}
@@ -75,15 +67,6 @@ public class Office extends TreeEntity<Office> {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	@Length(min=1, max=1)
-	public String getGrade() {
-		return grade;
-	}
-
-	public void setGrade(String grade) {
-		this.grade = grade;
 	}
 
 	@Length(min=0, max=255)

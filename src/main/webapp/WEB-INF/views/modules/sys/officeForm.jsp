@@ -53,14 +53,6 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">机构级别:</label>
-			<div class="layui-input-inline">
-				<form:select path="grade">
-					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
-		<div class="layui-form-item">
 			<label class="layui-form-label">是否可用:</label>
 			<div class="layui-input-inline">
 				<form:select path="useable">
@@ -110,16 +102,6 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="layui-textarea"/>
 			</div>
 		</div>
-		<c:if test="${empty office.id}">
-			<div class="layui-form-item">
-				<label class="layui-form-label">快速添加下级部门:</label>
-				<div class="layui-input-block">
-					<c:forEach items="${fns:getDictList('sys_office_common')}" var="dict">
-						<input type="checkbox" name="childDeptList" value="${dict.value}" title="${dict.label}">
-					</c:forEach>
-				</div>
-			</div>
-		</c:if>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<shiro:hasPermission name="sys:office:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>

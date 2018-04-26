@@ -35,27 +35,10 @@
 ${columnField?substring(0, columnField?last_index_of(","))}
 	</sql>
 
-	<#-- 输出字段关联表 -->
-	<sql id="${className}Joins">
-		<#-- 关联父表 -->
-		<#if table.parentExists>
-		LEFT JOIN ${table.parent.name} b ON b.id = a.${table.parentTableFk}
-		</#if>
-		<#-- 关联系统表 -->
-		<#list table.columnList as c>
-			<#if c.showType?? && c.showType == "userselect">
-		LEFT JOIN sys_user u${c_index + 1} ON u${c_index + 1}.id = a.${c.name}
-			<#elseif c.showType?? && c.showType == "officeselect">
-		LEFT JOIN sys_office o${c_index + 1} ON o${c_index + 1}.id = a.${c.name}
-			</#if>
-		</#list>
-	</sql>
-
 	<select id="get" resultType="${ClassName}">
 		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
 		WHERE a.id = ${"#"}{id}
 	</select>
 
@@ -63,7 +46,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
 		<where>
 			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
 			<#list table.columnList as c>
@@ -108,7 +90,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
 		<where>
 			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
 		</where>
@@ -125,7 +106,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			a.parent_id AS "parent.id",
 			a.parent_ids
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
 		<where>
 			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
 			AND a.parent_ids LIKE ${"#"}{parentIds}

@@ -39,14 +39,11 @@ public class TestTreeController extends BaseController {
 
 	@ModelAttribute
 	public TestTree get(@RequestParam(required = false) String id) {
-		TestTree entity = null;
 		if (StringUtils.isNotBlank(id)) {
-			entity = testTreeService.get(id);
+			return testTreeService.get(id);
+		} else {
+			return new TestTree();
 		}
-		if (entity == null) {
-			entity = new TestTree();
-		}
-		return entity;
 	}
 
 	@RequiresPermissions("test:testTree:view")
@@ -62,21 +59,6 @@ public class TestTreeController extends BaseController {
 	public String form(TestTree testTree, Model model) {
 		if (testTree.getParent() != null && StringUtils.isNotBlank(testTree.getParent().getId())) {
 			testTree.setParent(testTreeService.get(testTree.getParent().getId()));
-			// 获取排序号，最末节点排序号+30
-			if (StringUtils.isBlank(testTree.getId())) {
-				TestTree testTreeChild = new TestTree();
-				testTreeChild.setParent(new TestTree(testTree.getParent().getId()));
-				List<TestTree> list = testTreeService.findList(testTree);
-				if (list.size() > 0) {
-					testTree.setSort(list.get(list.size() - 1).getSort());
-					if (testTree.getSort() != null) {
-						testTree.setSort(testTree.getSort() + 30);
-					}
-				}
-			}
-		}
-		if (testTree.getSort() == null) {
-			testTree.setSort(30);
 		}
 		model.addAttribute("testTree", testTree);
 		return "jeesite/test/testTreeForm";

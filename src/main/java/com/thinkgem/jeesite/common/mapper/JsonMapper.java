@@ -41,7 +41,7 @@ public class JsonMapper extends ObjectMapper {
 	private static JsonMapper mapper;
 
 	public JsonMapper() {
-		this(Include.NON_EMPTY);
+		this(null);
 	}
 
 	public JsonMapper(Include include) {
@@ -76,21 +76,11 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
+	 * 创建属性到Json字符串的Mapper,建议在外部接口中使用.
 	 */
 	public static JsonMapper getInstance() {
 		if (mapper == null){
 			mapper = new JsonMapper().enableSimple();
-		}
-		return mapper;
-	}
-
-	/**
-	 * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
-	 */
-	public static JsonMapper nonDefaultMapper() {
-		if (mapper == null){
-			mapper = new JsonMapper(Include.NON_DEFAULT);
 		}
 		return mapper;
 	}
@@ -144,15 +134,6 @@ public class JsonMapper extends ObjectMapper {
 			logger.warn("parse json string error:" + jsonString, e);
 			return null;
 		}
-	}
-
-	/**
-	 * 构造泛型的Collection Type如:
-	 * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
-	 * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
-	 */
-	public JavaType createCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
-		return this.getTypeFactory().constructParametricType(collectionClass, elementClasses);
 	}
 
 	/**

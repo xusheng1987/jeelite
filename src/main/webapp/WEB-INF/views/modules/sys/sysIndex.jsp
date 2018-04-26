@@ -63,7 +63,7 @@
 			if (getlayId(layId) == -1) {//判断菜单是否已在tab打开
 				element.tabAdd('tab', {
 					title: '<span>'+$this.text()+'</span>',
-					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-link')+'" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>',
+					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-link')+'" scrolling="yes" frameborder="0"></iframe>',
 					id: layId
 				});
 			}
@@ -129,14 +129,14 @@
   <div id="left"></div>
   <div id="right" class="layui-body">
   <c:if test="${tabmode eq '1'}">
-	<div class="layui-tab" lay-allowClose="true" lay-filter="tab" style="display:none">
+	<div class="layui-tab layui-tab-card" lay-allowClose="true" lay-filter="tab" style="display:none">
 		<ul class="layui-tab-title"></ul>
 		<div class="layui-tab-content"></div>
 	</div>
   </c:if>
   <c:if test="${tabmode eq '0'}">
 	<div class="layui-tab-content">
-		<iframe id="mainFrame" name="mainFrame" src="" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>
+		<iframe id="mainFrame" name="mainFrame" src="" scrolling="yes" frameborder="0"></iframe>
 	</div>
   </c:if>
   </div>

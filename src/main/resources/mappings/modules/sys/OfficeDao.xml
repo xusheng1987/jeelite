@@ -10,7 +10,6 @@
 		a.name,
 		a.sort,
 		a.type,
-		a.grade,
 		a.address,
 		a.zip_code,
 		a.master,

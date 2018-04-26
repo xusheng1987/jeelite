@@ -3,26 +3,31 @@
 /*.layui-input {width:220px}*/
 .layui-body .layui-tab-title .layui-this {background-color:#009688;color:#fff}
 .layui-body .layui-tab {margin-top:0px;margin-bottom:0px}
-.layui-layout-admin .layui-body{overflow-y:hidden}
 .layui-tab-content {
-    position: absolute;
-    top: 0px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding-top:0px;
-    padding-bottom:0px;
-    padding-right:0px
+    padding:0px;
 }
 .layui-tab .layui-tab-content {
 	position: inherit;
 }
-.layui-tab-content .layui-tab-item {
+.layui-tab .layui-tab-item {
     position: absolute;
     top: 42px;
     bottom: 0;
-    left: 10px;
+    left: 0;
     right: 0;
+    overflow:auto;
+}
+.layui-tab-content iframe {
+	width:100%;
+	height:100%;
+	position:absolute;
+}
+.layui-tab-card {
+	height:40px;
+	margin:0;
+}
+.layui-table-body {
+	overflow:hidden
 }
 /*.layui-tab ul.layui-tab-title li:nth-child(1) i {display: none;}*/
 

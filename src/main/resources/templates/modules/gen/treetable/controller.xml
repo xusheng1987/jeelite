@@ -45,14 +45,11 @@ public class ${ClassName}Controller extends BaseController {
 
 	@ModelAttribute
 	public ${ClassName} get(@RequestParam(required = false) String id) {
-		${ClassName} entity = null;
 		if (StringUtils.isNotBlank(id)) {
-			entity = ${className}Service.get(id);
+			return ${className}Service.get(id);
+		} else {
+			return new ${ClassName}();
 		}
-		if (entity == null) {
-			entity = new ${ClassName}();
-		}
-		return entity;
 	}
 
 	@RequiresPermissions("${permissionPrefix}:view")
@@ -68,21 +65,6 @@ public class ${ClassName}Controller extends BaseController {
 	public String form(${ClassName} ${className}, Model model) {
 		if (${className}.getParent() != null && StringUtils.isNotBlank(${className}.getParent().getId())) {
 			${className}.setParent(${className}Service.get(${className}.getParent().getId()));
-			// 获取排序号，最末节点排序号+30
-			if (StringUtils.isBlank(${className}.getId())) {
-				${ClassName} ${className}Child = new ${ClassName}();
-				${className}Child.setParent(new ${ClassName}(${className}.getParent().getId()));
-				List<${ClassName}> list = ${className}Service.findList(${className});
-				if (list.size() > 0) {
-					${className}.setSort(list.get(list.size() - 1).getSort());
-					if (${className}.getSort() != null) {
-						${className}.setSort(${className}.getSort() + 30);
-					}
-				}
-			}
-		}
-		if (${className}.getSort() == null) {
-			${className}.setSort(30);
 		}
 		model.addAttribute("${className}", ${className});
 		return "${lastPackageName}/${viewPrefix}Form";

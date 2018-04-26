@@ -26,7 +26,6 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -60,7 +59,7 @@ public class OfficeController extends BaseController {
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = { "list" })
 	public String list(Model model) {
-		model.addAttribute("list", officeService.findList());
+		model.addAttribute("list", officeService.findAll());
 		return "modules/sys/officeList";
 	}
 
@@ -72,20 +71,6 @@ public class OfficeController extends BaseController {
 			office.setParent(user.getOffice());
 		}
 		office.setParent(officeService.get(office.getParent().getId()));
-		// 自动获取排序号
-		if (StringUtils.isBlank(office.getId()) && office.getParent() != null) {
-			int size = 0;
-			List<Office> list = officeService.findAll();
-			for (int i = 0; i < list.size(); i++) {
-				Office e = list.get(i);
-				if (e.getParent() != null && e.getParent().getId() != null
-						&& e.getParent().getId().equals(office.getParent().getId())) {
-					size++;
-				}
-			}
-			office.setCode(office.getParent().getCode()
-					+ StringUtils.leftPad(String.valueOf(size > 0 ? size + 1 : 1), 3, "0"));
-		}
 		model.addAttribute("office", office);
 		return "modules/sys/officeForm";
 	}
@@ -101,19 +86,6 @@ public class OfficeController extends BaseController {
 			return form(office, model);
 		}
 		officeService.save(office);
-
-		if (office.getChildDeptList() != null) {
-			Office childOffice = null;
-			for (String id : office.getChildDeptList()) {
-				childOffice = new Office();
-				childOffice.setName(DictUtils.getDictLabel(id, "sys_office_common", "未知"));
-				childOffice.setParent(office);
-				childOffice.setType("2");
-				childOffice.setGrade(String.valueOf(Integer.valueOf(office.getGrade()) + 1));
-				childOffice.setUseable(Global.YES);
-				officeService.save(childOffice);
-			}
-		}
 
 		addMessage(redirectAttributes, "保存机构'" + office.getName() + "'成功");
 		return "redirect:" + adminPath + "/sys/office/list";
@@ -137,15 +109,13 @@ public class OfficeController extends BaseController {
 	 * 
 	 * @param extId 排除的ID
 	 * @param type 类型（1：公司；2：部门/小组/其它：3：用户）
-	 * @param grade 显示级别
 	 * @param response
 	 * @return
 	 */
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "treeData")
-	public List<Map<String, Object>> treeData(@RequestParam(required = false) String extId,
-			@RequestParam(required = false) String type, @RequestParam(required = false) Long grade,
+	public List<Map<String, Object>> treeData(@RequestParam(required = false) String extId, @RequestParam(required = false) String type,
 			@RequestParam(required = false) Boolean isAll, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<Office> list = officeService.findList(isAll);
@@ -154,7 +124,6 @@ public class OfficeController extends BaseController {
 			if ((StringUtils.isBlank(extId)
 					|| (extId != null && !extId.equals(e.getId()) && e.getParentIds().indexOf("," + extId + ",") == -1))
 					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
-					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
 					&& Global.YES.equals(e.getUseable())) {
 				Map<String, Object> map = Maps.newHashMap();
 				map.put("id", e.getId());

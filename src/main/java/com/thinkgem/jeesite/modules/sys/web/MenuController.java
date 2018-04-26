@@ -52,10 +52,7 @@ public class MenuController extends BaseController {
 	@RequiresPermissions("sys:menu:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(Model model) {
-		List<Menu> list = Lists.newArrayList();
-		List<Menu> sourcelist = menuService.findAllMenu();
-		Menu.sortList(list, sourcelist, Menu.getRootId(), true);
-		model.addAttribute("list", list);
+		model.addAttribute("list", menuService.findAllMenu());
 		return "modules/sys/menuList";
 	}
 
@@ -66,15 +63,6 @@ public class MenuController extends BaseController {
 			menu.setParent(new Menu(Menu.getRootId()));
 		}
 		menu.setParent(menuService.get(menu.getParent().getId()));
-		// 获取排序号，最末节点排序号+30
-		if (StringUtils.isBlank(menu.getId())) {
-			List<Menu> list = Lists.newArrayList();
-			List<Menu> sourcelist = menuService.findAllMenu();
-			Menu.sortList(list, sourcelist, menu.getParentId(), false);
-			if (list.size() > 0) {
-				menu.setSort(list.get(list.size() - 1).getSort() + 30);
-			}
-		}
 		model.addAttribute("menu", menu);
 		return "modules/sys/menuForm";
 	}

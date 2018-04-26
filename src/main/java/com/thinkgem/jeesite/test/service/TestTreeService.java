@@ -27,7 +27,8 @@ public class TestTreeService extends TreeService<TestTreeDao, TestTree> {
 		if (StringUtils.isNotBlank(testTree.getParentIds())) {
 			testTree.setParentIds("," + testTree.getParentIds() + ",");
 		}
-		return super.findList(testTree);
+		List<TestTree> list = super.findList(testTree);
+		return buildTree(list);
 	}
 
 }

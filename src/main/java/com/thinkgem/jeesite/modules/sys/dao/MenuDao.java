@@ -5,7 +5,7 @@ package com.thinkgem.jeesite.modules.sys.dao;
 
 import java.util.List;
 
-import com.thinkgem.jeesite.common.persistence.CrudDao;
+import com.thinkgem.jeesite.common.persistence.TreeDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Menu;
 
@@ -15,13 +15,9 @@ import com.thinkgem.jeesite.modules.sys.entity.Menu;
  * @version 2014-05-16
  */
 @MyBatisDao
-public interface MenuDao extends CrudDao<Menu> {
-
-	public List<Menu> findByParentIdsLike(Menu menu);
+public interface MenuDao extends TreeDao<Menu> {
 
 	public List<Menu> findByUserId(Menu menu);
-	
-	public int updateParentIds(Menu menu);
 	
 	public int updateSort(Menu menu);
 	

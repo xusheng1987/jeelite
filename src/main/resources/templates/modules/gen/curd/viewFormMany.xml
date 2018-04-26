@@ -21,9 +21,11 @@
 		});
 	<#list table.childList as c>
 		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
+			var laytpl = layui.laytpl;
+			var data = {"idx":idx, "row":row};
+			laytpl(tpl.innerHTML).render(data, function(html){
+				$(list).append(html);
+			});
 			$(list+idx).find("select").each(function(){
 				$(this).val($(this).attr("data-value"));
 			});
@@ -43,11 +45,11 @@
 				$(obj).parent().parent().remove();
 			}else if(delFlag.val() == "0"){
 				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
+				$(obj).html('<i class="layui-icon">&#x1007;</i>').attr("title", "撤销删除");
 				$(obj).parent().parent().addClass("error");
 			}else if(delFlag.val() == "1"){
 				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
+				$(obj).html('<i class="layui-icon">&#xe640;</i>').attr("title", "删除");
 				$(obj).parent().parent().removeClass("error");
 			}
 		}
@@ -140,21 +142,21 @@
 							<tr><td colspan="${childColumnCount + 2}"><a href="javascript:" onclick="addRow('#${child.className?uncap_first}List', ${child.className?uncap_first}RowIdx, ${child.className?uncap_first}Tpl);${child.className?uncap_first}RowIdx = ${child.className?uncap_first}RowIdx + 1;" class="layui-btn layui-btn-primary">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table>
-					<script type="text/template" id="${child.className?uncap_first}Tpl">//<!--
-						<tr id="${child.className?uncap_first}List{{idx}}">
+					<script type="text/html" id="${child.className?uncap_first}Tpl">
+						<tr id="${child.className?uncap_first}List{{d.idx}}">
 							<td class="hide">
-								<input id="${child.className?uncap_first}List{{idx}}_id" name="${child.className?uncap_first}List[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-								<input id="${child.className?uncap_first}List{{idx}}_delFlag" name="${child.className?uncap_first}List[{{idx}}].delFlag" type="hidden" value="0"/>
+								<input id="${child.className?uncap_first}List{{d.idx}}_id" name="${child.className?uncap_first}List[{{d.idx}}].id" type="hidden" value="{{# if(d.row){ }}{{d.row.id}}{{# } }}"/>
+								<input id="${child.className?uncap_first}List{{d.idx}}_delFlag" name="${child.className?uncap_first}List[{{d.idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<#list child.columnList as c>
 								<#if c.isEdit?? && c.isEdit == "1" && (c.isNotBaseField || c.simpleJavaField == 'remarks') && c.name != c.genTable.parentTableFk>
 							<td>
 							<#if c.showType == "input">
-								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="text" value="{{row.${c.javaFieldId}}}"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+								<input id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" type="text" value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
 							<#elseif c.showType == "textarea">
-								<textarea id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if>">{{row.${c.javaFieldId}}}</textarea>
+								<textarea id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if>">{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}</textarea>
 							<#elseif c.showType == "select">
-								<select id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" data-value="{{row.${c.javaFieldId}}}" class="input-small <#if c.isNull != "1">required</#if>">
+								<select id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" data-value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}" class="input-small <#if c.isNull != "1">required</#if>">
 									<option value=""></option>
 									<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
 										<option value="${"$"}{dict.value}">${"$"}{dict.label}</option>
@@ -162,20 +164,20 @@
 								</select>
 							<#elseif c.showType == "checkbox">
 								<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict" varStatus="dictStatus">
-									<span><input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="checkbox" value="${"$"}{dict.value}" data-value="{{row.${c.javaFieldId}}}"><label for="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}">${"$"}{dict.label}</label></span>
+									<span><input id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" type="checkbox" value="${"$"}{dict.value}" data-value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}"><label for="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}">${"$"}{dict.label}</label></span>
 								</c:forEach>
 							<#elseif c.showType == "radiobox">
 								<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict" varStatus="dictStatus">
-									<span><input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="radio" value="${"$"}{dict.value}" data-value="{{row.${c.javaFieldId}}}"><label for="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}">${"$"}{dict.label}</label></span>
+									<span><input id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" type="radio" value="${"$"}{dict.value}" data-value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}"><label for="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}${"$"}{dictStatus.index}">${"$"}{dict.label}</label></span>
 								</c:forEach>
 							<#elseif c.showType == "dateselect">
-								<input id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate <#if c.isNull != "1">required</#if>"
-									value="{{row.${c.javaFieldId}}}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+								<input id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate <#if c.isNull != "1">required</#if>"
+									value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 							<#elseif c.showType == "userselect">
-								<sys:treeselect id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" value="{{row.${c.javaFieldId}}}" labelName="${child.className?uncap_first}List{{idx}}.${c.javaFieldName}" labelValue="{{row.${c.javaFieldName}}}"
+								<sys:treeselect id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}" labelName="${child.className?uncap_first}List{{d.idx}}.${c.javaFieldName}" labelValue="{{# if(d.row){ }}{{d.row.${c.javaFieldName}}}{{# } }}"
 									title="用户" url="/sys/office/treeData?type=3" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
 							<#elseif c.showType == "officeselect">
-								<sys:treeselect id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" value="{{row.${c.javaFieldId}}}" labelName="${child.className?uncap_first}List{{idx}}.${c.javaFieldName}" labelValue="{{row.${c.javaFieldName}}}"
+								<sys:treeselect id="${child.className?uncap_first}List{{d.idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{d.idx}}].${c.javaFieldId}" value="{{# if(d.row){ }}{{d.row.${c.javaFieldId}}}{{# } }}" labelName="${child.className?uncap_first}List{{d.idx}}.${c.javaFieldName}" labelValue="{{# if(d.row){ }}{{d.row.${c.javaFieldName}}}{{# } }}"
 									title="部门" url="/sys/office/treeData?type=2" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
 							<#elseif c.showType == "fileselect">
 								<sys:imageupload name="${c.javaFieldId}"/>
@@ -184,12 +186,12 @@
 								</#if>
 							</#list>
 							<shiro:hasPermission name="${permissionPrefix}:edit"><td width="10">
-								{{#delBtn}}<a href="javascript:void(0)" onclick="delRow(this, '#${child.className?uncap_first}List{{idx}}')"><i class="layui-icon">&#xe640;</i></a>{{/delBtn}}
+								<a href="javascript:void(0)" onclick="delRow(this, '#${child.className?uncap_first}List{{d.idx}}')"><i class="layui-icon">&#xe640;</i></a>
 							</td></shiro:hasPermission>
-						</tr>//-->
+						</tr>
 					</script>
 					<script type="text/javascript">
-						var ${child.className?uncap_first}RowIdx = 0, ${child.className?uncap_first}Tpl = $("#${child.className?uncap_first}Tpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						var ${child.className?uncap_first}RowIdx = 0;
 						$(document).ready(function() {
 							var data = ${"$"}{fns:toJson(${className}.${child.className?uncap_first}List)};
 							for (var i=0; i<data.length; i++){

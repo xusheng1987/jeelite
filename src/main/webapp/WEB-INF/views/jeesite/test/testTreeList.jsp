@@ -7,36 +7,13 @@
 	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var tpl = $("#treeTableTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-			var data = ${fns:toJson(list)}, ids = [], rootIds = [];
-			for (var i=0; i<data.length; i++){
-				ids.push(data[i].id);
-			}
-			ids = ',' + ids.join(',') + ',';
-			for (var i=0; i<data.length; i++){
-				if (ids.indexOf(','+data[i].parentId+',') == -1){
-					if ((','+rootIds.join(',')+',').indexOf(','+data[i].parentId+',') == -1){
-						rootIds.push(data[i].parentId);
-					}
-				}
-			}
-			for (var i=0; i<rootIds.length; i++){
-				addRow("#treeTableList", tpl, data, rootIds[i], true);
-			}
+			var laytpl = layui.laytpl;
+			var data = ${fns:toJson(list)};
+			laytpl(treeTableTpl.innerHTML).render(data, function(html){
+				$("#treeTableList").html(html);
+			});
 			$("#treeTable").treeTable({expandLevel : 5});
 		});
-		function addRow(list, tpl, data, pid, root){
-			for (var i=0; i<data.length; i++){
-				var row = data[i];
-				if ((${fns:jsGetVal('row.parentId')}) == pid){
-					$(list).append(Mustache.render(tpl, {
-						dict: {
-						blank123:0}, pid: (root?0:pid), row: row
-					}));
-					addRow(list, tpl, data, row.id);
-				}
-			}
-		}
 	</script>
 </head>
 <body>
@@ -66,26 +43,28 @@
 		</thead>
 		<tbody id="treeTableList"></tbody>
 	</table>
-	<script type="text/template" id="treeTableTpl">
-		<tr id="{{row.id}}" pId="{{pid}}">
-			<td class="layui-text"><a href="${ctx}/test/testTree/form?id={{row.id}}">
-				{{row.name}}
+	<script type="text/html" id="treeTableTpl">
+	{{#  layui.each(d, function(index, item){ }}
+		<tr id="{{item.id}}" pId="{{item.parentId}}">
+			<td class="layui-text"><a href="${ctx}/test/testTree/form?id={{item.id}}">
+				{{item.name}}
 			</a></td>
 			<td>
-				{{row.sort}}
+				{{item.sort}}
 			</td>
 			<td>
-				{{row.updateDate}}
+				{{item.updateDate}}
 			</td>
 			<td>
-				{{row.remarks}}
+				{{item.remarks}}
 			</td>
 			<shiro:hasPermission name="test:testTree:edit"><td>
-   				<a class="layui-btn layui-btn-sm" href="${ctx}/test/testTree/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/test/testTree/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级树结构</a>
+   				<a class="layui-btn layui-btn-sm" href="${ctx}/test/testTree/form?id={{item.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{item.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/test/testTree/form?parent.id={{item.id}}"><i class="layui-icon">&#xe608;</i>添加下级树结构</a>
 			</td></shiro:hasPermission>
 		</tr>
+	{{#  }); }}
 	</script>
 </body>
 </html>

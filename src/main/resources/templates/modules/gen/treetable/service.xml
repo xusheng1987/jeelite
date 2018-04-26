@@ -33,7 +33,8 @@ public class ${ClassName}Service extends TreeService<${ClassName}Dao, ${ClassNam
 		if (StringUtils.isNotBlank(${className}.getParentIds())) {
 			${className}.setParentIds("," + ${className}.getParentIds() + ",");
 		}
-		return super.findList(${className});
+		List<${ClassName}> list = super.findList(${className});
+		return buildTree(list);
 	}
 
 }]]>

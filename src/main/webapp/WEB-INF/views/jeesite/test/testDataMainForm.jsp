@@ -14,9 +14,11 @@
 			});
 		});
 		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
+			var laytpl = layui.laytpl;
+			var data = {"idx":idx, "row":row};
+			laytpl(tpl.innerHTML).render(data, function(html){
+				$(list).append(html);
+			});
 			$(list+idx).find("select").each(function(){
 				$(this).val($(this).attr("data-value"));
 			});
@@ -36,11 +38,11 @@
 				$(obj).parent().parent().remove();
 			}else if(delFlag.val() == "0"){
 				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
+				$(obj).html('<i class="layui-icon">&#x1007;</i>').attr("title", "撤销删除");
 				$(obj).parent().parent().addClass("error");
 			}else if(delFlag.val() == "1"){
 				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
+				$(obj).html('<i class="layui-icon">&#xe640;</i>').attr("title", "删除");
 				$(obj).parent().parent().removeClass("error");
 			}
 		}
@@ -113,25 +115,25 @@
 							<tr><td colspan="4"><a href="javascript:" onclick="addRow('#testDataChildList', testDataChildRowIdx, testDataChildTpl);testDataChildRowIdx = testDataChildRowIdx + 1;" class="layui-btn layui-btn-primary">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table>
-					<script type="text/template" id="testDataChildTpl">//<!--
-						<tr id="testDataChildList{{idx}}">
+					<script type="text/html" id="testDataChildTpl">
+						<tr id="testDataChildList{{d.idx}}">
 							<td class="hide">
-								<input id="testDataChildList{{idx}}_id" name="testDataChildList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-								<input id="testDataChildList{{idx}}_delFlag" name="testDataChildList[{{idx}}].delFlag" type="hidden" value="0"/>
+								<input id="testDataChildList{{d.idx}}_id" name="testDataChildList[{{d.idx}}].id" type="hidden" value="{{# if(d.row){ }}{{d.row.id}}{{# } }}"/>
+								<input id="testDataChildList{{d.idx}}_delFlag" name="testDataChildList[{{d.idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<td>
-								<input id="testDataChildList{{idx}}_name" name="testDataChildList[{{idx}}].name" type="text" value="{{row.name}}" maxlength="100" class="layui-input"/>
+								<input id="testDataChildList{{d.idx}}_name" name="testDataChildList[{{d.idx}}].name" type="text" value="{{# if(d.row){ }}{{d.row.name}}{{# } }}" maxlength="100" class="layui-input"/>
 							</td>
 							<td>
-								<input id="testDataChildList{{idx}}_remarks" name="testDataChildList[{{idx}}].remarks" type="text" value="{{row.remarks}}" maxlength="255" class="layui-input"/>
+								<input id="testDataChildList{{d.idx}}_remarks" name="testDataChildList[{{d.idx}}].remarks" type="text" value="{{# if(d.row){ }}{{d.row.remarks}}{{# } }}" maxlength="255" class="layui-input"/>
 							</td>
 							<shiro:hasPermission name="test:testDataMain:edit"><td width="10">
-								{{#delBtn}}<a href="javascript:void(0)" onclick="delRow(this, '#testDataChildList{{idx}}')"><i class="layui-icon">&#xe640;</i></a>{{/delBtn}}
+								<a href="javascript:void(0)" onclick="delRow(this, '#testDataChildList{{d.idx}}')"><i class="layui-icon">&#xe640;</i></a>
 							</td></shiro:hasPermission>
-						</tr>//-->
+						</tr>
 					</script>
 					<script type="text/javascript">
-						var testDataChildRowIdx = 0, testDataChildTpl = $("#testDataChildTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						var testDataChildRowIdx = 0;
 						$(document).ready(function() {
 							var data = ${fns:toJson(testDataMain.testDataChildList)};
 							for (var i=0; i<data.length; i++){
