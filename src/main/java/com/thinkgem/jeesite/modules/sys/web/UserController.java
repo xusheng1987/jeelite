@@ -33,8 +33,8 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.PageFactory;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdGen;
+import com.thinkgem.jeesite.common.utils.JxlsUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.web.Servlets;
@@ -198,7 +198,9 @@ public class UserController extends BaseController {
 		try {
 			String fileName = "用户数据" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
 			List<User> list = userService.findUser(user);
-			new ExportExcel("用户数据", User.class).setDataList(list).write(response, fileName).dispose();
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("users", list);
+			JxlsUtils.exportExcel(response, "export.xlsx", fileName, model);
 			return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出用户失败！失败信息：" + e.getMessage());
@@ -229,7 +231,9 @@ public class UserController extends BaseController {
 			for (User user : list) {
 				try {
 					if ("true".equals(checkLoginName("", user.getLoginName()))) {
+						// 默认密码：123456，默认角色：普通用户
 						user.setPassword(UserService.entryptPassword("123456"));
+						user.getRoleList().add(new Role("6"));
 						BeanValidators.validateWithException(validator, user);
 						userService.saveUser(user);
 						successNum++;
@@ -272,7 +276,9 @@ public class UserController extends BaseController {
 			String fileName = "用户数据导入模板.xlsx";
 			List<User> list = Lists.newArrayList();
 			list.add(UserUtils.getUser());
-			new ExportExcel("用户数据", User.class, 2).setDataList(list).write(response, fileName).dispose();
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("users", list);
+			JxlsUtils.exportExcel(response, "import.xlsx", fileName, model);
 			return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
@@ -372,7 +378,7 @@ public class UserController extends BaseController {
 		}
 		return mapList;
 	}
-	
+
 	/**
 	 * 上传头像
 	 */

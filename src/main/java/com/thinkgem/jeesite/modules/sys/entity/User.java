@@ -20,7 +20,6 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.Collections3;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
-import com.thinkgem.jeesite.common.utils.excel.fieldtype.RoleListType;
 
 /**
  * 用户Entity
@@ -271,7 +270,6 @@ public class User extends DataEntity<User> {
 	}
 
 	@JsonIgnore
-	@ExcelField(title="拥有角色", align=1, sort=800, fieldType=RoleListType.class)
 	public List<Role> getRoleList() {
 		return roleList;
 	}
@@ -283,8 +281,8 @@ public class User extends DataEntity<User> {
 	@JsonIgnore
 	public List<String> getRoleIdList() {
 		List<String> roleIdList = Lists.newArrayList();
-		for (Role role : roleList) {
-			roleIdList.add(role.getId());
+		for (Role e : roleList) {
+			roleIdList.add(e.getId());
 		}
 		return roleIdList;
 	}
@@ -292,9 +290,9 @@ public class User extends DataEntity<User> {
 	public void setRoleIdList(List<String> roleIdList) {
 		roleList = Lists.newArrayList();
 		for (String roleId : roleIdList) {
-			Role role = new Role();
-			role.setId(roleId);
-			roleList.add(role);
+			Role e = new Role();
+			e.setId(roleId);
+			roleList.add(e);
 		}
 	}
 	

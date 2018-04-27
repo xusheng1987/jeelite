@@ -15,7 +15,7 @@ public class SystemPath {
 		String path = Thread.currentThread().getContextClassLoader()
 				.getResource("").toString();
 		String temp = path.replaceFirst("file:/", "").replaceFirst(
-				"WEB-INF/classes/", "");
+				"target/classes/", "");
 		String separator = System.getProperty("file.separator");
 		String resultPath = temp.replaceAll("/", separator + separator);
 		return resultPath;

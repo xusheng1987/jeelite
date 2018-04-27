@@ -161,8 +161,8 @@ public class Role extends DataEntity<Role> {
 
 	public List<String> getOfficeIdList() {
 		List<String> officeIdList = Lists.newArrayList();
-		for (Office office : officeList) {
-			officeIdList.add(office.getId());
+		for (Office e : officeList) {
+			officeIdList.add(e.getId());
 		}
 		return officeIdList;
 	}
@@ -170,9 +170,9 @@ public class Role extends DataEntity<Role> {
 	public void setOfficeIdList(List<String> officeIdList) {
 		officeList = Lists.newArrayList();
 		for (String officeId : officeIdList) {
-			Office office = new Office();
-			office.setId(officeId);
-			officeList.add(office);
+			Office e = new Office();
+			e.setId(officeId);
+			officeList.add(e);
 		}
 	}
 
