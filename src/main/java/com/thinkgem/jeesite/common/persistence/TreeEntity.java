@@ -39,7 +39,6 @@ public abstract class TreeEntity<T> extends DataEntity<T> {
 	
 	public abstract String getParentId();
 
-	@Length(min=1, max=2000)
 	public String getParentIds() {
 		return parentIds;
 	}

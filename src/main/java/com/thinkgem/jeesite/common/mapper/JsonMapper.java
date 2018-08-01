@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.common.mapper;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -13,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -41,38 +42,34 @@ public class JsonMapper extends ObjectMapper {
 	private static JsonMapper mapper;
 
 	public JsonMapper() {
-		this(null);
-	}
-
-	public JsonMapper(Include include) {
-		// 设置输出时包含属性的风格
-		if (include != null) {
-			this.setSerializationInclusion(include);
-		}
-		// 允许单引号、允许不带引号的字段名称
-		this.enableSimple();
+		// 允许单引号
+		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
+		// 允许不带引号的字段名称
+		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		// 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
 		this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        // 空值处理为空串
-		this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>(){
+		// 空值处理为空串
+		this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
 			@Override
-			public void serialize(Object value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-					JsonProcessingException {
+			public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider)
+					throws IOException, JsonProcessingException {
 				jgen.writeString("");
 			}
-        });
+		});
+		// 将Number类型的值输出为String
+		// this.registerModule(new SimpleModule().addSerializer(Number.class, ToStringSerializer.instance));
 		// 进行HTML解码。
-		this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>(){
+		this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>() {
 			@Override
-			public void serialize(String value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-					JsonProcessingException {
+			public void serialize(String value, JsonGenerator jgen, SerializerProvider provider)
+					throws IOException, JsonProcessingException {
 				jgen.writeString(StringEscapeUtils.unescapeHtml4(value));
 			}
-        }));
+		}));
+		// 设置时间格式
+		this.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 		// 设置时区
-		this.setTimeZone(TimeZone.getDefault());//getTimeZone("GMT+8:00")
+		this.setTimeZone(TimeZone.getDefault());// getTimeZone("GMT+8:00")
 	}
 
 	/**
@@ -80,7 +77,7 @@ public class JsonMapper extends ObjectMapper {
 	 */
 	public static JsonMapper getInstance() {
 		if (mapper == null){
-			mapper = new JsonMapper().enableSimple();
+			mapper = new JsonMapper();
 		}
 		return mapper;
 	}
@@ -137,19 +134,7 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 允许单引号
-	 * 允许不带引号的字段名称
-	 */
-	public JsonMapper enableSimple() {
-		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
-		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-		return this;
-	}
-
-	/**
 	 * 对象转换为JSON字符串
-	 * @param object
-	 * @return
 	 */
 	public static String toJsonString(Object object){
 		return JsonMapper.getInstance().toJson(object);
@@ -157,12 +142,9 @@ public class JsonMapper extends ObjectMapper {
 	
 	/**
 	 * JSON字符串转换为对象
-	 * @param jsonString
-	 * @param clazz
-	 * @return
 	 */
-	public static Object fromJsonString(String jsonString, Class<?> clazz){
-		return JsonMapper.getInstance().fromJson(jsonString, clazz);
+	public static <T> T fromJsonString(String jsonString, Class<?> clazz){
+		return (T) JsonMapper.getInstance().fromJson(jsonString, clazz);
 	}
 	
 	/**

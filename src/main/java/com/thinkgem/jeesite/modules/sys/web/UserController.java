@@ -38,7 +38,6 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.web.Servlets;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.RoleService;
@@ -106,14 +105,11 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
-	public String save(User user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	public String save(User user, Model model, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
 			return "redirect:" + adminPath + "/sys/user/list";
 		}
-		// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
-		user.setCompany(new Office(request.getParameter("company.id")));
-		user.setOffice(new Office(request.getParameter("office.id")));
 		// 如果新密码为空，则不更换密码
 		if (StringUtils.isNotBlank(user.getNewPassword())) {
 			user.setPassword(UserService.entryptPassword(user.getNewPassword()));

@@ -156,8 +156,8 @@ public class GenTable extends DataEntity<GenTable> {
 			if (column.getIsNotBaseField()){
 				// 导入JSR303、Json等依赖包
 				for (String ann : column.getAnnotationList()){
-					if (!importList.contains(StringUtils.substringBeforeLast(ann, "("))){
-						importList.add(StringUtils.substringBeforeLast(ann, "("));
+					if (!importList.contains(StringUtils.substringBefore(ann, "("))){
+						importList.add(StringUtils.substringBefore(ann, "("));
 					}
 				}
 			}

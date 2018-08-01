@@ -30,7 +30,6 @@ public class Role extends DataEntity<Role> {
 	
 	@TableField(exist=false)
 	private String oldName; 	// 原角色名称
-	private String sysData; 		//是否是系统数据
 	private String useable; 		//是否是可用
 	
 	@TableField(exist=false)
@@ -71,14 +70,6 @@ public class Role extends DataEntity<Role> {
 
 	public void setUseable(String useable) {
 		this.useable = useable;
-	}
-
-	public String getSysData() {
-		return sysData;
-	}
-
-	public void setSysData(String sysData) {
-		this.sysData = sysData;
 	}
 
 	public Office getOffice() {

@@ -6,10 +6,6 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$.each($("#roleIds").val().split(","), function(index, value) {
-				$("input[name='roleIdList'][value='"+value+"']").attr("checked",true);
-			});
-			layui.form.render('checkbox');
 			$("#no").focus();
 			$("#inputForm").validate({
 				rules: {
@@ -122,9 +118,8 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">用户角色:</label>
 			<div class="layui-input-block">
-				<input type="hidden" id="roleIds" value="${user.roleIds}"/>
 				<c:forEach items="${allRoles}" var="role">
-					<input type="checkbox" name="roleIdList" value="${role.id}" title="${role.name}">
+					<input type="checkbox" name="roleIdList" value="${role.id}" title="${role.name}" <c:if test="${fns:contains(user.roleIdList, role.id)}">checked</c:if>>
 				</c:forEach>
 			</div>
 		</div>

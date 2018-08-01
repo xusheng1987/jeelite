@@ -6,16 +6,15 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var layer = layui.layer;
 			$("#btnExport").click(function(){
-				layer.confirm("确认要导出用户数据吗？", {icon: 3, title:'系统提示'}, function(index){
+				top.layer.confirm("确认要导出用户数据吗？", {icon: 3, title:'系统提示'}, function(index){
 					$("#searchForm").attr("action","${ctx}/sys/user/export");
 					$("#searchForm").submit();
-					layer.close(index);
+					top.layer.close(index);
 				});
 			});
 			$("#btnImport").click(function(){
-				layer.open({
+				top.layer.open({
 					type: 1,
 					title: "导入数据",
 					content: $("#importBox").html(),
@@ -30,7 +29,7 @@
 		<form id="importForm" action="${ctx}/sys/user/import" method="post" enctype="multipart/form-data"
 			class="form-search" style="padding-left:20px;text-align:center;" onsubmit="loading();"><br/>
 			<input id="uploadFile" name="file" type="file" style="width:330px"/><br/><br/>
-			<button type="submit" class="layui-btn" id="btnImportSubmit"><i class="layui-icon">&#xe67c;</i>导    入</button>
+			<button type="submit" class="layui-btn" id="btnImportSubmit"><i class="layui-icon layui-icon-upload"></i>导    入</button>
 			<span class="layui-text"><a href="${ctx}/sys/user/import/template">下载模板</a></span>
 		</form>
 	</div>
@@ -76,13 +75,13 @@
 	<sys:message content="${message}"/>
 	<div style="margin-right:10px">
 		<div class="layui-btn-group">
-			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon">&#xe640;</i>批量删除</button>
+			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon layui-icon-delete"></i>批量删除</button>
 		</div>
 		<table class="layui-table"></table>
 	</div>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 	</script>
 	<script type="text/javascript">
 	$(document).ready(function() {

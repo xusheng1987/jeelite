@@ -182,7 +182,7 @@
 			<input type="text" class="layui-input" id="key" name="key" maxlength="50" style="width:110px;height:30px">
 		</div>
 		<div class="layui-input-inline">
-			<button class="layui-btn layui-btn-primary layui-btn-sm" id="btn" onclick="searchNode()"><i class="layui-icon">&#xe615;</i>搜索</button>
+			<button class="layui-btn layui-btn-primary layui-btn-sm" id="btn" onclick="searchNode()"><i class="layui-icon layui-icon-search"></i>搜索</button>
 		</div>
 	</div>
 	<div id="tree" class="ztree" style="padding:15px 20px;"></div>

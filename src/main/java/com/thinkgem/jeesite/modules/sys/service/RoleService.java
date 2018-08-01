@@ -38,10 +38,6 @@ public class RoleService extends BaseService<RoleDao, Role> {
 		return dao.getByName(r);
 	}
 
-	public List<Role> findRole(Role role) {
-		return super.findList(role);
-	}
-
 	public List<Role> findAllRole() {
 		return UserUtils.getRoleList();
 	}

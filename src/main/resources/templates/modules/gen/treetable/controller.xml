@@ -54,8 +54,8 @@ public class ${ClassName}Controller extends BaseController {
 
 	@RequiresPermissions("${permissionPrefix}:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(${ClassName} ${className}, Model model) {
-		List<${ClassName}> list = ${className}Service.findList(${className});
+	public String list(Model model) {
+		List<${ClassName}> list = ${className}Service.findAll();
 		model.addAttribute("list", list);
 		return "${lastPackageName}/${viewPrefix}List";
 	}
@@ -78,7 +78,7 @@ public class ${ClassName}Controller extends BaseController {
 		}
 		${className}Service.save(${className});
 		addMessage(redirectAttributes, "保存${functionNameSimple}成功");
-		return "redirect:"+Global.getAdminPath()+"/${viewPrefix}";
+		return "redirect:" + Global.getAdminPath() + "/${viewPrefix}";
 	}
 
 	@RequiresPermissions("${permissionPrefix}:edit")
@@ -86,7 +86,7 @@ public class ${ClassName}Controller extends BaseController {
 	public String delete(${ClassName} ${className}, RedirectAttributes redirectAttributes) {
 		${className}Service.delete(${className});
 		addMessage(redirectAttributes, "删除${functionNameSimple}成功");
-		return "redirect:"+Global.getAdminPath()+"/${viewPrefix}";
+		return "redirect:" + Global.getAdminPath() + "/${viewPrefix}";
 	}
 
 	@RequiresPermissions("user")

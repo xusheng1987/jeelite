@@ -6,8 +6,8 @@
 		<img class="layui-upload-img" style="height:100px" id="avatarPreview">
 		<p id="errorText" style="margin-top:10px;margin-bottom:10px"></p>
 	</div>
-	<button type="button" class="layui-btn layui-btn-danger" id="avatar">
-		<i class="layui-icon">&#xe67c;</i>上传图片
+	<button type="button" class="layui-btn layui-btn-danger" id="avatarBtn">
+		<i class="layui-icon layui-icon-upload"></i>上传图片
 	</button>
 	<form:hidden path="${name}" htmlEscape="false"/>
 </div>
@@ -15,14 +15,14 @@
 	$(document).ready(function() {
 		if($("#${name}").val()) {//显示头像
 			$("#uploadImg").show();
-			$('#avatarPreview').attr('src', $("#${name}").val());
+			$('#avatarPreview').attr('src', "${ctp}"+$("#${name}").val());
 		}
-		var upload = layui.upload
-		,layer = layui.layer;
+		var upload = layui.upload;
 		//执行实例
 		  var uploadInst = upload.render({
-		    elem: '#avatar' //绑定元素
+		    elem: '#avatarBtn' //绑定元素
 		    ,url: 'upload/' //上传接口
+		    ,acceptMime: 'image/*'
 		    ,size: 10240 //限制文件大小10M，单位 KB
 		    ,before: function(obj){//文件提交上传前的回调
 		      $("#uploadImg").show();

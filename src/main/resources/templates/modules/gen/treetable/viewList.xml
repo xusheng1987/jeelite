@@ -28,8 +28,9 @@
 			<li class="layui-this"><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
 			<shiro:hasPermission name="${permissionPrefix}:edit"><li><a href="${r"${ctx}"}/${urlPrefix}/form">${functionNameSimple}添加</a></li></shiro:hasPermission>
 		</ul>
-	</div><br/>
+	</div>
 	<sys:message content="${r"${message}"}"/>
+	<div style="margin:15px">
 	<table id="treeTable" class="layui-table" lay-even>
 		<thead>
 			<tr>
@@ -43,7 +44,13 @@
 		</thead>
 		<tbody id="treeTableList"></tbody>
 	</table>
+	</div>
 	<script type="text/html" id="treeTableTpl">
+	<#list table.columnList as c>
+		<#if (c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox") && c.simpleJavaField != 'delFlag'>
+	{{#  var ${c.simpleJavaField}Data = ${"$"}{fns:getDictListJson('${c.dictType}')}; }}
+		</#if>
+	</#list>
 	{{#  layui.each(d, function(index, item){ }}
 		<tr id="{{item.id}}" pId="{{item.parentId}}">
 			<#assign firstListField = true>
@@ -51,20 +58,20 @@
 				<#if c.isList?? && c.isList == "1">
 			<td<#if firstListField> class="layui-text"><a href="${r"${ctx}"}/${urlPrefix}/form?id={{item.id}}"><#else>></#if>
 			<#if c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
-				{{dict.${c.simpleJavaField}}}
+				{{getDictLabel(${c.simpleJavaField}Data, item.${c.simpleJavaField})}}
 			<#elseif c.showType == "userselect" || c.showType == "officeselect">
 				{{item.${c.javaFieldName}}}
 			<#else>
 				{{item.${c.javaFieldId}}}
 			</#if>
 			<#if firstListField></a></#if></td>
-					<#assign firstListField = false>
+			<#assign firstListField = false>
 				</#if>
 			</#list>
 			<shiro:hasPermission name="${permissionPrefix}:edit"><td>
-   				<a class="layui-btn layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?id={{item.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{item.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{item.id}}"><i class="layui-icon">&#xe608;</i>添加下级${functionNameSimple}</a>
+   				<a class="layui-btn layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?id={{item.id}}"><i class="layui-icon layui-icon-edit"></i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{item.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{item.id}}"><i class="layui-icon layui-icon-add-circle-fine"></i>添加下级${functionNameSimple}</a>
 			</td></shiro:hasPermission>
 		</tr>
 	{{#  }); }}

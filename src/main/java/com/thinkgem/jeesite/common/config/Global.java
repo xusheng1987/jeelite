@@ -37,12 +37,6 @@ public class Global {
 	private static PropertiesLoader loader = new PropertiesLoader("jeesite.properties");
 
 	/**
-	 * 显示/隐藏
-	 */
-	public static final String SHOW = "1";
-	public static final String HIDE = "0";
-
-	/**
 	 * 是/否
 	 */
 	public static final String YES = "1";

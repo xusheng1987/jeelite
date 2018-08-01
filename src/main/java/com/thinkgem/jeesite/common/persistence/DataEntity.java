@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.enums.FieldFill;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
@@ -67,7 +66,6 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 		this.createBy = createBy;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -85,7 +83,6 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 		this.updateBy = updateBy;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getUpdateDate() {
 		return updateDate;
 	}

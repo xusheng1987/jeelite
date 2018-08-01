@@ -91,6 +91,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	/**
 	 * 获取权限授权信息，如果缓存中存在，则直接从缓存中获取，否则就重新获取， 登录成功后调用
 	 */
+	@Override
 	protected AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
 		if (principals == null) {
             return null;

@@ -89,29 +89,26 @@ function getDictLabel(data, value, defaultValue){
 	return defaultValue;
 }
 
-// 打开一个窗体
-function windowOpen(url, name, width, height){
-	var top=parseInt((window.screen.height-height)/2,10),left=parseInt((window.screen.width-width)/2,10),
-		options="location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,"+
-		"resizable=yes,scrollbars=yes,"+"width="+width+",height="+height+",top="+top+",left="+left;
-	window.open(url ,name , options);
+//恢复提示框显示
+function resetTip(){
+	top.mess = null;
 }
 
 // 显示加载框
 function loading(){
-	var layer = layui.layer;
+	resetTip();
 	layer.load();
 }
 
 // 确认对话框
 function confirmx(mess, href){
-	var layer = layui.layer;
-	layer.confirm(mess, {icon: 3, title:'提示'}, function(index){
+	top.layer.confirm(mess, {icon: 3, title:'提示'}, function(index){
+		resetTip();
 		location = href;
 		//$.post(href, function(result) {
 		//	$('#btnSubmit').click();
 		//});
-		layer.close(index);
+		top.layer.close(index);
 	});
 }
 
@@ -242,8 +239,7 @@ function queryParams() {
 }
 
 function batchDelete(href) {
-	var layer = layui.layer;
-	layer.confirm('确认要删除选中的项目吗', {icon: 3, title:'提示'}, function(index){
+	top.layer.confirm('确认要删除选中的项目吗', {icon: 3, title:'提示'}, function(index){
 		var table = layui.table;
 		var data = table.checkStatus('table').data;
 		var ids = [];
@@ -251,6 +247,6 @@ function batchDelete(href) {
 			ids.push(element.id);
 		});
 		location = href + "?ids="+ids.join(",");
-		layer.close(index);
+		top.layer.close(index);
 	});
 }

@@ -6,45 +6,43 @@
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
 	<script type="text/javascript">
-		var layer;
 		var officeTree;
 		var selectedTree;//zTree已选择对象
-		
+
 		// 初始化
 		$(document).ready(function(){
 			officeTree = $.fn.zTree.init($("#officeTree"), setting, officeNodes);
 			selectedTree = $.fn.zTree.init($("#selectedTree"), setting, selectedNodes);
-			layer = layui.layer;
 		});
 
 		var setting = {view: {selectedMulti:false,nameIsHTML:true,showTitle:false,dblClickExpand:false},
 				data: {simpleData: {enable: true}},
 				callback: {onClick: treeOnClick}};
-		
+
 		var officeNodes=[
 	            <c:forEach items="${officeList}" var="office">
 	            {id:"${office.id}",
-	             pId:"${not empty office.parent?office.parent.id:0}", 
+	             pId:"${not empty office.parent?office.parent.id:0}",
 	             name:"${office.name}"},
 	            </c:forEach>];
-	
+
 		var pre_selectedNodes =[
    		        <c:forEach items="${userList}" var="user">
    		        {id:"${user.id}",
    		         pId:"0",
    		         name:"<font color='red' style='font-weight:bold;'>${user.name}</font>"},
    		        </c:forEach>];
-		
+
 		var selectedNodes =[
 		        <c:forEach items="${userList}" var="user">
 		        {id:"${user.id}",
 		         pId:"0",
 		         name:"<font color='red' style='font-weight:bold;'>${user.name}</font>"},
 		        </c:forEach>];
-		
+
 		var pre_ids = "${selectIds}".split(",");
 		var ids = "${selectIds}".split(",");
-		
+
 		//点击选择项回调
 		function treeOnClick(event, treeId, treeNode, clickFlag){
 			$.fn.zTree.getZTreeObj(treeId).expandNode(treeNode);
@@ -64,12 +62,12 @@
 					selectedTree.removeNode(treeNode);
 					ids.splice($.inArray(String(treeNode.id), ids), 1);
 				}else{
-					layer.msg("角色原有成员不能清除！", {icon: 0}); 
+					layer.msg("角色原有成员不能清除！", {icon: 0});
 				}
 			}
 		};
 		function clearAssign(){
-			layer.confirm("确定清除角色【${role.name}】下的已选人员？", {icon: 3, title:'清除确认'}, function(index){
+			top.layer.confirm("确定清除角色【${role.name}】下的已选人员？", {icon: 3, title:'清除确认'}, function(index){
 				var tips="";
 				if(pre_ids.sort().toString() == ids.sort().toString()){
 					tips = "未给角色【${role.name}】分配新成员！";
@@ -79,10 +77,10 @@
 				ids=pre_ids.slice(0);
 				selectedNodes=pre_selectedNodes;
 				$.fn.zTree.init($("#selectedTree"), setting, selectedNodes);
-				layer.msg(tips, {icon: 0}); 
+				top.layer.msg(tips, {icon: 0});
 			}, function(index){
 		    	// 取消
-				layer.msg("取消清除操作！", {icon: 0}); 
+				top.layer.msg("取消清除操作！", {icon: 0});
 			});
 		};
 	</script>

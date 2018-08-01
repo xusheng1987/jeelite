@@ -35,7 +35,7 @@
 		<#list table.columnList as c>
 			<#if c.simpleJavaField == 'parent'>
 		<div class="layui-form-item">
-			<label class="layui-form-label">上级${c.comments}:</label>
+			<label class="layui-form-label">${c.comments}:</label>
 			<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
 				title="${c.comments}" url="/${urlPrefix}/treeData" extId="${'$'}{${className}.id}" allowClear="true"/>
 		</div>
@@ -65,9 +65,8 @@
 			</div>
 			<#elseif c.showType == "radiobox">
 			<div class="layui-input-inline">
-				<input id="${c.javaFieldId}" type="hidden" value="${"$"}{${className}.${c.javaFieldId}}"/>
 				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
-					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}" ${"$"}{dict.value eq ${className}.${c.javaFieldId} ? 'checked' : ''}>
 				</c:forEach>
 			</div>
 			<#elseif c.showType == "dateselect">

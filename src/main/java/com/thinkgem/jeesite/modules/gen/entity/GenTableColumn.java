@@ -256,9 +256,6 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		if ("This".equals(getJavaType())){
 			list.add("com.fasterxml.jackson.annotation.JsonBackReference");
 		}
-		if ("java.util.Date".equals(getJavaType())){
-			list.add("com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
-		}
 		// 导入JSR303验证依赖包
 		if (!"1".equals(getIsNull()) && !"String".equals(getJavaType())){
 			list.add("javax.validation.constraints.NotNull(message = \""+getComments()+"不能为空\")");

@@ -76,7 +76,7 @@
 			</#if>
 		</#list>
 			<div class="layui-inline">
-				<input id="btnSearch" class="layui-btn layui-btn-normal" type="button" value="查询"/>
+				<input id="btnSearch" class="layui-btn layui-btn-normal" style="margin-left:40px" type="button" value="查询"/>
 			</div>
 		</div>
 	</form:form>
@@ -85,8 +85,8 @@
 		<table class="layui-table"></table>
 	</div>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 	</script>
 	<script type="text/javascript">
 	$(document).ready(function() {
@@ -98,14 +98,19 @@
 			<#assign firstListField = true>
 			<#list table.columnList as c>
 				<#if c.isList?? && c.isList == "1">
+				<#if !firstListField>,</#if>
 					<#if c.showType == "userselect" || c.showType == "officeselect">
-		       <#if !firstListField>,</#if>{title: '${c.comments}', templet: function(d) {
+		       {title: '${c.comments}', templet: function(d) {
 		          return <#if firstListField>'<a href="${r"${ctx}"}/${urlPrefix}/form?id='+d.id+'" class="layui-table-link">'+</#if>d.${c.javaFieldName}<#if firstListField>+'</a>'</#if>
 		       }}
-		       <#assign firstListField = false>
+					<#elseif c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
+				{title: '${c.comments}', templet: function(d) {
+		          return getDictLabel(${"$"}{fns:getDictListJson('${c.dictType}')}, d.${c.simpleJavaField}, '');
+		       }}
 					<#else>
-		       <#if !firstListField>,</#if>{field: '${c.javaFieldId}', title: '${c.comments}'}
+		      {field: '${c.javaFieldId}', title: '${c.comments}'}
 					</#if>
+		       <#assign firstListField = false>
 				</#if>
 			</#list>
 		      <shiro:hasPermission name="${permissionPrefix}:edit">

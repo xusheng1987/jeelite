@@ -11,15 +11,20 @@
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:jeesite.properties" />
 
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-		<property name="maxIdle" value="300" /> <!-- 最大能够保持idel状态的对象数  -->
-		<property name="maxTotal" value="60000" /> <!-- 最大分配的对象数 -->
+		<property name="maxIdle" value="20" /> <!-- 最大能够保持idle状态的对象数  -->
+		<property name="maxTotal" value="100" /> <!-- 最大分配的对象数 -->
+		<property name="maxWaitMillis" value="3000" /> <!-- borrow一个jedis实例时，最大的等待时间(毫秒) -->
 		<property name="testOnBorrow" value="true" /> <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
 	</bean>
 
 	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
 		<constructor-arg index="0" ref="jedisPoolConfig" />
-		<constructor-arg index="1" value="${redis.host}" />
+		<constructor-arg index="1" value="${redis.host}" type="java.lang.String" />
 		<constructor-arg index="2" value="${redis.port}" type="int" />
+		<!--
+		<constructor-arg index="3" value="${redis.timeout}" type="int" />
+		<constructor-arg index="4" value="${redis.password}" type="java.lang.String" />
+		-->
 	</bean>
 
 </beans>

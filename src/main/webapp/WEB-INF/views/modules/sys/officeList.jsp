@@ -22,7 +22,7 @@
 			<li class="layui-this"><a href="${ctx}/sys/office/list">机构列表</a></li>
 			<shiro:hasPermission name="sys:office:edit"><li><a href="${ctx}/sys/office/form?parent.id=${office.id}">机构添加</a></li></shiro:hasPermission>
 		</ul>
-	</div><br/>
+	</div>
 	<sys:message content="${message}"/>
 	<div style="margin:15px">
 	<table id="treeTable" class="layui-table" lay-even>
@@ -31,16 +31,17 @@
 	</table>
 	</div>
 	<script type="text/html" id="treeTableTpl">
+	{{#  var typeData = ${fns:getDictListJson('sys_office_type')}; }}
 	{{#  layui.each(d, function(index, item){ }}
 		<tr id="{{item.id}}" pId="{{item.parentId}}">
 			<td class="layui-text"><a href="${ctx}/sys/office/form?id={{item.id}}">{{item.name}}</a></td>
 			<td>{{item.code}}</td>
-			<td>{{# getDictLabel(${fns:toJson(fns:getDictList('sys_office_type'))}, item.type)}}</td>
+			<td>{{getDictLabel(typeData, item.type)}}</td>
 			<td>{{item.remarks}}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
-				<a class="layui-btn layui-btn-sm" href="${ctx}/sys/office/form?id={{item.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{item.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/sys/office/form?parent.id={{item.id}}"><i class="layui-icon">&#xe608;</i>添加下级机构</a>
+				<a class="layui-btn layui-btn-sm" href="${ctx}/sys/office/form?id={{item.id}}"><i class="layui-icon layui-icon-edit"></i>修改</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{item.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${ctx}/sys/office/form?parent.id={{item.id}}"><i class="layui-icon layui-icon-add-circle-fine"></i>添加下级机构</a>
 			</td></shiro:hasPermission>
 		</tr>
 	{{#  }); }}

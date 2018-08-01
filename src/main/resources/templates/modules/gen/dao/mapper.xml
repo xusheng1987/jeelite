@@ -122,39 +122,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		</choose>
 	</select>
 
-	<select id="findAllList" resultType="${ClassName}">
-		SELECT
-			<include refid="${className}Columns"/>
-		FROM ${table.name} a
-		<include refid="${className}Joins"/>
-		<where>
-			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
-		</where>
-		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${"$"}{page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${"$"}{page.orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				<#if table.parentExists>
-					<#if table.createDateExists>
-				ORDER BY a.create_date ASC
-					</#if>
-				<#else>
-					<#if table.updateDateExists>
-				ORDER BY a.update_date DESC
-					</#if>
-				</#if>
-			</otherwise>
-		</choose>
-	</select>
-
 	<update id="delete">
 	<#if table.delFlagExists>
 		UPDATE ${table.name} SET

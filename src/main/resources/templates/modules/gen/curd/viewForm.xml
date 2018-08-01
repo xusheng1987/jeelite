@@ -58,9 +58,8 @@
 			</div>
 			<#elseif c.showType == "radiobox">
 			<div class="layui-input-inline">
-				<input id="${c.javaFieldId}" type="hidden" value="${"$"}{${className}.${c.javaFieldId}}"/>
 				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
-					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}" ${"$"}{dict.value eq ${className}.${c.javaFieldId} ? 'checked' : ''}>
 				</c:forEach>
 			</div>
 			<#elseif c.showType == "dateselect">
@@ -79,7 +78,7 @@
 				title="部门" url="/sys/office/treeData?type=2" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
 			</#if>
 			<#if c.isNull != "1">
-				<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 			</#if>
 		</div>
 			</#if>

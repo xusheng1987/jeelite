@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.service.TreeService;
-import com.thinkgem.jeesite.common.utils.StringUtils;
 import ${packageName}.${moduleName}.dao.${ClassName}Dao;
 import ${packageName}.${moduleName}.entity.${ClassName};
 
@@ -29,11 +28,8 @@ import ${packageName}.${moduleName}.entity.${ClassName};
 @Transactional(readOnly = true)
 public class ${ClassName}Service extends TreeService<${ClassName}Dao, ${ClassName}> {
 
-	public List<${ClassName}> findList(${ClassName} ${className}) {
-		if (StringUtils.isNotBlank(${className}.getParentIds())) {
-			${className}.setParentIds("," + ${className}.getParentIds() + ",");
-		}
-		List<${ClassName}> list = super.findList(${className});
+	public List<${ClassName}> findAll() {
+		List<${ClassName}> list = dao.findAllList(new ${ClassName}());
 		return buildTree(list);
 	}
 

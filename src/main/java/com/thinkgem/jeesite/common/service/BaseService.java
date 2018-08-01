@@ -126,15 +126,6 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	}
 
 	/**
-	 * 查询所有数据列表
-	 * 
-	 * @param entity
-	 */
-	public List<T> findAllList(T entity) {
-		return dao.findAllList(entity);
-	}
-
-	/**
 	 * 查询分页数据
 	 * 
 	 * @param page 分页对象

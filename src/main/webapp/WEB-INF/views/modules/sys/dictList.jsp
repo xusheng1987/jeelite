@@ -31,14 +31,14 @@
 	<sys:message content="${message}"/>
 	<div style="margin:15px">
 		<div class="layui-btn-group">
-			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon">&#xe640;</i>批量删除</button>
+			<button class="layui-btn layui-btn-danger layui-btn-disabled" id="btnDelete" disabled><i class="layui-icon layui-icon-delete"></i>批量删除</button>
 		</div>
 		<table class="layui-table"></table>
 	</div>
 	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe608;</i>添加键值</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+		<a href="javascript:void(0)" class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-circle-fine"></i>添加键值</a>
 	</script>
 	<script type="text/javascript">
 	function typeFilter(type) {
@@ -59,7 +59,7 @@
 		       }}
 		      ,{title: '类型', templet: function(d) {
 		          return '<a href="javascript:void(0)" class="layui-table-link" onclick="typeFilter(\''+d.type+'\')">'+d.type+'</a>'
-		       }} 
+		       }}
 		      ,{field: 'description', title: '描述'}
 		      ,{field: 'sort', title: '排序'}
 		      <shiro:hasPermission name="sys:dict:edit">

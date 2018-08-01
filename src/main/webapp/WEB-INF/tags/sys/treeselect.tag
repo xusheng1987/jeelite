@@ -24,15 +24,14 @@
 	<input id="${id}Name" name="${labelName}" ${allowInput?'':'readonly="readonly"'} type="text" value="${labelValue}" data-msg-required="${dataMsgRequired}"
 		class="layui-input ${cssClass}" style="${cssStyle}" />
 </div>
-<a id="${id}Button" href="javascript:" style="margin-left:-10px" class="search layui-btn layui-btn-primary ${disabled ? 'layui-btn-disabled' : ''} ${hideBtn ? 'hide' : ''}">&nbsp;<i class="layui-icon">&#xe615;</i>&nbsp;</a>&nbsp;&nbsp;
+<a id="${id}Button" href="javascript:" style="margin-left:-10px;padding:0 10px" class="search layui-btn layui-btn-primary ${disabled ? 'layui-btn-disabled' : ''} ${hideBtn ? 'hide' : ''}">&nbsp;<i class="layui-icon layui-icon-search"></i>&nbsp;</a>&nbsp;&nbsp;
 <script type="text/javascript">
 	$("#${id}Button, #${id}Name").click(function(){
 		// 是否限制选择，如果限制，设置为disabled
 		if ($("#${id}Button").hasClass("layui-btn-disabled")){
 			return true;
 		}
-		var layer = layui.layer;
-		layer.open({
+		top.layer.open({
 			type: 2,
 			title: "选择${title}",
 			area: ['300px', '420px'],//宽高
@@ -51,11 +50,11 @@
 						continue; // 如果为复选框选择，则过滤掉父节点
 					}//</c:if><c:if test="${notAllowSelectRoot}">
 					if (nodes[i].level == 0){
-						layer.msg("不能选择根节点（"+nodes[i].name+"）请重新选择。");
+						top.layer.msg("不能选择根节点（"+nodes[i].name+"）请重新选择。");
 						return false;
 					}//</c:if><c:if test="${notAllowSelectParent}">
 					if (nodes[i].isParent){
-						layer.msg("不能选择父节点（"+nodes[i].name+"）请重新选择。");
+						top.layer.msg("不能选择父节点（"+nodes[i].name+"）请重新选择。");
 						return false;
 					}//</c:if>
 					ids.push(nodes[i].id);
@@ -64,7 +63,7 @@
 				}
 				$("#${id}Id").val(ids.join(",").replace(/u_/ig,""));
 				$("#${id}Name").val(names.join(","));
-				layer.close(index);
+				top.layer.close(index);
 			},
 			btn2: function(index, layero){//清除按钮的回调
 				$("#${id}Id").val("");

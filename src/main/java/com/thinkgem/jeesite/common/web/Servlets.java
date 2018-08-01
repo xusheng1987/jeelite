@@ -25,9 +25,6 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  */
 public class Servlets {
 
-	// -- 常用数值定义 --//
-	public static final long ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
-	
 	// 静态文件后缀
 	private final static String[] staticFiles = StringUtils.split(Global.getConfig("web.staticFile"), ",");
 
@@ -127,21 +124,8 @@ public class Servlets {
 
 	/**
      * 判断访问URI是否是静态文件请求
-	 * @throws Exception 
      */
     public static boolean isStaticFile(String uri){
-		if (staticFiles == null){
-			try {
-				throw new Exception("检测到“app.properties”中没有配置“web.staticFile”属性。配置示例：\n#静态文件后缀\n"
-					+"web.staticFile=.css,.js,.png,.jpg,.gif,.jpeg,.bmp,.ico,.swf,.psd,.htc,.crx,.xpi,.exe,.ipa,.apk");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-//		if ((StringUtils.startsWith(uri, "/static/") || StringUtils.endsWithAny(uri, sfs)) 
-//				&& !StringUtils.endsWithAny(uri, ".jsp") && !StringUtils.endsWithAny(uri, ".java")){
-//			return true;
-//		}
 		if (StringUtils.endsWithAny(uri, staticFiles) && !StringUtils.endsWithAny(uri, ".html")
 				&& !StringUtils.endsWithAny(uri, ".jsp") && !StringUtils.endsWithAny(uri, ".java")){
 			return true;

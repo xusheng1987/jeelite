@@ -108,12 +108,13 @@
     <function-signature>java.lang.String abbreviate(java.lang.String, int)</function-signature>
     <example>${fns:abbreviate(str,length)}</example>  
   </function>
+  
   <function>
-    <description>转换为JS获取对象值，生成三目运算返回结果。</description>
-    <name>jsGetVal</name>
-    <function-class>com.thinkgem.jeesite.common.utils.StringUtils</function-class>
-    <function-signature>java.lang.String jsGetVal(java.lang.String)</function-signature>
-    <example>${fns:jsGetVal('row.user.id')}  返回：!row?'':!row.user?'':!row.user.id?'':row.user.id</example>  
+    <description>list是否包含给定的值</description>
+    <name>contains</name>
+    <function-class>com.thinkgem.jeesite.common.utils.Collections3</function-class>
+    <function-signature>boolean contains(java.util.List, java.lang.Object)</function-signature>
+    <example>${fns:contains(list,object)}</example>
   </function>
   
   <!-- JsonMapper -->

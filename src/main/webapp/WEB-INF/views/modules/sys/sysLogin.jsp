@@ -7,8 +7,7 @@
 	<link rel="stylesheet" href="${ctxStatic}/common/login.css" media="all">
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var form = layui.form,
-			layer = layui.layer;
+			var form = layui.form;
 			form.on('submit', function(data){
 				// 登录
 				$.post("${ctx}/login", data.field, function (result) {
@@ -42,14 +41,17 @@
           </div>
           <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
           <form id="loginForm" method="post">
-            <div class="layui-form-item"><!--<i class="layui-icon layadmin-user-login-icon">&#xe612;</i>-->
+            <div class="layui-form-item">
+              <label class="layadmin-user-login-icon layui-icon layui-icon-username"></label>
               <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名" class="layui-input">
             </div>
             <div class="layui-form-item">
+              <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
               <input type="password" name="password" id="password" lay-verify="required" placeholder="密码" class="layui-input">
             </div>
             <div class="layui-form-item" id="validateCodeItem" style="display:none">
                 <div class="layui-col-xs7">
+                  <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"></label>
                   <input type="text" name="validateCode" id="validateCode" placeholder="图形验证码" class="layui-input">
                 </div>
                 <div class="layui-col-xs4">
@@ -69,7 +71,7 @@
           </div>
         </div>
         <div class="layadmin-user-login-footer">
-          Copyright &copy; 2012-${fns:getConfig('copyrightYear')} <a href="https://github.com/xusheng1987/jeesite-lite">${fns:getConfig('productName')}</a> - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')} 
+          Copyright &copy; 2012-${fns:getConfig('copyrightYear')} <a href="https://github.com/xusheng1987/jeesite-lite">${fns:getConfig('productName')}</a> - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')}
         </div>
       </div>
 </body>

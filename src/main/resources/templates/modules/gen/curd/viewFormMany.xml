@@ -45,11 +45,11 @@
 				$(obj).parent().parent().remove();
 			}else if(delFlag.val() == "0"){
 				delFlag.val("1");
-				$(obj).html('<i class="layui-icon">&#x1007;</i>').attr("title", "撤销删除");
+				$(obj).html('<i class="layui-icon layui-icon-close-fill"></i>').attr("title", "撤销删除");
 				$(obj).parent().parent().addClass("error");
 			}else if(delFlag.val() == "1"){
 				delFlag.val("0");
-				$(obj).html('<i class="layui-icon">&#xe640;</i>').attr("title", "删除");
+				$(obj).html('<i class="layui-icon layui-icon-delete"></i>').attr("title", "删除");
 				$(obj).parent().parent().removeClass("error");
 			}
 		}
@@ -94,9 +94,8 @@
 			</div>
 			<#elseif c.showType == "radiobox">
 			<div class="layui-input-inline">
-				<input id="${c.javaFieldId}" type="hidden" value="${"$"}{${className}.${c.javaFieldId}}"/>
 				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
-					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}" ${"$"}{dict.value eq ${className}.${c.javaFieldId} ? 'checked' : ''}>
 				</c:forEach>
 			</div>
 			<#elseif c.showType == "dateselect">
@@ -115,7 +114,7 @@
 					title="部门" url="/sys/office/treeData?type=2" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"/>
 			</#if>
 			<#if c.isNull != "1">
-				<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
+			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 			</#if>
 		</div>
 			</#if>
@@ -186,7 +185,7 @@
 								</#if>
 							</#list>
 							<shiro:hasPermission name="${permissionPrefix}:edit"><td width="10">
-								<a href="javascript:void(0)" onclick="delRow(this, '#${child.className?uncap_first}List{{d.idx}}')"><i class="layui-icon">&#xe640;</i></a>
+								<a href="javascript:void(0)" onclick="delRow(this, '#${child.className?uncap_first}List{{d.idx}}')"><i class="layui-icon layui-icon-delete"></i></a>
 							</td></shiro:hasPermission>
 						</tr>
 					</script>

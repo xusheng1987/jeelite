@@ -109,15 +109,6 @@
 			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">是否系统数据:</label>
-			<div class="layui-input-inline">
-				<form:select path="sysData">
-					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			<div class="layui-form-mid layui-word-aux">“是”代表此数据只有超级管理员能进行修改，“否”则表示拥有角色修改人员的权限都能进行修改</div>
-		</div>
-		<div class="layui-form-item">
 			<label class="layui-form-label">是否可用</label>
 			<div class="layui-input-inline">
 				<form:select path="useable">
@@ -152,9 +143,7 @@
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<c:if test="${(role.sysData eq fns:getDictValue('是', 'yes_no', '1') && fns:getUser().admin)||!(role.sysData eq fns:getDictValue('是', 'yes_no', '1'))}">
-					<shiro:hasPermission name="sys:role:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				</c:if>
+				<shiro:hasPermission name="sys:role:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
 			</div>
 		</div>

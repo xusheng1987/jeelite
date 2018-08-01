@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
  * @author calvin
  * @version 2013-01-15
  */
-@SuppressWarnings("rawtypes")
 public class Collections3 {
 
 	/**
@@ -173,4 +172,12 @@ public class Collections3 {
 		}
 		return list;
 	}
+	
+	/**
+	 * list是否包含给定的值
+	 */
+	public static boolean contains(List list, Object o) {
+		return list.contains(o);
+	}
+
 }

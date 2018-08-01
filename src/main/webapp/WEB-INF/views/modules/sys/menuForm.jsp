@@ -7,8 +7,6 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#name").focus();
-			$("input[name='isShow'][value='"+$("#isShow").val()+"']").attr("checked",true);
-			layui.form.render('radio');
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading();
@@ -70,9 +68,8 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">可见:</label>
 			<div class="layui-input-inline">
-				<input id="isShow" type="hidden" value="${menu.isShow}"/>
 				<c:forEach items="${fns:getDictList('show_hide')}" var="dict">
-					<input type="radio" name="isShow" value="${dict.value}" title="${dict.label}">
+					<input type="radio" name="isShow" value="${dict.value}" title="${dict.label}" ${dict.value eq menu.isShow ? 'checked' : ''}>
 				</c:forEach>
 			</div>
 			<div class="layui-form-mid layui-word-aux">该菜单或操作是否显示到系统菜单中</div>

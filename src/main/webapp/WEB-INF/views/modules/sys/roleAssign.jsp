@@ -29,12 +29,11 @@
 			<input id="idsArr" type="hidden" name="idsArr" value=""/>
 		</form>
 		<div class="layui-btn-group">
-			<button type="submit" class="layui-btn layui-btn-normal" id="assignButton"><i class="layui-icon">&#xe640;</i>分配角色</button>
+			<button type="submit" class="layui-btn layui-btn-normal" id="assignButton"><i class="layui-icon layui-icon-delete"></i>分配角色</button>
 		</div>
 		<script type="text/javascript">
 			$("#assignButton").click(function(){
-				var layer = layui.layer;
-				layer.open({
+				top.layer.open({
 					type: 2,
 					title: "分配角色",
 					area: ['810px', '500px'],//宽高
@@ -49,7 +48,7 @@
 							pre_ids.shift();
 						}
 						if(pre_ids.sort().toString() == ids.sort().toString()){
-							layer.msg("未给角色【${role.name}】分配新成员！", {icon: 0});
+							top.layer.msg("未给角色【${role.name}】分配新成员！", {icon: 0});
 							return false;
 						};
 				    	// 执行保存
@@ -59,7 +58,7 @@
 				    		idsArr = (idsArr + ids[i]) + (((i + 1)== ids.length) ? '':',');
 				    	}
 				    	$('#idsArr').val(idsArr);
-						layer.close(index);
+						top.layer.close(index);
 				    	$('#assignRoleForm').submit();
 				    	return true;
 					},
@@ -84,7 +83,7 @@
 				<shiro:hasPermission name="sys:role:edit">
 					<td>
 						<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)"
-							onclick="confirmx('确认要将用户<b>[${user.name}]</b>从<b>[${role.name}]</b>角色中移除吗？', '${ctx}/sys/role/outrole?userId=${user.id}&roleId=${role.id}')"><i class="layui-icon">&#xe640;</i>移除</a>
+							onclick="confirmx('确认要将用户<b>[${user.name}]</b>从<b>[${role.name}]</b>角色中移除吗？', '${ctx}/sys/role/outrole?userId=${user.id}&roleId=${role.id}')"><i class="layui-icon layui-icon-delete"></i>移除</a>
 					</td>
 				</shiro:hasPermission>
 			</tr>

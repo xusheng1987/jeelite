@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.BaseEntity;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 
@@ -142,7 +141,6 @@ public class Log extends BaseEntity<Log> {
 		this.createBy = createBy;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getCreateDate() {
 		return createDate;
 	}

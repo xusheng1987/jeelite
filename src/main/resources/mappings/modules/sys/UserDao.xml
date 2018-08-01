@@ -121,16 +121,6 @@
 		ORDER BY a.name
 	</select>
 
-	<!-- 查询全部用户 -->
-	<select id="findAllList" resultType="User">
-		SELECT
-			<include refid="userColumns"/>
-		FROM sys_user a
-		<include refid="userJoins"/>
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-		ORDER BY c.code, o.code, a.name
-	</select>
-
 	<!-- 删除用户和角色关联表数据 -->
 	<delete id="deleteUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{id}

@@ -43,7 +43,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 	}
 
 	public List<GenTable> findAll() {
-		return super.findAllList(new GenTable());
+		return dao.findAllList(new GenTable());
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 					if (StringUtils.isBlank(genTable.getComments())) {
 						genTable.setComments(genTable.getName());
 					}
-					genTable.setClassName(StringUtils.toCapitalizeCamelCase(genTable.getName()));
+					genTable.setClassName(StringUtils.toCapitalizeCamelCase(genTable.getName().substring(genTable.getName().indexOf("_") + 1)));
 				}
 
 				// 添加新列

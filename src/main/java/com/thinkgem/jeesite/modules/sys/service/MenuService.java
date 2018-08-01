@@ -35,6 +35,8 @@ public class MenuService extends TreeService<MenuDao, Menu> {
 		super.save(menu);
 		// 清除用户菜单缓存
 		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
+		// 清除权限缓存
+		// UserUtils.removeCache(UserUtils.CACHE_AUTH_INFO);
 		// 清除日志相关缓存
 		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
 	}
@@ -53,6 +55,8 @@ public class MenuService extends TreeService<MenuDao, Menu> {
 		super.delete(menu);
 		// 清除用户菜单缓存
 		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
+		// 清除权限缓存
+		// UserUtils.removeCache(UserUtils.CACHE_AUTH_INFO);
 		// 清除日志相关缓存
 		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
 	}
