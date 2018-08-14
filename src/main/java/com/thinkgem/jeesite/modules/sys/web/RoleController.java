@@ -140,7 +140,7 @@ public class RoleController extends BaseController {
 		List<User> userList = userService.findUser(new User(new Role(role.getId())));
 		model.addAttribute("role", role);
 		model.addAttribute("userList", userList);
-		model.addAttribute("selectIds", Collections3.extractToString(userList, "name", ","));
+		model.addAttribute("selectIds", Collections3.extractToString(userList, "id", ","));
 		model.addAttribute("officeList", officeService.findAll());
 		return "modules/sys/selectUserToRole";
 	}

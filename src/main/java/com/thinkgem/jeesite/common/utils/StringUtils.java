@@ -95,7 +95,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }else if (isNotBlank(remoteAddr)) {
         	remoteAddr = request.getHeader("WL-Proxy-Client-IP");
         }
-        return remoteAddr != null ? remoteAddr : request.getRemoteAddr();
+		return (remoteAddr != null ? remoteAddr : request.getRemoteAddr()).split(",")[0];// 有时会出现以，分割的多个IP
 	}
 
 	/**

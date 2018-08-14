@@ -2,11 +2,11 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <%@ attribute name="name" type="java.lang.String" required="false" description="隐藏域名称"%>
 <div class="layui-input-inline">
-	<div id="uploadImg" style="display:none">
-		<img class="layui-upload-img" style="height:100px" id="avatarPreview">
-		<p id="errorText" style="margin-top:10px;margin-bottom:10px"></p>
+	<div id="${name}Img" style="display:none">
+		<img class="layui-upload-img" style="height:100px" id="${name}Preview">
+		<p id="${name}errorText" style="margin-top:10px;margin-bottom:10px"></p>
 	</div>
-	<button type="button" class="layui-btn layui-btn-danger" id="avatarBtn">
+	<button type="button" class="layui-btn layui-btn-danger" id="${name}Btn">
 		<i class="layui-icon layui-icon-upload"></i>上传图片
 	</button>
 	<form:hidden path="${name}" htmlEscape="false"/>
@@ -14,22 +14,22 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		if($("#${name}").val()) {//显示头像
-			$("#uploadImg").show();
-			$('#avatarPreview').attr('src', "${ctp}"+$("#${name}").val());
+			$("#${name}Img").show();
+			$('#${name}Preview').attr('src', "${ctp}"+$("#${name}").val());
 		}
 		var upload = layui.upload;
 		//执行实例
 		  var uploadInst = upload.render({
-		    elem: '#avatarBtn' //绑定元素
+		    elem: '#${name}Btn' //绑定元素
 		    ,url: 'upload/' //上传接口
 		    ,acceptMime: 'image/*'
 		    ,size: 10240 //限制文件大小10M，单位 KB
 		    ,before: function(obj){//文件提交上传前的回调
-		      $("#uploadImg").show();
+		      $("#${name}Img").show();
 		      layer.load(); //上传loading
 		      //图片预览，不支持ie8/9
 		      obj.preview(function(index, file, result){
-		        $('#avatarPreview').attr('src', result); //图片链接（base64）
+		        $('#${name}Preview').attr('src', result); //图片链接（base64）
 		      });
 		    }
 		    ,done: function(res){
@@ -46,7 +46,7 @@
 		      layer.msg('上传失败');
 		      layer.closeAll('loading'); //关闭loading
 		      //失败状态，并实现重传
-		      var errorText = $('#errorText');
+		      var errorText = $('#${name}errorText');
 		      errorText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini reload">重试</a>');
 		      errorText.find('.reload').on('click', function(){
 		        uploadInst.upload();
