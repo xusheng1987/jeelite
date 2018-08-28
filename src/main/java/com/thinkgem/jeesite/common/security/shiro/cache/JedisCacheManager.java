@@ -15,21 +15,22 @@ import org.apache.shiro.cache.CacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import redis.clients.jedis.Jedis;
-
 import com.google.common.collect.Sets;
 import com.thinkgem.jeesite.common.utils.JedisUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
 
+import redis.clients.jedis.Jedis;
+
 /**
  * 自定义授权缓存管理类
+ * 
  * @author ThinkGem
  * @version 2014-7-20
  */
 public class JedisCacheManager implements CacheManager {
 
 	private String cacheKeyPrefix = "shiro_cache_";
-	
+
 	@Override
 	public <K, V> Cache<K, V> getCache(String name) throws CacheException {
 		return new JedisCache<K, V>(cacheKeyPrefix + name);
@@ -42,9 +43,10 @@ public class JedisCacheManager implements CacheManager {
 	public void setCacheKeyPrefix(String cacheKeyPrefix) {
 		this.cacheKeyPrefix = cacheKeyPrefix;
 	}
-	
+
 	/**
 	 * 自定义授权缓存管理类
+	 * 
 	 * @author ThinkGem
 	 * @version 2014-7-20
 	 */
@@ -56,59 +58,57 @@ public class JedisCacheManager implements CacheManager {
 
 		public JedisCache(String cacheKeyName) {
 			this.cacheKeyName = cacheKeyName;
-//			if (!JedisUtils.exists(cacheKeyName)){
-//				Map<String, Object> map = Maps.newHashMap();
-//				JedisUtils.setObjectMap(cacheKeyName, map, 60 * 60 * 24);
-//			}
-//			logger.debug("Init: cacheKeyName {} ", cacheKeyName);
+			// if (!JedisUtils.exists(cacheKeyName)){
+			// Map<String, Object> map = Maps.newHashMap();
+			// JedisUtils.setObjectMap(cacheKeyName, map, 60 * 60 * 24);
+			// }
 		}
-		
-		@SuppressWarnings("unchecked")
+
 		@Override
 		public V get(K key) throws CacheException {
-			if (key == null){
+			if (key == null) {
 				return null;
 			}
-			
+
 			V v = null;
 			HttpServletRequest request = Servlets.getRequest();
-			if (request != null){
-				v = (V)request.getAttribute(cacheKeyName);
-				if (v != null){
+			if (request != null) {
+				v = (V) request.getAttribute(cacheKeyName);
+				if (v != null) {
 					return v;
 				}
 			}
-			
+
 			V value = null;
 			Jedis jedis = null;
 			try {
 				jedis = JedisUtils.getResource();
-				value = (V)JedisUtils.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
-				logger.debug("get {} {} {}", cacheKeyName, key, request != null ? request.getRequestURI() : "");
+				value = (V) JedisUtils
+						.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
 			} catch (Exception e) {
 				logger.error("get {} {} {}", cacheKeyName, key, request != null ? request.getRequestURI() : "", e);
 			} finally {
 				JedisUtils.returnResource(jedis);
 			}
-			
-			if (request != null && value != null){
+
+			if (request != null && value != null) {
 				request.setAttribute(cacheKeyName, value);
 			}
-			
+
 			return value;
 		}
 
 		@Override
 		public V put(K key, V value) throws CacheException {
-			if (key == null){
+			if (key == null) {
 				return null;
 			}
-			
+
 			Jedis jedis = null;
 			try {
 				jedis = JedisUtils.getResource();
-				jedis.hset(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key), JedisUtils.toBytes(value));
-				logger.debug("put {} {} = {}", cacheKeyName, key, value);
+				jedis.hset(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key),
+						JedisUtils.toBytes(value));
 			} catch (Exception e) {
 				logger.error("put {} {}", cacheKeyName, key, e);
 			} finally {
@@ -117,16 +117,15 @@ public class JedisCacheManager implements CacheManager {
 			return value;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public V remove(K key) throws CacheException {
 			V value = null;
 			Jedis jedis = null;
 			try {
 				jedis = JedisUtils.getResource();
-				value = (V)JedisUtils.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
+				value = (V) JedisUtils
+						.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
 				jedis.hdel(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key));
-				logger.debug("remove {} {}", cacheKeyName, key);
 			} catch (Exception e) {
 				logger.warn("remove {} {}", cacheKeyName, key, e);
 			} finally {
@@ -141,7 +140,6 @@ public class JedisCacheManager implements CacheManager {
 			try {
 				jedis = JedisUtils.getResource();
 				jedis.hdel(JedisUtils.getBytesKey(cacheKeyName));
-				logger.debug("clear {}", cacheKeyName);
 			} catch (Exception e) {
 				logger.error("clear {}", cacheKeyName, e);
 			} finally {
@@ -156,17 +154,15 @@ public class JedisCacheManager implements CacheManager {
 			try {
 				jedis = JedisUtils.getResource();
 				size = jedis.hlen(JedisUtils.getBytesKey(cacheKeyName)).intValue();
-				logger.debug("size {} {} ", cacheKeyName, size);
 				return size;
 			} catch (Exception e) {
-				logger.error("clear {}",  cacheKeyName, e);
+				logger.error("clear {}", cacheKeyName, e);
 			} finally {
 				JedisUtils.returnResource(jedis);
 			}
 			return size;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public Set<K> keys() {
 			Set<K> keys = Sets.newHashSet();
@@ -174,13 +170,12 @@ public class JedisCacheManager implements CacheManager {
 			try {
 				jedis = JedisUtils.getResource();
 				Set<byte[]> set = jedis.hkeys(JedisUtils.getBytesKey(cacheKeyName));
-				for(byte[] key : set){
+				for (byte[] key : set) {
 					Object obj = JedisUtils.getObjectKey(key);
-					if (obj != null){
+					if (obj != null) {
 						keys.add((K) obj);
 					}
-	        	}
-				logger.debug("keys {} {} ", cacheKeyName, keys);
+				}
 				return keys;
 			} catch (Exception e) {
 				logger.error("keys {}", cacheKeyName, e);
@@ -190,7 +185,6 @@ public class JedisCacheManager implements CacheManager {
 			return keys;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public Collection<V> values() {
 			Collection<V> vals = Collections.emptyList();
@@ -198,16 +192,15 @@ public class JedisCacheManager implements CacheManager {
 			try {
 				jedis = JedisUtils.getResource();
 				Collection<byte[]> col = jedis.hvals(JedisUtils.getBytesKey(cacheKeyName));
-				for(byte[] val : col){
+				for (byte[] val : col) {
 					Object obj = JedisUtils.toObject(val);
-					if (obj != null){
+					if (obj != null) {
 						vals.add((V) obj);
 					}
-	        	}
-				logger.debug("values {} {} ", cacheKeyName, vals);
+				}
 				return vals;
 			} catch (Exception e) {
-				logger.error("values {}",  cacheKeyName, e);
+				logger.error("values {}", cacheKeyName, e);
 			} finally {
 				JedisUtils.returnResource(jedis);
 			}

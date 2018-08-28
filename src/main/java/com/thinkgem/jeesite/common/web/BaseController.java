@@ -49,7 +49,7 @@ public abstract class BaseController {
 	 */
 	@Value("${adminPath}")
 	protected String adminPath;
-	
+
 	/**
 	 * 验证Bean实例对象
 	 */
@@ -73,10 +73,9 @@ public abstract class BaseController {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 添加Model消息
-	 * @param message
 	 */
 	protected void addMessage(Model model, String... messages) {
 		StringBuilder sb = new StringBuilder();
@@ -85,10 +84,9 @@ public abstract class BaseController {
 		}
 		model.addAttribute("message", sb.toString());
 	}
-	
+
 	/**
 	 * 添加Flash消息
-	 * @param message
 	 */
 	protected void addMessage(RedirectAttributes redirectAttributes, String... messages) {
 		StringBuilder sb = new StringBuilder();
@@ -97,7 +95,7 @@ public abstract class BaseController {
 		}
 		redirectAttributes.addFlashAttribute("message", sb.toString());
 	}
-	
+
 	/**
 	 * 设置客户端成功响应
 	 */
@@ -111,7 +109,7 @@ public abstract class BaseController {
 	protected ResponseEntity<?> renderSuccess(Object data) {
 		return render(HttpStatus.OK, data);
 	}
-	
+
 	/**
 	 * 设置客户端响应
 	 */
@@ -131,12 +129,9 @@ public abstract class BaseController {
 		map.put("msg", status.getReasonPhrase());
 		return ResponseEntity.ok(map);
 	}
-	
+
 	/**
 	 * 客户端返回JSON字符串
-	 * @param response
-	 * @param object
-	 * @return
 	 */
 	protected String renderString(HttpServletResponse response, Object object) {
 		try {
@@ -194,5 +189,5 @@ public abstract class BaseController {
 //			}
 		});
 	}
-	
+
 }

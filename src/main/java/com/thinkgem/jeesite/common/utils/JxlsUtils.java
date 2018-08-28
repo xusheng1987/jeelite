@@ -2,12 +2,12 @@ package com.thinkgem.jeesite.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,8 +26,8 @@ public class JxlsUtils {
 	public static void exportExcel(InputStream is, OutputStream os, Map<String, Object> model) throws IOException {
 		Context context = PoiTransformer.createInitialContext();
 		if (model != null) {
-			for (String key : model.keySet()) {
-				context.putVar(key, model.get(key));
+			for (Entry<String, Object> e: model.entrySet()) {
+				context.putVar(e.getKey(), e.getValue());
 			}
 		}
 		JxlsHelper jxlsHelper = JxlsHelper.getInstance();
@@ -41,12 +41,12 @@ public class JxlsUtils {
 	}
 
 	public static void exportExcel(File xls, File out, Map<String, Object> model)
-			throws FileNotFoundException, IOException {
+			throws IOException {
 		exportExcel(new FileInputStream(xls), new FileOutputStream(out), model);
 	}
 
 	public static void exportExcel(HttpServletResponse response, String templateName, String fileName,
-			Map<String, Object> model) throws FileNotFoundException, IOException {
+			Map<String, Object> model) throws IOException {
 		File template = getTemplate(templateName);
 		if (template != null) {
 			// 让浏览器弹出文件下载框
@@ -59,8 +59,10 @@ public class JxlsUtils {
 		}
 	}
 
-	// 获取jxls模版文件
-	public static File getTemplate(String name) throws IOException {
+	/**
+	 *  获取jxls模版文件
+	 */
+	public static File getTemplate(String name) {
 		String templatePath = JxlsUtils.class.getClassLoader().getResource(TEMPLATE_PATH).getPath();
 		File template = new File(templatePath, name);
 		if (template.exists()) {

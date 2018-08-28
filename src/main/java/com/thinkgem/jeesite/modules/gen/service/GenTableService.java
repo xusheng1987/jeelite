@@ -34,6 +34,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 	@Autowired
 	private GenDataBaseDictDao genDataBaseDictDao;
 
+	@Override
 	public GenTable get(String id) {
 		GenTable genTable = super.selectById(id);
 		GenTableColumn genTableColumn = new GenTableColumn();
@@ -48,9 +49,6 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	/**
 	 * 获取物理数据表列表
-	 *
-	 * @param genTable
-	 * @return
 	 */
 	public List<GenTable> findTableListFormDb(GenTable genTable) {
 		return genDataBaseDictDao.findTableList(genTable);
@@ -58,9 +56,6 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	/**
 	 * 验证表名是否可用，如果已存在，则返回false
-	 *
-	 * @param genTable
-	 * @return
 	 */
 	public boolean checkTableName(String tableName) {
 		if (StringUtils.isBlank(tableName)) {
@@ -74,9 +69,6 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	/**
 	 * 获取物理数据表列表
-	 *
-	 * @param genTable
-	 * @return
 	 */
 	public GenTable getTableFormDb(GenTable genTable) {
 		// 如果有表名，则获取物理表
@@ -133,6 +125,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 		return genTable;
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void save(GenTable genTable) {
 		super.save(genTable);
@@ -147,6 +140,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 		}
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void delete(GenTable genTable) {
 		super.delete(genTable);

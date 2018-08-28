@@ -50,12 +50,14 @@ public class Office extends TreeEntity<Office> {
 		this.useable = useable;
 	}
 
+	@Override
 	@JsonBackReference
 	@NotNull
 	public Office getParent() {
 		return parent;
 	}
 
+	@Override
 	public void setParent(Office parent) {
 		this.parent = parent;
 	}
@@ -132,6 +134,7 @@ public class Office extends TreeEntity<Office> {
 		this.code = code;
 	}
 	
+	@Override
 	public String getParentId() {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
 	}

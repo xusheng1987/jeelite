@@ -33,7 +33,6 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  * @author calvin
  * @version 2013-01-15
  */
-@SuppressWarnings("rawtypes")
 public class JaxbMapper {
 
 	private static ConcurrentMap<Class, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class, JAXBContext>();
@@ -97,7 +96,6 @@ public class JaxbMapper {
 	/**
 	 * Xml->Java Object.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T fromXml(String xml, Class<T> clazz) {
 		try {
 			StringReader reader = new StringReader(xml);

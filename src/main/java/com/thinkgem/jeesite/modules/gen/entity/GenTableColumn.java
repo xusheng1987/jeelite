@@ -20,7 +20,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  */
 @TableName("gen_table_column")
 public class GenTableColumn extends DataEntity<GenTableColumn> {
-	
+
 	private static final long serialVersionUID = 1L;
 	@TableField(value="gen_table_id", el = "genTable.id")
 	private GenTable genTable;	// 归属表
@@ -46,7 +46,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	public GenTableColumn(String id){
 		super(id);
 	}
-	
+
 	public GenTableColumn(GenTable genTable){
 		this.genTable = genTable;
 	}
@@ -58,7 +58,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	public void setGenTable(GenTable genTable) {
 		this.genTable = genTable;
 	}
-	
+
 	@Length(min=1, max=200)
 	public String getName() {
 		return StringUtils.lowerCase(name);
@@ -174,15 +174,13 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 
 	/**
 	 * 获取列名和说明
-	 * @return
 	 */
 	public String getNameAndComments() {
 		return getName() + (comments == null ? "" : "  :  " + comments);
 	}
-	
+
 	/**
 	 * 获取字符串长度
-	 * @return
 	 */
 	public String getDataLength(){
 		String[] ss = StringUtils.split(StringUtils.substringBetween(getJdbcType(), "(", ")"), ",");
@@ -194,45 +192,40 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 
 	/**
 	 * 获取简写Java类型
-	 * @return
 	 */
 	public String getSimpleJavaType(){
 		if ("This".equals(getJavaType())){
 			return StringUtils.capitalize(genTable.getClassName());
 		}
-		return StringUtils.indexOf(getJavaType(), ".") != -1 
+		return StringUtils.indexOf(getJavaType(), ".") != -1
 				? StringUtils.substringAfterLast(getJavaType(), ".")
 						: getJavaType();
 	}
-	
+
 	/**
 	 * 获取简写Java字段
-	 * @return
 	 */
 	public String getSimpleJavaField(){
 		return StringUtils.substringBefore(getJavaField(), ".");
 	}
-	
+
 	/**
 	 * 获取Java字段，如果是对象，则获取对象.附加属性1
-	 * @return
 	 */
 	public String getJavaFieldId(){
 		return StringUtils.substringBefore(getJavaField(), "|");
 	}
-	
+
 	/**
 	 * 获取Java字段，如果是对象，则获取对象.附加属性2
-	 * @return
 	 */
 	public String getJavaFieldName(){
 		String[][] ss = getJavaFieldAttrs();
 		return ss.length>0 ? getSimpleJavaField()+"."+ss[0][0] : "";
 	}
-	
+
 	/**
 	 * 获取Java字段，所有属性名
-	 * @return
 	 */
 	public String[][] getJavaFieldAttrs(){
 		String[] ss = StringUtils.split(StringUtils.substringAfter(getJavaField(), "|"), "|");
@@ -245,10 +238,9 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		}
 		return sss;
 	}
-	
+
 	/**
 	 * 获取列注解列表
-	 * @return
 	 */
 	public List<String> getAnnotationList(){
 		List<String> list = Lists.newArrayList();
@@ -270,10 +262,9 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 获取简写列注解列表
-	 * @return
 	 */
 	public List<String> getSimpleAnnotationList(){
 		List<String> list = Lists.newArrayList();
@@ -282,10 +273,9 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 是否是基类字段
-	 * @return
 	 */
 	public Boolean getIsNotBaseField(){
 		return !StringUtils.equals(getSimpleJavaField(), "id")
@@ -296,10 +286,9 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 				&& !StringUtils.equals(getSimpleJavaField(), "updateDate")
 				&& !StringUtils.equals(getSimpleJavaField(), "delFlag");
 	}
-	
+
 	/**
 	 * 是否是项目本身的实体类
-	 * @return
 	 */
 	public Boolean getIsSelfType() {
 		return getJavaType().startsWith("com.thinkgem.jeesite");

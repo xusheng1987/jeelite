@@ -22,10 +22,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 @Transactional(readOnly = true)
 public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>> extends BaseService<M, T> {
 
+	@Override
 	@Transactional(readOnly = false)
 	public void save(T entity) {
-
-		@SuppressWarnings("unchecked")
 		Class<T> entityClass = Reflections.getClassGenricType(getClass(), 1);
 
 		// 如果没有设置父节点，则代表为跟节点，有则获取父节点实体

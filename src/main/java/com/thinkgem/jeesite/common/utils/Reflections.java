@@ -22,7 +22,6 @@ import org.springframework.util.Assert;
  * @author calvin
  * @version 2013-01-15
  */
-@SuppressWarnings("rawtypes")
 public class Reflections {
 	
 	private static final String SETTER_PREFIX = "set";
@@ -235,7 +234,6 @@ public class Reflections {
 	 * @param clazz The class to introspect
 	 * @return the first generic declaration, or Object.class if cannot be determined
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> Class<T> getClassGenricType(final Class clazz) {
 		return getClassGenricType(clazz, 0);
 	}

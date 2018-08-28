@@ -56,8 +56,6 @@ public class Exceptions {
 
 	/**
 	 * 在request中获取异常类
-	 * @param request
-	 * @return 
 	 */
 	public static Throwable getThrowable(HttpServletRequest request){
 		Throwable ex = null;
@@ -68,5 +66,5 @@ public class Exceptions {
 		}
 		return ex;
 	}
-	
+
 }

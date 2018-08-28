@@ -1,14 +1,17 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<%@ attribute name="name" type="java.lang.String" required="false" description="隐藏域名称"%>
+<%@ attribute name="name" type="java.lang.String" required="true" description="隐藏域名称"%>
+<%@ attribute name="hideBtn" type="java.lang.Boolean" required="false" description="是否隐藏按钮"%>
 <div class="layui-input-inline">
 	<div id="${name}Img" style="display:none">
-		<img class="layui-upload-img" style="height:100px" id="${name}Preview">
+		<a href="javascript:void(0);" target="_blank" id="${name}Href"><img class="layui-upload-img" style="height:100px" id="${name}Preview"></a>
 		<p id="${name}errorText" style="margin-top:10px;margin-bottom:10px"></p>
 	</div>
+	<c:if test="${!hideBtn}">
 	<button type="button" class="layui-btn layui-btn-danger" id="${name}Btn">
 		<i class="layui-icon layui-icon-upload"></i>上传图片
 	</button>
+	</c:if>
 	<form:hidden path="${name}" htmlEscape="false"/>
 </div>
 <script type="text/javascript">
@@ -16,6 +19,7 @@
 		if($("#${name}").val()) {//显示头像
 			$("#${name}Img").show();
 			$('#${name}Preview').attr('src', "${ctp}"+$("#${name}").val());
+			$('#${name}Href').attr('href', "${ctp}"+$("#${name}").val());
 		}
 		var upload = layui.upload;
 		//执行实例
@@ -38,7 +42,8 @@
 			      layer.msg('上传失败');
 		      } else {
 			      $("#${name}").val(res.src);
-		      }
+                  $('#${name}Href').attr('href', "${ctp}"+$("#${name}").val());
+              }
 		      layer.closeAll('loading'); //关闭loading
 		    }
 		    ,error: function(){

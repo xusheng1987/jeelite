@@ -28,7 +28,6 @@ public class Collections3 {
 	 * @param keyPropertyName 要提取为Map中的Key值的属性名.
 	 * @param valuePropertyName 要提取为Map中的Value值的属性名.
 	 */
-	@SuppressWarnings("unchecked")
 	public static Map extractToMap(final Collection collection, final String keyPropertyName,
 			final String valuePropertyName) {
 		Map map = new HashMap(collection.size());
@@ -51,7 +50,6 @@ public class Collections3 {
 	 * @param collection 来源集合.
 	 * @param propertyName 要提取的属性名.
 	 */
-	@SuppressWarnings("unchecked")
 	public static List extractToList(final Collection collection, final String propertyName) {
 		List list = new ArrayList(collection.size());
 

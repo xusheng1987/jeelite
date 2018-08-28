@@ -40,7 +40,9 @@ public class Role extends DataEntity<Role> {
 	@TableField(exist=false)
 	private List<Office> officeList = Lists.newArrayList(); // 按明细设置数据范围
 
-	// 数据范围（1：所有数据；2：所在公司及以下数据；3：所在公司数据；4：所在部门及以下数据；5：所在部门数据；8：仅本人数据；9：按明细设置）
+	/**
+	 *  数据范围（1：所有数据；2：所在公司及以下数据；3：所在公司数据；4：所在部门及以下数据；5：所在部门数据；8：仅本人数据；9：按明细设置）
+	 */
 	public static final String DATA_SCOPE_ALL = "1";
 	public static final String DATA_SCOPE_COMPANY_AND_CHILD = "2";
 	public static final String DATA_SCOPE_COMPANY = "3";
@@ -198,6 +200,11 @@ public class Role extends DataEntity<Role> {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }

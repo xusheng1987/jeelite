@@ -21,8 +21,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -45,8 +43,6 @@ import com.thinkgem.jeesite.modules.sys.web.LoginController;
 @Service
 public class SystemAuthorizingRealm extends AuthorizingRealm {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	
 	private UserService userService;
 	
 	public SystemAuthorizingRealm() {
@@ -59,12 +55,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		
-		int activeSessionSize = getUserService().getSessionDao().getActiveSessions(false).size();
-		if (logger.isDebugEnabled()){
-			logger.debug("login submit, active session size: {}, username: {}", activeSessionSize, token.getUsername());
-		}
-		
 		// 校验登录验证码
 		if (LoginController.isValidateCodeLogin(token.getUsername(), false, false)){
 			Session session = UserUtils.getSession();

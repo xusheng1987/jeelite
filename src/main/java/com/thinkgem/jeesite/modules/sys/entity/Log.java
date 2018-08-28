@@ -6,8 +6,6 @@ package com.thinkgem.jeesite.modules.sys.entity;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.thinkgem.jeesite.common.persistence.BaseEntity;
@@ -40,8 +38,11 @@ public class Log extends BaseEntity<Log> {
 	@TableField(el = "createBy.id")
 	private User createBy; // 创建者
 	private Date createDate; // 创建日期
+	private Integer costTime; // 请求耗时(毫秒)
 
-	// 日志类型（1：接入日志；2：错误日志）
+	/**
+	 *  日志类型（1：接入日志；2：错误日志）
+	 */
 	public static final String TYPE_ACCESS = "1";
 	public static final String TYPE_EXCEPTION = "2";
 
@@ -149,28 +150,29 @@ public class Log extends BaseEntity<Log> {
 		this.createDate = createDate;
 	}
 
+	public Integer getCostTime() {
+		return costTime;
+	}
+
+	public void setCostTime(Integer costTime) {
+		this.costTime = costTime;
+	}
+
 	/**
 	 * 设置请求参数
 	 * 
-	 * @param paramMap
 	 */
-	@SuppressWarnings("hiding")
-	public void setParams(Map paramMap) {
+	public void setParams(Map<String, String[]> paramMap) {
 		if (paramMap == null) {
 			return;
 		}
-		StringBuilder params = new StringBuilder();
-		for (Map.Entry<String, String[]> param : ((Map<String, String[]>) paramMap).entrySet()) {
-			params.append(("".equals(params.toString()) ? "" : "&") + param.getKey() + "=");
+		StringBuilder sb = new StringBuilder();
+		for (Map.Entry<String, String[]> param : paramMap.entrySet()) {
+			sb.append(("".equals(sb.toString()) ? "" : "&") + param.getKey() + "=");
 			String paramValue = (param.getValue() != null && param.getValue().length > 0 ? param.getValue()[0] : "");
-			params.append(StringUtils.abbreviate(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue,
+			sb.append(StringUtils.abbreviate(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue,
 					100));
 		}
-		this.params = params.toString();
-	}
-
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
+		this.params = sb.toString();
 	}
 }

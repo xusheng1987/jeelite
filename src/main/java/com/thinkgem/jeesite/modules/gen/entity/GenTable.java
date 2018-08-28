@@ -20,7 +20,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  */
 @TableName("gen_table")
 public class GenTable extends DataEntity<GenTable> {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String name; 	// 名称
 	private String comments;		// 描述
@@ -33,15 +33,15 @@ public class GenTable extends DataEntity<GenTable> {
 
 	@TableField(exist=false)
 	private String nameLike; 	// 按名称模糊查询
-	
+
 	@TableField(exist=false)
 	private List<String> pkList; // 当前表主键列表
-	
+
 	@TableField(exist=false)
 	private GenTable parent;	// 父表对象
 	@TableField(exist=false)
 	private List<GenTable> childList = Lists.newArrayList();	// 子表列表
-	
+
 	public GenTable() {
 		super();
 	}
@@ -130,10 +130,9 @@ public class GenTable extends DataEntity<GenTable> {
 	public void setChildList(List<GenTable> childList) {
 		this.childList = childList;
 	}
-	
+
 	/**
 	 * 获取列名和说明
-	 * @return
 	 */
 	public String getNameAndComments() {
 		return getName() + (comments == null ? "" : "  :  " + comments);
@@ -141,7 +140,6 @@ public class GenTable extends DataEntity<GenTable> {
 
 	/**
 	 * 获取导入依赖包字符串
-	 * @return
 	 */
 	public List<String> getImportList(){
 		List<String> importList = Lists.newArrayList(); // 引用列表
@@ -176,10 +174,9 @@ public class GenTable extends DataEntity<GenTable> {
 		importList.add("com.baomidou.mybatisplus.annotations.TableName");
 		return importList;
 	}
-	
+
 	/**
 	 * 是否存在父类
-	 * @return
 	 */
 	public Boolean getParentExists(){
 		return parent != null && StringUtils.isNotBlank(parentTable) && StringUtils.isNotBlank(parentTableFk);
@@ -187,7 +184,6 @@ public class GenTable extends DataEntity<GenTable> {
 
 	/**
 	 * 是否存在create_date列
-	 * @return
 	 */
 	public Boolean getCreateDateExists(){
 		for (GenTableColumn c : columnList){
@@ -197,10 +193,9 @@ public class GenTable extends DataEntity<GenTable> {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 是否存在update_date列
-	 * @return
 	 */
 	public Boolean getUpdateDateExists(){
 		for (GenTableColumn c : columnList){
@@ -213,7 +208,6 @@ public class GenTable extends DataEntity<GenTable> {
 
 	/**
 	 * 是否存在del_flag列
-	 * @return
 	 */
 	public Boolean getDelFlagExists(){
 		for (GenTableColumn c : columnList){
@@ -224,5 +218,3 @@ public class GenTable extends DataEntity<GenTable> {
 		return false;
 	}
 }
-
-

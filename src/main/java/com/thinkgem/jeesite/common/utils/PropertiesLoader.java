@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2005-2011 springside.org.cn
- * 
+ *
  * $Id: PropertiesLoader.java 1690 2012-02-22 13:42:00Z calvinxiu $
  */
 package com.thinkgem.jeesite.common.utils;
@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -135,18 +134,11 @@ public class PropertiesLoader {
 		Properties props = new Properties();
 
 		for (String location : resourcesPaths) {
-
-//			logger.debug("Loading properties file from:" + location);
-
-			InputStream is = null;
-			try {
-				Resource resource = resourceLoader.getResource(location);
-				is = resource.getInputStream();
+			Resource resource = resourceLoader.getResource(location);
+			try (InputStream is = resource.getInputStream()) {
 				props.load(is);
 			} catch (IOException ex) {
-				logger.info("Could not load properties from path:" + location + ", " + ex.getMessage());
-			} finally {
-				IOUtils.closeQuietly(is);
+				logger.error("Could not load properties from path:" + location + ", " + ex.getMessage());
 			}
 		}
 		return props;

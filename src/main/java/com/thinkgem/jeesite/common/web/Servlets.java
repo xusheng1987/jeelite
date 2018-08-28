@@ -25,8 +25,10 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  */
 public class Servlets {
 
-	// 静态文件后缀
-	private final static String[] staticFiles = StringUtils.split(Global.getConfig("web.staticFile"), ",");
+	/**
+	 *  静态文件后缀
+	 */
+	private final static String[] STATIC_FILES = StringUtils.split(Global.getConfig("web.staticFile"), ",");
 
 	/**
 	 * 设置客户端缓存过期时间 的Header.
@@ -58,9 +60,8 @@ public class Servlets {
 
 	/**
 	 * 根据浏览器If-Modified-Since Header, 计算文件是否已被修改.
-	 * 
 	 * 如果无修改, checkIfModify返回false ,设置304 not modify status.
-	 * 
+	 *
 	 * @param lastModified 内容的最后修改时间.
 	 */
 	public static boolean checkIfModifiedSince(HttpServletRequest request, HttpServletResponse response,
@@ -75,7 +76,7 @@ public class Servlets {
 
 	/**
 	 * 设置让浏览器弹出下载对话框的Header.
-	 * 
+	 *
 	 * @param fileName 下载后的文件名.
 	 */
 	public static void setFileDownloadHeader(HttpServletResponse response, String fileName) {
@@ -95,24 +96,22 @@ public class Servlets {
 		String encode = userName + ":" + password;
 		return "Basic " + Encodes.encodeBase64(encode.getBytes());
 	}
-	
+
 	/**
 	 * 是否是Ajax异步请求
-	 * @param request
 	 */
 	public static boolean isAjaxRequest(HttpServletRequest request){
-		
+
 		String accept = request.getHeader("accept");
 		String xRequestedWith = request.getHeader("X-Requested-With");
 
 		// 如果是异步请求，则直接返回信息
-		return ((accept != null && accept.indexOf("application/json") != -1 
+		return ((accept != null && accept.indexOf("application/json") != -1
 			|| (xRequestedWith != null && xRequestedWith.indexOf("XMLHttpRequest") != -1)));
 	}
-	
+
 	/**
 	 * 获取当前请求对象
-	 * @return
 	 */
 	public static HttpServletRequest getRequest(){
 		try{
@@ -126,7 +125,7 @@ public class Servlets {
      * 判断访问URI是否是静态文件请求
      */
     public static boolean isStaticFile(String uri){
-		if (StringUtils.endsWithAny(uri, staticFiles) && !StringUtils.endsWithAny(uri, ".html")
+		if (StringUtils.endsWithAny(uri, STATIC_FILES) && !StringUtils.endsWithAny(uri, ".html")
 				&& !StringUtils.endsWithAny(uri, ".jsp") && !StringUtils.endsWithAny(uri, ".java")){
 			return true;
 		}

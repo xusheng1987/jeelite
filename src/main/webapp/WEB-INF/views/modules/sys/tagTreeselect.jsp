@@ -1,10 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>数据选择</title>
-	<meta name="decorator" content="default"/>
-	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
+<%@ include file="/WEB-INF/views/include/treeview.jsp" %>
 	<script type="text/javascript">
 		var key, lastValue = "", nodeList = [], type = getQueryString("type", "${url}");
 		var tree, setting = {view:{selectedMulti:false,dblClickExpand:false},check:{enable:"${checked}",nocheckInherit:true},
@@ -169,10 +165,7 @@
 			$("#txt").toggle();
 			$("#key").focus();
 		}
-
 	</script>
-</head>
-<body>
 	<div style="position:absolute;right:8px;top:5px;cursor:pointer;" onclick="search();">
 		<i class="icon-search"></i><label id="txt">搜索</label>
 	</div>
@@ -186,4 +179,3 @@
 		</div>
 	</div>
 	<div id="tree" class="ztree" style="padding:15px 20px;"></div>
-</body>

@@ -26,7 +26,7 @@ import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principa
 
 /**
  * 用户工具类
- * 
+ *
  * @author ThinkGem
  * @version 2013-12-05
  */
@@ -50,9 +50,6 @@ public class UserUtils {
 
 	/**
 	 * 根据ID获取用户
-	 * 
-	 * @param id
-	 * @return 取不到返回null
 	 */
 	public static User get(String id) {
 		User user = (User) CacheUtils.get(USER_CACHE, USER_CACHE_ID_ + id);
@@ -70,9 +67,6 @@ public class UserUtils {
 
 	/**
 	 * 根据登录名获取用户
-	 * 
-	 * @param loginName
-	 * @return 取不到返回null
 	 */
 	public static User getByLoginName(String loginName) {
 		User user = (User) CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginName);
@@ -102,8 +96,6 @@ public class UserUtils {
 
 	/**
 	 * 清除指定用户缓存
-	 * 
-	 * @param user
 	 */
 	public static void clearCache(User user) {
 		CacheUtils.remove(USER_CACHE, USER_CACHE_ID_ + user.getId());
@@ -116,8 +108,6 @@ public class UserUtils {
 
 	/**
 	 * 获取当前用户
-	 * 
-	 * @return 取不到返回 new User()
 	 */
 	public static User getUser() {
 		Principal principal = getPrincipal();
@@ -134,8 +124,6 @@ public class UserUtils {
 
 	/**
 	 * 获取当前用户角色列表
-	 * 
-	 * @return
 	 */
 	public static List<Role> getRoleList() {
 		List<Role> roleList = (List<Role>) getCache(CACHE_ROLE_LIST);
@@ -155,8 +143,6 @@ public class UserUtils {
 
 	/**
 	 * 获取当前用户授权菜单
-	 * 
-	 * @return
 	 */
 	public static List<Menu> getMenuList() {
 		List<Menu> menuList = (List<Menu>) getCache(CACHE_MENU_LIST);
@@ -176,8 +162,6 @@ public class UserUtils {
 
 	/**
 	 * 获取当前用户有权限访问的部门
-	 * 
-	 * @return
 	 */
 	public static List<Office> getOfficeList() {
 		List<Office> officeList = (List<Office>) getCache(CACHE_OFFICE_LIST);
@@ -197,8 +181,6 @@ public class UserUtils {
 
 	/**
 	 * 获取当前用户有权限访问的部门
-	 * 
-	 * @return
 	 */
 	public static List<Office> getOfficeAllList() {
 		List<Office> officeList = (List<Office>) getCache(CACHE_OFFICE_ALL_LIST);
@@ -225,7 +207,6 @@ public class UserUtils {
 			if (principal != null) {
 				return principal;
 			}
-			// subject.logout();
 		} catch (UnavailableSecurityManagerException e) {
 
 		} catch (InvalidSessionException e) {
@@ -244,7 +225,6 @@ public class UserUtils {
 			if (session != null) {
 				return session;
 			}
-			// subject.logout();
 		} catch (InvalidSessionException e) {
 
 		}

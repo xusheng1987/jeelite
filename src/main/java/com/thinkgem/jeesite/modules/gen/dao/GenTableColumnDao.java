@@ -14,6 +14,6 @@ import com.thinkgem.jeesite.modules.gen.entity.GenTableColumn;
  */
 @MyBatisDao
 public interface GenTableColumnDao extends CrudDao<GenTableColumn> {
-	
-	public void deleteByGenTableId(String genTableId);
+
+	void deleteByGenTableId(String genTableId);
 }

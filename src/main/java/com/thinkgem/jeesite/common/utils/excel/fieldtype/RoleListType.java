@@ -43,7 +43,6 @@ public class RoleListType {
 	 */
 	public static String setValue(Object val) {
 		if (val != null) {
-			@SuppressWarnings("unchecked")
 			List<Role> roleList = (List<Role>) val;
 			return Collections3.extractToString(roleList, "name", ", ");
 		}

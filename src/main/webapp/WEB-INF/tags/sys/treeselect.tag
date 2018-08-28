@@ -31,44 +31,46 @@
 		if ($("#${id}Button").hasClass("layui-btn-disabled")){
 			return true;
 		}
-		top.layer.open({
-			type: 2,
-			title: "选择${title}",
-			area: ['300px', '420px'],//宽高
-			content: "${ctx}/tag/treeselect?url="+encodeURIComponent("${url}")+"&checked=${checked}&extId=${extId}&isAll=${isAll}&selectIds="+$("#${id}Id").val(),
-			btn: ["确定"${allowClear?",\"清除\"":""}],// FIXME layer的限制，此处暂时不显示关闭按钮
-			yes: function(index, layero){//确定按钮的回调
-				var tree = layero.find("iframe")[0].contentWindow.tree;
-				var ids = [], names = [], nodes = [];
-				if ("${checked}" == "true"){
-					nodes = tree.getCheckedNodes(true);
-				}else{
-					nodes = tree.getSelectedNodes();
+		$.get("${ctx}/tag/treeselect?url="+encodeURIComponent("${url}")+"&checked=${checked}&extId=${extId}&isAll=${isAll}&selectIds="+$("#${id}Id").val(), function (result) {
+			layer.open({
+				type: 1,
+				title: "选择${title}",
+				area: ['300px', '420px'],//宽高
+				content: result,
+				btn: ["确定"${allowClear?",\"清除\"":""}],// FIXME layer的限制，此处暂时不显示关闭按钮
+				yes: function(index, layero){//确定按钮的回调
+					var ids = [], names = [], nodes = [];
+					if ("${checked}" == "true"){
+						nodes = tree.getCheckedNodes(true);
+					}else{
+						nodes = tree.getSelectedNodes();
+					}
+					for(var i=0; i<nodes.length; i++) {//<c:if test="${checked && notAllowSelectParent}">
+						if (nodes[i].isParent){
+							continue; // 如果为复选框选择，则过滤掉父节点
+						}//</c:if><c:if test="${notAllowSelectRoot}">
+						if (nodes[i].level == 0){
+							layer.msg("不能选择根节点（"+nodes[i].name+"）请重新选择。");
+							return false;
+						}//</c:if><c:if test="${notAllowSelectParent}">
+						if (nodes[i].isParent){
+							layer.msg("不能选择父节点（"+nodes[i].name+"）请重新选择。");
+							return false;
+						}//</c:if>
+						ids.push(nodes[i].id);
+						names.push(nodes[i].name);//<c:if test="${!checked}">
+						break; // 如果为非复选框选择，则返回第一个选择  </c:if>
+					}
+					$("#${id}Id").val(ids.join(",").replace(/u_/ig,""));
+					$("#${id}Name").val(names.join(","));
+					$("#${id}Id").trigger("change");
+					layer.close(index);
+				},
+				btn2: function(index, layero){//清除按钮的回调
+					$("#${id}Id").val("");
+					$("#${id}Name").val("");
 				}
-				for(var i=0; i<nodes.length; i++) {//<c:if test="${checked && notAllowSelectParent}">
-					if (nodes[i].isParent){
-						continue; // 如果为复选框选择，则过滤掉父节点
-					}//</c:if><c:if test="${notAllowSelectRoot}">
-					if (nodes[i].level == 0){
-						top.layer.msg("不能选择根节点（"+nodes[i].name+"）请重新选择。");
-						return false;
-					}//</c:if><c:if test="${notAllowSelectParent}">
-					if (nodes[i].isParent){
-						top.layer.msg("不能选择父节点（"+nodes[i].name+"）请重新选择。");
-						return false;
-					}//</c:if>
-					ids.push(nodes[i].id);
-					names.push(nodes[i].name);//<c:if test="${!checked}">
-					break; // 如果为非复选框选择，则返回第一个选择  </c:if>
-				}
-				$("#${id}Id").val(ids.join(",").replace(/u_/ig,""));
-				$("#${id}Name").val(names.join(","));
-				top.layer.close(index);
-			},
-			btn2: function(index, layero){//清除按钮的回调
-				$("#${id}Id").val("");
-				$("#${id}Name").val("");
-			}
-		}); 
+			}); 
+		});
 	});
 </script>

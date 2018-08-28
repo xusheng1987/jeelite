@@ -117,25 +117,10 @@ public abstract class BaseEntity<T> implements Serializable {
 	}
 
     @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (!getClass().equals(obj.getClass())) {
-            return false;
-        }
-        BaseEntity<?> that = (BaseEntity<?>) obj;
-        return null == this.getId() ? false : this.getId().equals(that.getId());
-    }
-    
-    @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
-    
+
 	/**
 	 * 删除标记（0：正常；1：删除；2：审核；）
 	 */

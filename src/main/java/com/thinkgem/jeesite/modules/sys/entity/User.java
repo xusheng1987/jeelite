@@ -187,11 +187,13 @@ public class User extends DataEntity<User> {
 		this.mobile = mobile;
 	}
 
+	@Override
 	@ExcelField(title="备注", align=1, sort=900)
 	public String getRemarks() {
 		return remarks;
 	}
 	
+	@Override
 	@ExcelField(title="创建时间", type=0, align=1, sort=90)
 	public Date getCreateDate() {
 		return createDate;

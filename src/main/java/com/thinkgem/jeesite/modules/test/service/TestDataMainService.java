@@ -27,12 +27,14 @@ public class TestDataMainService extends BaseService<TestDataMainDao, TestDataMa
 	@Autowired
 	private TestDataChildDao testDataChildDao;
 
+	@Override
 	public TestDataMain get(String id) {
 		TestDataMain testDataMain = super.get(id);
 		testDataMain.setTestDataChildList(testDataChildDao.findList(new TestDataChild(testDataMain)));
 		return testDataMain;
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void save(TestDataMain testDataMain) {
 		super.save(testDataMain);
@@ -53,6 +55,7 @@ public class TestDataMainService extends BaseService<TestDataMainDao, TestDataMa
 		}
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void delete(TestDataMain testDataMain) {
 		super.delete(testDataMain);

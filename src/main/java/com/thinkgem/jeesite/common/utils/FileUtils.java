@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
  * @version 2015-3-16
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
 	/**
@@ -53,12 +53,12 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		File srcFile = new File(srcFileName);
 		// 判断源文件是否存在
 		if (!srcFile.exists()) {
-			logger.debug("复制文件失败，源文件 " + srcFileName + " 不存在!");
+			logger.warn("复制文件失败，源文件 " + srcFileName + " 不存在!");
 			return false;
 		}
 		// 判断源文件是否是合法的文件
 		else if (!srcFile.isFile()) {
-			logger.debug("复制文件失败，" + srcFileName + " 不是一个文件!");
+			logger.warn("复制文件失败，" + srcFileName + " 不是一个文件!");
 			return false;
 		}
 		File descFile = new File(descFileName);
@@ -66,22 +66,19 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		if (descFile.exists()) {
 			// 如果目标文件存在，并且允许覆盖
 			if (coverlay) {
-				logger.debug("目标文件已存在，准备删除!");
 				if (!FileUtils.delFile(descFileName)) {
-					logger.debug("删除目标文件 " + descFileName + " 失败!");
+					logger.warn("删除目标文件 " + descFileName + " 失败!");
 					return false;
 				}
 			} else {
-				logger.debug("复制文件失败，目标文件 " + descFileName + " 已存在!");
+				logger.warn("复制文件失败，目标文件 " + descFileName + " 已存在!");
 				return false;
 			}
 		} else {
 			if (!descFile.getParentFile().exists()) {
 				// 如果目标文件所在的目录不存在，则创建目录
-				logger.debug("目标文件所在的目录不存在，创建目录!");
-				// 创建目标文件所在的目录
 				if (!descFile.getParentFile().mkdirs()) {
-					logger.debug("创建目标文件所在的目录失败!");
+					logger.warn("创建目标文件所在的目录失败!");
 					return false;
 				}
 			}
@@ -89,42 +86,19 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
 		// 准备复制文件
 		// 读取的位数
-		int readByte = 0;
-		InputStream ins = null;
-		OutputStream outs = null;
-		try {
-			// 打开源文件
-			ins = new FileInputStream(srcFile);
-			// 打开目标文件的输出流
-			outs = new FileOutputStream(descFile);
+		try (InputStream ins = new FileInputStream(srcFile);// 打开源文件
+			OutputStream outs = new FileOutputStream(descFile)) {// 打开目标文件的输出流
 			byte[] buf = new byte[1024];
+			int readByte = 0;
 			// 一次读取1024个字节，当readByte为-1时表示文件已经读取完毕
 			while ((readByte = ins.read(buf)) != -1) {
 				// 将读取的字节流写入到输出流
 				outs.write(buf, 0, readByte);
 			}
-			logger.debug("复制单个文件 " + srcFileName + " 到" + descFileName
-					+ "成功!");
 			return true;
 		} catch (Exception e) {
-			logger.debug("复制文件失败：" + e.getMessage());
+			logger.warn("复制文件失败：" + e.getMessage());
 			return false;
-		} finally {
-			// 关闭输入输出流，首先关闭输出流，然后再关闭输入流
-			if (outs != null) {
-				try {
-					outs.close();
-				} catch (IOException oute) {
-					oute.printStackTrace();
-				}
-			}
-			if (ins != null) {
-				try {
-					ins.close();
-				} catch (IOException ine) {
-					ine.printStackTrace();
-				}
-			}
 		}
 	}
 
@@ -140,7 +114,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	}
 
 	/**
-	 * 复制整个目录的内容 
+	 * 复制整个目录的内容
 	 * @param srcDirName 源目录名
 	 * @param descDirName 目标目录名
 	 * @param coverlay 如果目标目录存在，是否覆盖
@@ -151,12 +125,12 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		File srcDir = new File(srcDirName);
 		// 判断源目录是否存在
 		if (!srcDir.exists()) {
-			logger.debug("复制目录失败，源目录 " + srcDirName + " 不存在!");
+			logger.warn("复制目录失败，源目录 " + srcDirName + " 不存在!");
 			return false;
 		}
 		// 判断源目录是否是目录
 		else if (!srcDir.isDirectory()) {
-			logger.debug("复制目录失败，" + srcDirName + " 不是一个目录!");
+			logger.warn("复制目录失败，" + srcDirName + " 不是一个目录!");
 			return false;
 		}
 		// 如果目标文件夹名不以文件分隔符结尾，自动添加文件分隔符
@@ -169,20 +143,18 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		if (descDir.exists()) {
 			if (coverlay) {
 				// 允许覆盖目标目录
-				logger.debug("目标目录已存在，准备删除!");
 				if (!FileUtils.delFile(descDirNames)) {
-					logger.debug("删除目录 " + descDirNames + " 失败!");
+					logger.warn("删除目录 " + descDirNames + " 失败!");
 					return false;
 				}
 			} else {
-				logger.debug("目标目录复制失败，目标目录 " + descDirNames + " 已存在!");
+				logger.warn("目标目录复制失败，目标目录 " + descDirNames + " 已存在!");
 				return false;
 			}
 		} else {
 			// 创建目标目录
-			logger.debug("目标目录不存在，准备创建!");
 			if (!descDir.mkdirs()) {
-				logger.debug("创建目标目录失败!");
+				logger.warn("创建目标目录失败!");
 				return false;
 			}
 
@@ -213,25 +185,23 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 
 		if (!flag) {
-			logger.debug("复制目录 " + srcDirName + " 到 " + descDirName + " 失败!");
+			logger.warn("复制目录 " + srcDirName + " 到 " + descDirName + " 失败!");
 			return false;
 		}
-		logger.debug("复制目录 " + srcDirName + " 到 " + descDirName + " 成功!");
 		return true;
-
 	}
 
 	/**
-	 * 
+	 *
 	 * 删除文件，可以删除单个文件或文件夹
-	 * 
+	 *
 	 * @param fileName 被删除的文件名
 	 * @return 如果删除成功，则返回true，否是返回false
 	 */
 	public static boolean delFile(String fileName) {
  		File file = new File(fileName);
 		if (!file.exists()) {
-			logger.debug(fileName + " 文件不存在!");
+			logger.warn(fileName + " 文件不存在!");
 			return true;
 		} else {
 			if (file.isFile()) {
@@ -243,9 +213,9 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	}
 
 	/**
-	 * 
+	 *
 	 * 删除单个文件
-	 * 
+	 *
 	 * @param fileName 被删除的文件名
 	 * @return 如果删除成功，则返回true，否则返回false
 	 */
@@ -253,22 +223,21 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		File file = new File(fileName);
 		if (file.exists() && file.isFile()) {
 			if (file.delete()) {
-				logger.debug("删除文件 " + fileName + " 成功!");
 				return true;
 			} else {
-				logger.debug("删除文件 " + fileName + " 失败!");
+				logger.warn("删除文件 " + fileName + " 失败!");
 				return false;
 			}
 		} else {
-			logger.debug(fileName + " 文件不存在!");
+			logger.warn(fileName + " 文件不存在!");
 			return true;
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * 删除目录及目录下的文件
-	 * 
+	 *
 	 * @param dirName 被删除的目录所在的文件路径
 	 * @return 如果目录删除成功，则返回true，否则返回false
 	 */
@@ -279,7 +248,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 		File dirFile = new File(dirNames);
 		if (!dirFile.exists() || !dirFile.isDirectory()) {
-			logger.debug(dirNames + " 目录不存在!");
+			logger.warn(dirNames + " 目录不存在!");
 			return true;
 		}
 		boolean flag = true;
@@ -306,15 +275,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 
 		if (!flag) {
-			logger.debug("删除目录失败!");
+			logger.warn("删除目录失败!");
 			return false;
 		}
 		// 删除当前目录
 		if (dirFile.delete()) {
-			logger.debug("删除目录 " + dirName + " 成功!");
 			return true;
 		} else {
-			logger.debug("删除目录 " + dirName + " 失败!");
+			logger.warn("删除目录 " + dirName + " 失败!");
 			return false;
 		}
 
@@ -328,17 +296,17 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	public static boolean createFile(String descFileName) {
 		File file = new File(descFileName);
 		if (file.exists()) {
-			logger.debug("文件 " + descFileName + " 已存在!");
+			logger.warn("文件 " + descFileName + " 已存在!");
 			return false;
 		}
 		if (descFileName.endsWith(File.separator)) {
-			logger.debug(descFileName + " 为目录，不能创建目录!");
+			logger.warn(descFileName + " 为目录，不能创建目录!");
 			return false;
 		}
 		if (!file.getParentFile().exists()) {
 			// 如果文件所在的目录不存在，则创建目录
 			if (!file.getParentFile().mkdirs()) {
-				logger.debug("创建文件所在的目录失败!");
+				logger.warn("创建文件所在的目录失败!");
 				return false;
 			}
 		}
@@ -346,15 +314,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		// 创建文件
 		try {
 			if (file.createNewFile()) {
-				logger.debug(descFileName + " 文件创建成功!");
 				return true;
 			} else {
-				logger.debug(descFileName + " 文件创建失败!");
+				logger.warn(descFileName + " 文件创建失败!");
 				return false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.debug(descFileName + " 文件创建失败!");
+			logger.warn(descFileName + " 文件创建失败!");
 			return false;
 		}
 
@@ -372,15 +339,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 		File descDir = new File(descDirNames);
 		if (descDir.exists()) {
-			logger.debug("目录 " + descDirNames + " 已存在!");
+			logger.warn("目录 " + descDirNames + " 已存在!");
 			return false;
 		}
 		// 创建目录
 		if (descDir.mkdirs()) {
-			logger.debug("目录 " + descDirNames + " 创建成功!");
 			return true;
 		} else {
-			logger.debug("目录 " + descDirNames + " 创建失败!");
+			logger.warn("目录 " + descDirNames + " 创建失败!");
 			return false;
 		}
 
@@ -393,9 +359,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	public static void writeToFile(String fileName, String content, boolean append) {
 		try {
 			FileUtils.write(new File(fileName), content, "utf-8", append);
-			logger.debug("文件 " + fileName + " 写入成功!");
 		} catch (IOException e) {
-			logger.debug("文件 " + fileName + " 写入失败! " + e.getMessage());
+			logger.error("文件 " + fileName + " 写入失败! " + e.getMessage());
 		}
 	}
 
@@ -406,9 +371,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	public static void writeToFile(String fileName, String content, String encoding, boolean append) {
 		try {
 			FileUtils.write(new File(fileName), content, encoding, append);
-			logger.debug("文件 " + fileName + " 写入成功!");
 		} catch (IOException e) {
-			logger.debug("文件 " + fileName + " 写入失败! " + e.getMessage());
+			logger.error("文件 " + fileName + " 写入失败! " + e.getMessage());
 		}
 	}
 
@@ -419,125 +383,126 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 */
 	public static String getContentType(String returnFileName) {
 		String contentType = "application/octet-stream";
-		if (returnFileName.lastIndexOf(".") < 0)
+		if (returnFileName.lastIndexOf(".") < 0) {
 			return contentType;
+		}
 		returnFileName = returnFileName.toLowerCase();
 		returnFileName = returnFileName.substring(returnFileName.lastIndexOf(".") + 1);
-		if (returnFileName.equals("html") || returnFileName.equals("htm") || returnFileName.equals("shtml")) {
+		if ("html".equals(returnFileName) || "htm".equals(returnFileName) || "shtml".equals(returnFileName)) {
 			contentType = "text/html";
-		} else if (returnFileName.equals("apk")) {
+		} else if ("apk".equals(returnFileName)) {
 			contentType = "application/vnd.android.package-archive";
-		} else if (returnFileName.equals("sis")) {
+		} else if ("sis".equals(returnFileName)) {
 			contentType = "application/vnd.symbian.install";
-		} else if (returnFileName.equals("sisx")) {
+		} else if ("sisx".equals(returnFileName)) {
 			contentType = "application/vnd.symbian.install";
-		} else if (returnFileName.equals("exe")) {
+		} else if ("exe".equals(returnFileName)) {
 			contentType = "application/x-msdownload";
-		} else if (returnFileName.equals("msi")) {
+		} else if ("msi".equals(returnFileName)) {
 			contentType = "application/x-msdownload";
-		} else if (returnFileName.equals("css")) {
+		} else if ("css".equals(returnFileName)) {
 			contentType = "text/css";
-		} else if (returnFileName.equals("xml")) {
+		} else if ("xml".equals(returnFileName)) {
 			contentType = "text/xml";
-		} else if (returnFileName.equals("gif")) {
+		} else if ("gif".equals(returnFileName)) {
 			contentType = "image/gif";
-		} else if (returnFileName.equals("jpeg") || returnFileName.equals("jpg")) {
+		} else if ("jpeg".equals(returnFileName) || "jpg".equals(returnFileName)) {
 			contentType = "image/jpeg";
-		} else if (returnFileName.equals("js")) {
+		} else if ("js".equals(returnFileName)) {
 			contentType = "application/x-javascript";
-		} else if (returnFileName.equals("atom")) {
+		} else if ("atom".equals(returnFileName)) {
 			contentType = "application/atom+xml";
-		} else if (returnFileName.equals("rss")) {
+		} else if ("rss".equals(returnFileName)) {
 			contentType = "application/rss+xml";
-		} else if (returnFileName.equals("mml")) {
+		} else if ("mml".equals(returnFileName)) {
 			contentType = "text/mathml";
-		} else if (returnFileName.equals("txt")) {
+		} else if ("txt".equals(returnFileName)) {
 			contentType = "text/plain";
-		} else if (returnFileName.equals("jad")) {
+		} else if ("jad".equals(returnFileName)) {
 			contentType = "text/vnd.sun.j2me.app-descriptor";
-		} else if (returnFileName.equals("wml")) {
+		} else if ("wml".equals(returnFileName)) {
 			contentType = "text/vnd.wap.wml";
-		} else if (returnFileName.equals("htc")) {
+		} else if ("htc".equals(returnFileName)) {
 			contentType = "text/x-component";
-		} else if (returnFileName.equals("png")) {
+		} else if ("png".equals(returnFileName)) {
 			contentType = "image/png";
-		} else if (returnFileName.equals("tif") || returnFileName.equals("tiff")) {
+		} else if ("tif".equals(returnFileName) || "tiff".equals(returnFileName)) {
 			contentType = "image/tiff";
-		} else if (returnFileName.equals("wbmp")) {
+		} else if ("wbmp".equals(returnFileName)) {
 			contentType = "image/vnd.wap.wbmp";
-		} else if (returnFileName.equals("ico")) {
+		} else if ("ico".equals(returnFileName)) {
 			contentType = "image/x-icon";
-		} else if (returnFileName.equals("jng")) {
+		} else if ("jng".equals(returnFileName)) {
 			contentType = "image/x-jng";
-		} else if (returnFileName.equals("bmp")) {
+		} else if ("bmp".equals(returnFileName)) {
 			contentType = "image/x-ms-bmp";
-		} else if (returnFileName.equals("svg")) {
+		} else if ("svg".equals(returnFileName)) {
 			contentType = "image/svg+xml";
-		} else if (returnFileName.equals("jar") || returnFileName.equals("var") 
-				|| returnFileName.equals("ear")) {
+		} else if ("jar".equals(returnFileName) || "var".equals(returnFileName)
+				|| "ear".equals(returnFileName)) {
 			contentType = "application/java-archive";
-		} else if (returnFileName.equals("doc")) {
+		} else if ("doc".equals(returnFileName)) {
 			contentType = "application/msword";
-		} else if (returnFileName.equals("pdf")) {
+		} else if ("pdf".equals(returnFileName)) {
 			contentType = "application/pdf";
-		} else if (returnFileName.equals("rtf")) {
+		} else if ("rtf".equals(returnFileName)) {
 			contentType = "application/rtf";
-		} else if (returnFileName.equals("xls")) {
+		} else if ("xls".equals(returnFileName)) {
 			contentType = "application/vnd.ms-excel";
-		} else if (returnFileName.equals("ppt")) {
+		} else if ("ppt".equals(returnFileName)) {
 			contentType = "application/vnd.ms-powerpoint";
-		} else if (returnFileName.equals("7z")) {
+		} else if ("7z".equals(returnFileName)) {
 			contentType = "application/x-7z-compressed";
-		} else if (returnFileName.equals("rar")) {
+		} else if ("rar".equals(returnFileName)) {
 			contentType = "application/x-rar-compressed";
-		} else if (returnFileName.equals("swf")) {
+		} else if ("swf".equals(returnFileName)) {
 			contentType = "application/x-shockwave-flash";
-		} else if (returnFileName.equals("rpm")) {
+		} else if ("rpm".equals(returnFileName)) {
 			contentType = "application/x-redhat-package-manager";
-		} else if (returnFileName.equals("der") || returnFileName.equals("pem")
-				|| returnFileName.equals("crt")) {
+		} else if ("der".equals(returnFileName) || "pem".equals(returnFileName)
+				|| "crt".equals(returnFileName)) {
 			contentType = "application/x-x509-ca-cert";
-		} else if (returnFileName.equals("xhtml")) {
+		} else if ("xhtml".equals(returnFileName)) {
 			contentType = "application/xhtml+xml";
-		} else if (returnFileName.equals("zip")) {
+		} else if ("zip".equals(returnFileName)) {
 			contentType = "application/zip";
-		} else if (returnFileName.equals("mid") || returnFileName.equals("midi") 
-				|| returnFileName.equals("kar")) {
+		} else if ("mid".equals(returnFileName) || "midi".equals(returnFileName)
+				|| "kar".equals(returnFileName)) {
 			contentType = "audio/midi";
-		} else if (returnFileName.equals("mp3")) {
+		} else if ("mp3".equals(returnFileName)) {
 			contentType = "audio/mpeg";
-		} else if (returnFileName.equals("ogg")) {
+		} else if ("ogg".equals(returnFileName)) {
 			contentType = "audio/ogg";
-		} else if (returnFileName.equals("m4a")) {
+		} else if ("m4a".equals(returnFileName)) {
 			contentType = "audio/x-m4a";
-		} else if (returnFileName.equals("ra")) {
+		} else if ("ra".equals(returnFileName)) {
 			contentType = "audio/x-realaudio";
-		} else if (returnFileName.equals("3gpp")
-				|| returnFileName.equals("3gp")) {
+		} else if ("3gpp".equals(returnFileName)
+				|| "3gp".equals(returnFileName)) {
 			contentType = "video/3gpp";
-		} else if (returnFileName.equals("mp4")) {
+		} else if ("mp4".equals(returnFileName)) {
 			contentType = "video/mp4";
-		} else if (returnFileName.equals("mpeg")
-				|| returnFileName.equals("mpg")) {
+		} else if ("mpeg".equals(returnFileName)
+				|| "mpg".equals(returnFileName)) {
 			contentType = "video/mpeg";
-		} else if (returnFileName.equals("mov")) {
+		} else if ("mov".equals(returnFileName)) {
 			contentType = "video/quicktime";
-		} else if (returnFileName.equals("flv")) {
+		} else if ("flv".equals(returnFileName)) {
 			contentType = "video/x-flv";
-		} else if (returnFileName.equals("m4v")) {
+		} else if ("m4v".equals(returnFileName)) {
 			contentType = "video/x-m4v";
-		} else if (returnFileName.equals("mng")) {
+		} else if ("mng".equals(returnFileName)) {
 			contentType = "video/x-mng";
-		} else if (returnFileName.equals("asx") || returnFileName.equals("asf")) {
+		} else if ("asx".equals(returnFileName) || "asf".equals(returnFileName)) {
 			contentType = "video/x-ms-asf";
-		} else if (returnFileName.equals("wmv")) {
+		} else if ("wmv".equals(returnFileName)) {
 			contentType = "video/x-ms-wmv";
-		} else if (returnFileName.equals("avi")) {
+		} else if ("avi".equals(returnFileName)) {
 			contentType = "video/x-msvideo";
 		}
 		return contentType;
 	}
-	
+
 	/**
 	 * 向浏览器发送文件下载，支持断点续传
 	 * @param file 要下载的文件
@@ -548,7 +513,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	public static String downFile(File file, HttpServletRequest request, HttpServletResponse response){
 		 return downFile(file, request, response, null);
 	}
-	
+
 	/**
 	 * 向浏览器发送文件下载，支持断点续传
 	 * @param file 要下载的文件
@@ -574,7 +539,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			error = "文件已丢失或不存在！";
 		}
 		if (error != null){
-			logger.debug("---------------" + file + " " + error);
+			logger.error("---------------" + file + " " + error);
 			return error;
 		}
 
@@ -584,14 +549,10 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		long toLength = 0; 		// 记录客户端需要下载的字节段的最后一个字节偏移量（比如bytes=27000-39000，则这个值是为39000）
 		long contentLength = 0; // 客户端请求的字节总量
 		String rangeBytes = ""; // 记录客户端传来的形如“bytes=27000-”或者“bytes=27000-39000”的内容
-		RandomAccessFile raf = null; // 负责读取数据
-		OutputStream os = null; 	// 写出数据
-		OutputStream out = null; 	// 缓冲
 		byte b[] = new byte[1024]; 	// 暂存容器
 
 		if (request.getHeader("Range") != null) { // 客户端请求的下载的文件块的开始字节
 			response.setStatus(javax.servlet.http.HttpServletResponse.SC_PARTIAL_CONTENT);
-			logger.debug("request.getHeader(\"Range\") = " + request.getHeader("Range"));
 			rangeBytes = request.getHeader("Range").replaceAll("bytes=", "");
 			if (rangeBytes.indexOf('-') == rangeBytes.length() - 1) {// bytes=969998336-
 				rangeSwitch = 1;
@@ -612,7 +573,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
 		// 如果设设置了Content-Length，则客户端会自动进行多线程下载。如果不希望支持多线程，则不要设置这个参数。 响应的格式是:
 		// Content-Length: [文件的总大小] - [客户端请求的下载的文件块的开始字节]
-		// ServletActionContext.getResponse().setHeader("Content- Length", new Long(file.length() - p).toString());
+		// response.setHeader("Content- Length", new Long(file.length() - p).toString());
 		response.reset(); // 告诉客户端允许断点续传多线程连接下载,响应的格式是:Accept-Ranges: bytes
 		if (pastLength != 0) {
 			response.setHeader("Accept-Ranges", "bytes");// 如果是第一次下,还没有断点续传,状态是默认的 200,无需显式设置;响应的格式是:HTTP/1.1 200 OK
@@ -639,18 +600,16 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			logger.debug("---------------是从开始进行下载！");
 		}
 
-		try {
-			response.addHeader("Content-Disposition", "attachment; filename=\"" + 
+		try (OutputStream os = response.getOutputStream();// 写出数据
+			OutputStream out = new BufferedOutputStream(os);// 缓冲
+			RandomAccessFile raf = new RandomAccessFile(file, "r")) {// 负责读取数据
+			response.addHeader("Content-Disposition", "attachment; filename=\"" +
 					Encodes.urlEncode(StringUtils.isBlank(fileName) ? file.getName() : fileName) + "\"");
 			response.setContentType(getContentType(file.getName())); // set the MIME type.
 			response.addHeader("Content-Length", String.valueOf(contentLength));
-			os = response.getOutputStream();
-			out = new BufferedOutputStream(os);
-			raf = new RandomAccessFile(file, "r");
 			try {
 				switch (rangeSwitch) {
-					case 0: { // 普通下载，或者从头开始的下载 同1
-					}
+					case 0: // 普通下载，或者从头开始的下载 同1
 					case 1: { // 针对 bytes=27000- 的请求
 						raf.seek(pastLength); // 形如 bytes=969998336- 的客户端请求，跳过 969998336 个字节
 						int n = 0;
@@ -689,25 +648,10 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 				 * 掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。
 				 * 所以，我们忽略这种异常
 				 */
-				logger.debug("提醒：向客户端传输时出现IO异常，但此异常是允许的，有可能客户端取消了下载，导致此异常，不用关心！");
+				logger.error("提醒：向客户端传输时出现IO异常，但此异常是允许的，有可能客户端取消了下载，导致此异常，不用关心！");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					logger.error(e.getMessage(), e);
-				}
-			}
-			if (raf != null) {
-				try {
-					raf.close();
-				} catch (IOException e) {
-					logger.error(e.getMessage(), e);
-				}
-			}
 		}
 		return null;
 	}
@@ -731,7 +675,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * 获目录下的文件列表
 	 * @param dir 搜索目录

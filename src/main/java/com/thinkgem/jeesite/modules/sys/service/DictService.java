@@ -27,19 +27,19 @@ public class DictService extends BaseService<DictDao, Dict> {
 
 	/**
 	 * 查询字段类型列表
-	 *
-	 * @return
 	 */
 	public List<String> findTypeList() {
 		return dao.findTypeList(new Dict());
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
 		super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void delete(Dict dict) {
 		super.delete(dict);

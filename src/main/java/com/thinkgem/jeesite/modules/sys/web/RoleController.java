@@ -6,8 +6,6 @@ package com.thinkgem.jeesite.modules.sys.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +33,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 角色Controller
- * 
+ *
  * @author ThinkGem
  * @version 2013-12-05
  */
@@ -114,10 +112,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色分配页面
-	 * 
-	 * @param role
-	 * @param model
-	 * @return
 	 */
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "assign")
@@ -129,10 +123,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色分配 -- 打开角色分配对话框
-	 * 
-	 * @param role
-	 * @param model
-	 * @return
 	 */
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = "usertorole")
@@ -147,15 +137,11 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色分配 -- 根据部门编号获取用户列表
-	 * 
-	 * @param officeId
-	 * @param response
-	 * @return
 	 */
 	@RequiresPermissions("sys:role:view")
 	@ResponseBody
 	@RequestMapping(value = "users")
-	public List<Map<String, Object>> users(String officeId, HttpServletResponse response) {
+	public List<Map<String, Object>> users(String officeId) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		User user = new User();
 		user.setOffice(new Office(officeId));
@@ -172,11 +158,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色分配 -- 从角色中移除用户
-	 * 
-	 * @param userId
-	 * @param roleId
-	 * @param redirectAttributes
-	 * @return
 	 */
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "outrole")
@@ -207,11 +188,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色分配
-	 * 
-	 * @param role
-	 * @param idsArr
-	 * @param redirectAttributes
-	 * @return
 	 */
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "assignrole")
@@ -235,10 +211,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 验证角色名是否有效
-	 * 
-	 * @param oldName
-	 * @param name
-	 * @return
 	 */
 	@RequiresPermissions("user")
 	@ResponseBody

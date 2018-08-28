@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
@@ -46,7 +45,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 用户Controller
- * 
+ *
  * @author ThinkGem
  * @version 2013-8-29
  */
@@ -135,7 +134,6 @@ public class UserController extends BaseController {
 		// 清除当前用户缓存
 		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())) {
 			UserUtils.clearCache();
-			// UserUtils.getCacheMap().clear();
 		}
 		addMessage(redirectAttributes, "保存用户'" + user.getLoginName() + "'成功");
 		return "redirect:" + adminPath + "/sys/user/list";
@@ -180,16 +178,10 @@ public class UserController extends BaseController {
 
 	/**
 	 * 导出用户数据
-	 * 
-	 * @param user
-	 * @param request
-	 * @param response
-	 * @param redirectAttributes
-	 * @return
 	 */
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = "export", method = RequestMethod.POST)
-	public String exportFile(User user, HttpServletRequest request, HttpServletResponse response,
+	public String exportFile(User user, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
 		try {
 			String fileName = "用户数据" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
@@ -206,10 +198,6 @@ public class UserController extends BaseController {
 
 	/**
 	 * 导入用户数据
-	 * 
-	 * @param file
-	 * @param redirectAttributes
-	 * @return
 	 */
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "import", method = RequestMethod.POST)
@@ -260,10 +248,6 @@ public class UserController extends BaseController {
 
 	/**
 	 * 下载导入用户数据模板
-	 * 
-	 * @param response
-	 * @param redirectAttributes
-	 * @return
 	 */
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = "import/template")
@@ -284,10 +268,6 @@ public class UserController extends BaseController {
 
 	/**
 	 * 验证登录名是否有效
-	 * 
-	 * @param oldLoginName
-	 * @param loginName
-	 * @return
 	 */
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
@@ -303,10 +283,6 @@ public class UserController extends BaseController {
 
 	/**
 	 * 用户信息显示及保存
-	 * 
-	 * @param user
-	 * @param model
-	 * @return
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "info")
@@ -332,11 +308,6 @@ public class UserController extends BaseController {
 
 	/**
 	 * 修改个人用户密码
-	 * 
-	 * @param oldPassword
-	 * @param newPassword
-	 * @param model
-	 * @return
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "modifyPwd")

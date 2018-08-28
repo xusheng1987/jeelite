@@ -42,12 +42,14 @@ public class Menu extends TreeEntity<Menu> {
 		super(id);
 	}
 	
+	@Override
 	@JsonBackReference
 	@NotNull
 	public Menu getParent() {
 		return parent;
 	}
 
+	@Override
 	public void setParent(Menu parent) {
 		this.parent = parent;
 	}
@@ -97,6 +99,7 @@ public class Menu extends TreeEntity<Menu> {
 		this.permission = permission;
 	}
 
+	@Override
 	public String getParentId() {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
 	}

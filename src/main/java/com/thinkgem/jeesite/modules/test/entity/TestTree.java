@@ -31,16 +31,19 @@ public class TestTree extends TreeEntity<TestTree> {
 		super(id);
 	}
 
+	@Override
 	@JsonBackReference
 	@NotNull(message = "父级编号不能为空")
 	public TestTree getParent() {
 		return parent;
 	}
 
+	@Override
 	public void setParent(TestTree parent) {
 		this.parent = parent;
 	}
 
+	@Override
 	public String getParentId() {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
 	}

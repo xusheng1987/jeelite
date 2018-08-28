@@ -15,14 +15,12 @@ import org.apache.commons.lang3.BooleanUtils;
  * @version 2013-05-22
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
-	
+
     private static final char SEPARATOR = '_';
     private static final String CHARSET_NAME = "UTF-8";
-    
+
     /**
      * 转换为字节数组
-     * @param str
-     * @return
      */
     public static byte[] getBytes(String str){
     	if (str != null){
@@ -35,7 +33,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     		return null;
     	}
     }
-    
+
     /**
 	 * 转换为Boolean类型
 	 * 'true', 'on', 'y', 't', 'yes' or '1' (case insensitive) will return true. Otherwise, false is returned.
@@ -46,11 +44,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		}
 		return BooleanUtils.toBoolean(val.toString()) || "1".equals(val.toString());
 	}
-	
+
     /**
      * 转换为字节数组
-     * @param str
-     * @return
      */
     public static String toString(byte[] bytes){
     	try {
@@ -59,11 +55,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 			return EMPTY;
 		}
     }
-	
+
 	/**
 	 * 替换为手机识别的HTML，去掉样式及属性，保留回车。
-	 * @param txt
-	 * @return
 	 */
 	public static String toHtml(String txt){
 		if (txt == null){
@@ -71,18 +65,15 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		}
 		return replace(replace(Encodes.escapeHtml(txt), "\n", "<br/>"), "\t", "&nbsp; &nbsp; ");
 	}
-	
+
     /**
-	 * 如果对象为空，则使用defaultVal值 
-	 * 	see: ObjectUtils.toString(obj, defaultVal)
-	 * @param obj
-	 * @param defaultVal
-	 * @return
+	 * 如果对象为空，则使用defaultVal值
+	 * see: ObjectUtils.toString(obj, defaultVal)
 	 */
     public static String toString(final Object obj, final String defaultVal) {
     	 return obj == null ? defaultVal : obj.toString();
     }
-	
+
 	/**
 	 * 获得用户远程地址
 	 */
@@ -101,7 +92,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	/**
 	 * 驼峰命名法工具
 	 * @return
-	 * 		toCamelCase("hello_world") == "helloWorld" 
+	 * 		toCamelCase("hello_world") == "helloWorld"
 	 * 		toCapitalizeCamelCase("hello_world") == "HelloWorld"
 	 * 		toUnderScoreCase("helloWorld") = "hello_world"
 	 */
@@ -133,7 +124,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
 	 * 驼峰命名法工具
 	 * @return
-	 * 		toCamelCase("hello_world") == "helloWorld" 
+	 * 		toCamelCase("hello_world") == "helloWorld"
 	 * 		toCapitalizeCamelCase("hello_world") == "HelloWorld"
 	 * 		toUnderScoreCase("helloWorld") = "hello_world"
 	 */
@@ -144,11 +135,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         s = toCamelCase(s);
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
-    
+
     /**
 	 * 驼峰命名法工具
 	 * @return
-	 * 		toCamelCase("hello_world") == "helloWorld" 
+	 * 		toCamelCase("hello_world") == "helloWorld"
 	 * 		toCapitalizeCamelCase("hello_world") == "HelloWorld"
 	 * 		toUnderScoreCase("helloWorld") = "hello_world"
 	 */
@@ -182,7 +173,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
         return sb.toString();
     }
- 
+
     /**
      * 转换为JS获取对象值，生成三目运算返回结果
      * @param objectString 对象串
@@ -200,5 +191,5 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     	result.append(val.substring(1));
     	return result.toString();
     }
-    
+
 }

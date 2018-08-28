@@ -20,8 +20,6 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
 
 	/**
 	 * 注解到对象复制，只复制能匹配上的方法。
-	 * @param annotation
-	 * @param object
 	 */
 	public static void annotationToObject(Object annotation, Object object){
 		if (annotation != null){
@@ -45,11 +43,9 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * 序列化对象
-	 * @param object
-	 * @return
 	 */
 	public static byte[] serialize(Object object) {
 		ObjectOutputStream oos = null;
@@ -69,8 +65,6 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
 
 	/**
 	 * 反序列化对象
-	 * @param bytes
-	 * @return
 	 */
 	public static Object unserialize(byte[] bytes) {
 		ByteArrayInputStream bais = null;

@@ -6,8 +6,6 @@ package com.thinkgem.jeesite.modules.sys.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +27,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 菜单Controller
- * 
+ *
  * @author ThinkGem
  * @version 2013-3-23
  */
@@ -125,17 +123,12 @@ public class MenuController extends BaseController {
 
 	/**
 	 * isShowHide是否显示隐藏菜单
-	 * 
-	 * @param extId
-	 * @param isShowHidden
-	 * @param response
-	 * @return
 	 */
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required = false) String extId,
-			@RequestParam(required = false) String isShowHide, HttpServletResponse response) {
+			@RequestParam(required = false) String isShowHide) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<Menu> list = menuService.findAllMenu();
 		for (int i = 0; i < list.size(); i++) {

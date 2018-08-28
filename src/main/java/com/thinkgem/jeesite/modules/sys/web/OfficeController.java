@@ -6,8 +6,6 @@ package com.thinkgem.jeesite.modules.sys.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +28,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 机构Controller
- * 
+ *
  * @author ThinkGem
  * @version 2013-5-15
  */
@@ -106,17 +104,15 @@ public class OfficeController extends BaseController {
 
 	/**
 	 * 获取机构JSON数据。
-	 * 
+	 *
 	 * @param extId 排除的ID
 	 * @param type 类型（1：公司；2：部门/小组/其它：3：用户）
-	 * @param response
-	 * @return
 	 */
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required = false) String extId, @RequestParam(required = false) String type,
-			@RequestParam(required = false) Boolean isAll, HttpServletResponse response) {
+			@RequestParam(required = false) Boolean isAll) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<Office> list = officeService.findList(isAll);
 		for (int i = 0; i < list.size(); i++) {

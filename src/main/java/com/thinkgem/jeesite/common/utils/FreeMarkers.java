@@ -24,7 +24,7 @@ public class FreeMarkers {
 	public static String renderString(String templateString, Map<String, ?> model) {
 		try {
 			StringWriter result = new StringWriter();
-			Template t = new Template("name", new StringReader(templateString), new Configuration());
+			Template t = new Template("name", new StringReader(templateString), new Configuration(Configuration.VERSION_2_3_23));
 			t.process(model, result);
 			return result.toString();
 		} catch (Exception e) {
@@ -43,7 +43,7 @@ public class FreeMarkers {
 	}
 
 	public static Configuration buildConfiguration(String directory) throws IOException {
-		Configuration cfg = new Configuration();
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
 		Resource path = new DefaultResourceLoader().getResource(directory);
 		cfg.setDirectoryForTemplateLoading(path.getFile());
 		return cfg;

@@ -17,8 +17,8 @@ import com.thinkgem.jeesite.modules.sys.entity.Menu;
 @MyBatisDao
 public interface MenuDao extends TreeDao<Menu> {
 
-	public List<Menu> findByUserId(Menu menu);
-	
-	public int updateSort(Menu menu);
-	
+	List<Menu> findByUserId(Menu menu);
+
+	int updateSort(Menu menu);
+
 }

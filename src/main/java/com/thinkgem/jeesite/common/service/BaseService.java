@@ -21,13 +21,13 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * Service基类
- * 
+ *
  * @author ThinkGem
  * @version 2014-05-16
  */
 @Transactional(readOnly = true)
 public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>> extends ServiceImpl<M, T> {
-	
+
 	/**
 	 * 持久层对象
 	 */
@@ -41,7 +41,7 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 
 	/**
 	 * 数据范围过滤
-	 * 
+	 *
 	 * @param user 当前用户对象，通过“entity.getCurrentUser()”获取
 	 * @param officeAlias 机构表别名，多个用“,”逗号隔开。
 	 * @param userAlias 用户表别名，多个用“,”逗号隔开，传递空，忽略此参数
@@ -107,10 +107,9 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 		}
 		return "";
 	}
-	
+
 	/**
 	 * 获取单条数据
-	 * @param id
 	 */
 	public T get(String id) {
 		return dao.get(id);
@@ -118,8 +117,6 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 
 	/**
 	 * 查询列表数据
-	 * 
-	 * @param entity
 	 */
 	public List<T> findList(T entity) {
 		return dao.findList(entity);
@@ -127,9 +124,6 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 
 	/**
 	 * 查询分页数据
-	 * 
-	 * @param page 分页对象
-	 * @param entity
 	 */
 	public Page<T> findPage(Page<T> page, T entity) {
 		entity.setPage(page);
@@ -139,8 +133,6 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 
 	/**
 	 * 保存数据
-	 * 
-	 * @param entity
 	 */
 	@Transactional(readOnly = false)
 	public void save(T entity) {
@@ -149,8 +141,6 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 
 	/**
 	 * 删除数据（逻辑删除，更新del_flag字段为1）
-	 * 
-	 * @param entity
 	 */
 	@Transactional(readOnly = false)
 	public void delete(T entity) {

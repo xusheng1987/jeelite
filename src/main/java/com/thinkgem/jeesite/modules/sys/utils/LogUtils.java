@@ -32,23 +32,23 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
  * @version 2014-11-7
  */
 public class LogUtils {
-	
+
 	public static final String CACHE_MENU_NAME_PATH_MAP = "menuNamePathMap";
-	
+
 	private static LogDao logDao = SpringContextHolder.getBean(LogDao.class);
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
-	
+
 	/**
 	 * 保存日志
 	 */
 	public static void saveLog(HttpServletRequest request, String title){
-		saveLog(request, null, null, title);
+		saveLog(request, null, null, title, null);
 	}
-	
+
 	/**
 	 * 保存日志
 	 */
-	public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title){
+	public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title, Integer costTime){
 		User user = UserUtils.getUser();
 		if (user != null && user.getId() != null){
 			Log log = new Log();
@@ -61,6 +61,7 @@ public class LogUtils {
 			log.setMethod(request.getMethod());
 			log.setCreateBy(user);
 			log.setCreateDate(new Date());
+			log.setCostTime(costTime);
 			// 异步保存日志
 			new SaveLogThread(log, handler, ex).start();
 		}
@@ -70,18 +71,18 @@ public class LogUtils {
 	 * 保存日志线程
 	 */
 	public static class SaveLogThread extends Thread{
-		
+
 		private Log log;
 		private Object handler;
 		private Exception ex;
-		
+
 		public SaveLogThread(Log log, Object handler, Exception ex){
 			super(SaveLogThread.class.getSimpleName());
 			this.log = log;
 			this.handler = handler;
 			this.ex = ex;
 		}
-		
+
 		@Override
 		public void run() {
 			// 获取日志标题
@@ -110,7 +111,6 @@ public class LogUtils {
 	 */
 	public static String getMenuNamePath(String requestUri, String permission){
 		String href = StringUtils.substringAfter(requestUri, Global.getAdminPath());
-		@SuppressWarnings("unchecked")
 		Map<String, String> menuMap = (Map<String, String>)CacheUtils.get(CACHE_MENU_NAME_PATH_MAP);
 		if (menuMap == null){
 			menuMap = Maps.newHashMap();
@@ -142,7 +142,7 @@ public class LogUtils {
 						menuMap.put(p, namePath);
 					}
 				}
-				
+
 			}
 			CacheUtils.put(CACHE_MENU_NAME_PATH_MAP, menuMap);
 		}
@@ -161,5 +161,5 @@ public class LogUtils {
 		return menuNamePath;
 	}
 
-	
+
 }
