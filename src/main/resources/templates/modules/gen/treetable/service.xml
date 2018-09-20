@@ -5,7 +5,7 @@
 	<fileName>${ClassName}Service.java</fileName>
 	<content><![CDATA[
 /**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
 package ${packageName}.${moduleName}.service;
 
@@ -14,13 +14,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thinkgem.jeesite.common.service.TreeService;
+import com.github.flying.jeelite.common.service.TreeService;
 import ${packageName}.${moduleName}.dao.${ClassName}Dao;
 import ${packageName}.${moduleName}.entity.${ClassName};
 
 /**
  * ${functionName}Service
- * 
+ *
  * @author ${functionAuthor}
  * @version ${functionVersion}
  */

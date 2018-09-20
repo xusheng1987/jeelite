@@ -10,5 +10,5 @@
 <script src="${ctxStatic}/jquery-validation/1.16/jquery.validate.extend.js" type="text/javascript"></script>
 <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 <link href="${ctxStatic}/layui/css/layui.css" type="text/css" rel="stylesheet" />
-<link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>
+<link href="${ctxStatic}/common/jeelite.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/common/jeelite.js" type="text/javascript"></script>

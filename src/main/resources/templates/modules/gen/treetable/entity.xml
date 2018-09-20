@@ -5,7 +5,7 @@
 	<fileName>${ClassName}.java</fileName>
 	<content><![CDATA[
 /**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
 package ${packageName}.${moduleName}.entity;
 
@@ -13,11 +13,11 @@ package ${packageName}.${moduleName}.entity;
 import ${i};
 </#list>
 
-import com.thinkgem.jeesite.common.persistence.TreeEntity;
+import com.github.flying.jeelite.common.persistence.TreeEntity;
 
 /**
  * ${functionName}Entity
- * 
+ *
  * @author ${functionAuthor}
  * @version ${functionVersion}
  */
@@ -52,6 +52,9 @@ public class ${ClassName} extends TreeEntity<${ClassName}> {
 		<#-- 如果不是基类属性 -->
 		<#if c.isNotBaseField>
 			<#if c.name != "parent_ids" && c.name != "name" && c.name != "sort">
+			<#if c.name == "parent_id">
+	@Override
+			</#if>
 			<#list c.simpleAnnotationList as a>
 	@${a}
 			</#list>
@@ -59,6 +62,9 @@ public class ${ClassName} extends TreeEntity<${ClassName}> {
 		return ${c.simpleJavaField};
 	}
 
+	<#if c.name == "parent_id">
+	@Override
+	</#if>
 	public void set${c.simpleJavaField?cap_first}(${c.simpleJavaType} ${c.simpleJavaField}) {
 		this.${c.simpleJavaField} = ${c.simpleJavaField};
 	}
@@ -69,6 +75,7 @@ public class ${ClassName} extends TreeEntity<${ClassName}> {
 	<#list table.columnList as c>
 		<#if c.javaFieldId == 'parent.id'>
 
+	@Override
 	public String getParentId() {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
 	}

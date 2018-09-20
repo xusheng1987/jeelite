@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.RoleDao">
+<mapper namespace="com.github.flying.jeelite.modules.sys.dao.RoleDao">
 
     <resultMap id="roleResult" type="Role">
 		<id property="id" column="id" />
@@ -89,9 +89,7 @@
 		INSERT INTO sys_role_menu(role_id, menu_id)
 		<foreach collection="menuList" item="menu" separator=" union all ">
 			SELECT #{id}, #{menu.id}
-			<if test="dbName != 'mssql'">
 			FROM dual
-			</if>
 		</foreach>
 	</insert>
 
@@ -103,9 +101,7 @@
 		INSERT INTO sys_role_office(role_id, office_id)
 		<foreach collection="officeList" item="office" separator=" union all ">
 			SELECT #{id}, #{office.id}
-			<if test="dbName != 'mssql'">
 			FROM dual
-			</if>
 		</foreach>
 	</insert>
 

@@ -140,9 +140,6 @@
 	</div>
   </c:if>
   </div>
-  <div id="footer" class="layui-footer">
-	Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')}
-  </div>
 </div>
 </body>
 </html>

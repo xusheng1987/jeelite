@@ -1,10 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>用户管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<script type="text/javascript">
 		$(document).ready(function() {
 			$("#no").focus();
 			$("#inputForm").validate({
@@ -14,25 +11,13 @@
 				messages: {
 					loginName: {remote: "用户登录名已存在"},
 					confirmNewPassword: {equalTo: "输入与上面相同的密码"}
-				},
-				submitHandler: function(form){
-					loading();
-					form.submit();
 				}
 			});
 		});
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/sys/user/list">用户列表</a></li>
-			<li class="layui-this"><a href="${ctx}/sys/user/form?id=${user.id}">用户<shiro:hasPermission name="sys:user:edit">${not empty user.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:user:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+</script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="user" action="${ctx}/sys/user/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">头像:</label>
 			<sys:imageupload name="photo"/>
@@ -145,10 +130,9 @@
 		</c:if>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="sys:user:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="sys:user:edit"><input id="btnSubmit" class="layui-btn" type="button" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

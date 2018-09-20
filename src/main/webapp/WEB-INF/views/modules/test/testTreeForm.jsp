@@ -1,31 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>树结构管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading();
-					form.submit();
-				}
-			});
-		});
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/test/testTree/">树结构列表</a></li>
-			<li class="layui-this"><a href="${ctx}/test/testTree/form?id=${testTree.id}&parent.id=${testTreeparent.id}">树结构<shiro:hasPermission name="test:testTree:edit">${not empty testTree.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="test:testTree:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="testTree" action="${ctx}/test/testTree/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">上级编号:</label>
 			<sys:treeselect id="parent" name="parent.id" value="${testTree.parent.id}" labelName="parent.name" labelValue="${testTree.parent.name}"
@@ -53,10 +31,9 @@
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="test:testTree:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="test:testTree:edit"><input class="layui-btn" type="button" value="保 存" onclick="save()"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

@@ -24,9 +24,9 @@ if (Servlets.isAjaxRequest(request)) {
 else {
 %>
 <%@page import="org.slf4j.Logger,org.slf4j.LoggerFactory"%>
-<%@page import="com.thinkgem.jeesite.common.web.Servlets"%>
-<%@page import="com.thinkgem.jeesite.common.utils.Exceptions"%>
-<%@page import="com.thinkgem.jeesite.common.utils.StringUtils"%>
+<%@page import="com.github.flying.jeelite.common.web.Servlets"%>
+<%@page import="com.github.flying.jeelite.common.utils.Exceptions"%>
+<%@page import="com.github.flying.jeelite.common.utils.StringUtils"%>
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>

@@ -10,10 +10,9 @@
 	</style>
 </head>
 <body>
-	<sys:message content="${message}"/>
 	<div id="content">
 		<div class="layui-row">
-			<div class="layui-col-xs2">
+			<div class="layui-col-xs2" style="background-color:#fff">
 				<div style="height:auto;overflow:auto;padding:0 10px 0 10px">
 				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;width:200px;">
 					<legend>组织机构</legend>

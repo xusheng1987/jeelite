@@ -1,9 +1,4 @@
 @echo off
-rem /**
-rem  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
-rem  *
-rem  * Author: ThinkGem@163.com
-rem  */
 echo.
 echo [信息] 重建您的数据库并导入初始数据。
 echo.

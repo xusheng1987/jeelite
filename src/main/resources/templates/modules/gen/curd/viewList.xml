@@ -8,128 +8,121 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>${functionNameSimple}管理</title>
-	<meta name="decorator" content="default"/>
+  <title>${functionNameSimple}管理</title>
+  <meta name="decorator" content="default"/>
 </head>
 <body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li class="layui-this"><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
-			<shiro:hasPermission name="${permissionPrefix}:edit"><li><a href="${r"${ctx}"}/${urlPrefix}/form">${functionNameSimple}添加</a></li></shiro:hasPermission>
-		</ul>
-	</div><br/>
-	<form:form id="searchForm" modelAttribute="${className}" class="layui-form">
-		<div class="layui-form-item">
-		<#list table.columnList as c>
-			<#if c.isQuery?? && c.isQuery == "1">
-			<div class="layui-inline">
-				<label class="layui-form-label">${c.comments}：</label>
-			<#if c.showType == "input" || c.showType == "textarea">
-				<div class="layui-input-inline">
-					<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input input-medium"/>
-				</div>
-			<#elseif c.showType == "select">
-				<div class="layui-input-inline">
-					<form:select path="${c.javaFieldId}">
-						<form:option value="" label=""/>
-						<form:options items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-					</form:select>
-				</div>
-			<#elseif c.showType == "checkbox">
-				<div class="layui-input-inline">
-					<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
-					<input type="checkbox" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
-					</c:forEach>
-				</div>
-			<#elseif c.showType == "radiobox">
-				<div class="layui-input-inline" style="width:auto">
-					<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
-					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
-					</c:forEach>
-				</div>
-			<#elseif c.showType == "dateselect" && c.queryType == "between">
-				<div class="layui-input-inline input-medium">
-					<input name="begin${c.simpleJavaField?cap_first}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-						value="<fmt:formatDate value="${"$"}{${className}.begin${c.simpleJavaField?cap_first}}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-				</div>
-				<div class="layui-form-mid">-</div>
-				<div class="layui-input-inline input-medium">
-					<input name="end${c.simpleJavaField?cap_first}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-						value="<fmt:formatDate value="${"$"}{${className}.end${c.simpleJavaField?cap_first}}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-				</div>
-			<#elseif c.showType == "dateselect">
-				<div class="layui-input-inline input-medium">
-					<input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-						value="<fmt:formatDate value="${"$"}{${className}.${c.javaFieldId}}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-				</div>
-			<#elseif c.showType == "userselect">
-				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
-					title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
-			<#elseif c.showType == "officeselect">
-				<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
-					title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
-			</#if>
-			</div>
-			</#if>
-		</#list>
-			<div class="layui-inline">
-				<input id="btnSearch" class="layui-btn layui-btn-normal" style="margin-left:40px" type="button" value="查询"/>
-			</div>
-		</div>
-	</form:form>
-	<sys:message content="${r"${message}"}"/>
-	<div style="margin:15px">
-		<table class="layui-table"></table>
-	</div>
-	<script type="text/html" id="bar">
-		<a href="javascript:void(0)" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
-		<a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
-	</script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-		var table = layui.table;
-		//执行渲染
-		table.render({
-		    url: '${r"${ctx}"}/${urlPrefix}/data' //数据接口
-		    ,cols: [[ //表头
-			<#assign firstListField = true>
-			<#list table.columnList as c>
-				<#if c.isList?? && c.isList == "1">
-				<#if !firstListField>,</#if>
-					<#if c.showType == "userselect" || c.showType == "officeselect">
-		       {title: '${c.comments}', templet: function(d) {
-		          return <#if firstListField>'<a href="${r"${ctx}"}/${urlPrefix}/form?id='+d.id+'" class="layui-table-link">'+</#if>d.${c.javaFieldName}<#if firstListField>+'</a>'</#if>
-		       }}
-					<#elseif c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
-				{title: '${c.comments}', templet: function(d) {
-		          return getDictLabel(${"$"}{fns:getDictListJson('${c.dictType}')}, d.${c.simpleJavaField}, '');
-		       }}
-					<#else>
-		      {field: '${c.javaFieldId}', title: '${c.comments}'}
-					</#if>
-		       <#assign firstListField = false>
-				</#if>
-			</#list>
-		      <shiro:hasPermission name="${permissionPrefix}:edit">
-		      ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
-		      </shiro:hasPermission>
-		    ]]
-		});
-		//监听工具条
-		table.on('tool', function(obj){
-		  var data = obj.data; //获得当前行数据
-		  var layEvent = obj.event; //获得 lay-event 对应的值
-		  if(layEvent === 'edit'){ //修改
-              location = '${r"${ctx}"}/${urlPrefix}/form?id='+data.id;
-		  } else if(layEvent === 'del'){ //删除
-			  confirmx('确认要删除该${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id='+data.id)
-		  }
-		});
-	});
-	</script>
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-header">${functionNameSimple}列表</div>
+      <div class="layui-card-body">
+        <div id="searchForm" class="layui-form">
+          <div class="layui-form-item">
+          <#list table.columnList as c>
+            <#if c.isQuery?? && c.isQuery == "1">
+            <div class="layui-inline">
+              <label class="layui-form-label">${c.comments}：</label>
+            <#if c.showType == "input" || c.showType == "textarea">
+              <div class="layui-input-inline">
+                <input name="${c.javaFieldId}" type="text"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input input-medium"/>
+              </div>
+            <#elseif c.showType == "select">
+              <div class="layui-input-inline">
+                <select name="${c.javaFieldId}">
+                  <option value=""></option>
+                  <c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="e">
+                  <option value="${"$"}{e}">${"$"}{e}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            <#elseif c.showType == "checkbox">
+              <div class="layui-input-inline">
+              <c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+                <input type="checkbox" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+              </c:forEach>
+              </div>
+            <#elseif c.showType == "radiobox">
+              <div class="layui-input-inline" style="width:auto">
+              <c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+                <input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+              </c:forEach>
+              </div>
+            <#elseif c.showType == "dateselect" && c.queryType == "between">
+              <div class="layui-input-inline input-medium">
+                <input name="begin${c.simpleJavaField?cap_first}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+              </div>
+              <div class="layui-form-mid">-</div>
+              <div class="layui-input-inline input-medium">
+                <input name="end${c.simpleJavaField?cap_first}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+              </div>
+            <#elseif c.showType == "dateselect">
+              <div class="layui-input-inline input-medium">
+                <input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+              </div>
+            <#elseif c.showType == "userselect">
+              <sys:treeselect id="${c.simpleJavaField}Search" name="${c.javaFieldId}" value="" labelName="${c.javaFieldName}" labelValue=""
+                  title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
+            <#elseif c.showType == "officeselect">
+              <sys:treeselect id="${c.simpleJavaField}Search" name="${c.javaFieldId}" value="" labelName="${c.javaFieldName}" labelValue=""
+                  title="部门" url="/sys/office/treeData?type=2" allowClear="true" notAllowSelectParent="true"/>
+            </#if>
+            </div>
+            </#if>
+          </#list>
+            <div class="layui-inline">
+              <input id="btnSearch" class="layui-btn layui-btn-normal" type="button" value="查询"/>
+              <shiro:hasPermission name="${permissionPrefix}:edit">
+              <input id="btnAdd" class="layui-btn" type="button" value="添加" onclick="openDialog('${functionNameSimple}添加', '${r"${ctx}"}/${urlPrefix}/form')"/>
+              </shiro:hasPermission>
+            </div>
+          </div>
+        </div>
+        <table class="layui-table"></table>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="bar">
+    <a href="javascript:void(0)" class="layui-btn layui-btn-sm" onclick="openDialog('${functionNameSimple}修改', '${r"${ctx}"}/${urlPrefix}/form?id={{d.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
+    <a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{d.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      //执行渲染
+      table.render({
+        url: '${r"${ctx}"}/${urlPrefix}/data' //数据接口
+        ,cols: [[ //表头
+        <#assign firstListField = true>
+        <#list table.columnList as c>
+          <#if c.isList?? && c.isList == "1">
+          <#if !firstListField>,</#if><#if c.showType == "userselect" || c.showType == "officeselect">
+           {title: '${c.comments}', templet: function(d) {
+              <#if firstListField>
+              var url = '${r"${ctx}"}/${urlPrefix}/form?id='+d.id;
+              return '<a href="javascript:void(0)" class="layui-table-link" onclick="openDialog(\'${functionNameSimple}修改\', \''+url+'\')">'+d.${c.javaFieldName}+'</a>'
+              <#else>
+              return d.${c.javaFieldName}
+              </#if>
+           }}
+          <#elseif c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
+           {title: '${c.comments}', templet: function(d) {
+              return getDictLabel(${"$"}{fns:getDictListJson('${c.dictType}')}, d.${c.simpleJavaField}, '');
+           }}
+          <#else>
+           {field: '${c.javaFieldId}', title: '${c.comments}'}
+          </#if>
+          <#assign firstListField = false>
+          </#if>
+        </#list>
+          <shiro:hasPermission name="${permissionPrefix}:edit">
+          ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
+          </shiro:hasPermission>
+        ]]
+      });
+    });
+  </script>
 </body>
 </html>]]>
 	</content>

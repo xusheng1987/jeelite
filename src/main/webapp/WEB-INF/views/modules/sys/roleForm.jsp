@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>角色管理</title>
-	<meta name="decorator" content="default"/>
-	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
-	<script type="text/javascript">
+<%@include file="/WEB-INF/views/include/treeview.jsp" %>
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+		var tree, tree2;
 		$(document).ready(function(){
 			$("#name").focus();
 			$("#inputForm").validate({
@@ -14,20 +12,6 @@
 				},
 				messages: {
 					name: {remote: "角色名已存在"}
-				},
-				submitHandler: function(form){
-					var ids = [], nodes = tree.getCheckedNodes(true);
-					for(var i=0; i<nodes.length; i++) {
-						ids.push(nodes[i].id);
-					}
-					$("#menuIds").val(ids);
-					var ids2 = [], nodes2 = tree2.getCheckedNodes(true);
-					for(var i=0; i<nodes2.length; i++) {
-						ids2.push(nodes2[i].id);
-					}
-					$("#officeIds").val(ids2);
-					loading();
-					form.submit();
 				}
 			});
 
@@ -42,7 +26,7 @@
 					<c:forEach items="${menuList}" var="menu">{id:"${menu.id}", pId:"${not empty menu.parent.id?menu.parent.id:0}", name:"${not empty menu.parent.id?menu.name:'权限列表'}"},
 		            </c:forEach>];
 			// 初始化树结构
-			var tree = $.fn.zTree.init($("#menuTree"), setting, zNodes);
+			tree = $.fn.zTree.init($("#menuTree"), setting, zNodes);
 			// 不选择父节点
 			tree.setting.check.chkboxType = { "Y" : "ps", "N" : "s" };
 			// 默认选择节点
@@ -59,7 +43,7 @@
 					<c:forEach items="${officeList}" var="office">{id:"${office.id}", pId:"${not empty office.parent?office.parent.id:0}", name:"${office.name}"},
 		            </c:forEach>];
 			// 初始化树结构
-			var tree2 = $.fn.zTree.init($("#officeTree"), setting, zNodes2);
+			tree2 = $.fn.zTree.init($("#officeTree"), setting, zNodes2);
 			// 不选择父节点
 			tree2.setting.check.chkboxType = { "Y" : "ps", "N" : "s" };
 			// 默认选择节点
@@ -72,29 +56,33 @@
 			tree2.expandAll(true);
 			// 刷新（显示/隐藏）机构
 			refreshOfficeTree();
-			layui.form.on('select(dataScope)', function(data){
+			form.on('select(dataScope)', function(data){
 				refreshOfficeTree();
 			});
 		});
-		function refreshOfficeTree(){
+		function refreshOfficeTree() {
 			if($("#dataScope").val()==9){
 				$("#officeTree").show();
 			}else{
 				$("#officeTree").hide();
 			}
 		}
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/sys/role/">角色列表</a></li>
-			<li class="layui-this"><a href="${ctx}/sys/role/form?id=${role.id}">角色<shiro:hasPermission name="sys:role:edit">${not empty role.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:role:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+		function submitHandler() {
+			var ids = [], nodes = tree.getCheckedNodes(true);
+			for(var i=0; i<nodes.length; i++) {
+				ids.push(nodes[i].id);
+			}
+			$("#menuIds").val(ids);
+			var ids2 = [], nodes2 = tree2.getCheckedNodes(true);
+			for(var i=0; i<nodes2.length; i++) {
+				ids2.push(nodes2[i].id);
+			}
+			$("#officeIds").val(ids2);
+		}
+</script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="role" action="${ctx}/sys/role/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">归属机构:</label>
             <sys:treeselect id="office" name="office.id" value="${role.office.id}" labelName="office.name" labelValue="${role.office.name}"
@@ -143,10 +131,9 @@
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="sys:role:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="sys:role:edit"><input id="btnSubmit" class="layui-btn" type="button" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

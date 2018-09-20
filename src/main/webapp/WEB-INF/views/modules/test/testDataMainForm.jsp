@@ -1,63 +1,44 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>主子表管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading();
-					form.submit();
-				}
-			});
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function addRow(list, idx, tpl, row){
+		var laytpl = layui.laytpl;
+		var data = {"idx":idx, "row":row};
+		laytpl(tpl.innerHTML).render(data, function(html){
+			$(list).append(html);
 		});
-		function addRow(list, idx, tpl, row){
-			var laytpl = layui.laytpl;
-			var data = {"idx":idx, "row":row};
-			laytpl(tpl.innerHTML).render(data, function(html){
-				$(list).append(html);
-			});
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
+		$(list+idx).find("select").each(function(){
+			$(this).val($(this).attr("data-value"));
+		});
+		$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
+			var ss = $(this).attr("data-value").split(',');
+			for (var i=0; i<ss.length; i++){
+				if($(this).val() == ss[i]){
+					$(this).attr("checked","checked");
 				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html('<i class="layui-icon layui-icon-close-fill"></i>').attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html('<i class="layui-icon layui-icon-delete"></i>').attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
 			}
+		});
+	}
+	function delRow(obj, prefix){
+		var id = $(prefix+"_id");
+		var delFlag = $(prefix+"_delFlag");
+		if (id.val() == ""){
+			$(obj).parent().parent().remove();
+		}else if(delFlag.val() == "0"){
+			delFlag.val("1");
+			$(obj).html('<i class="layui-icon layui-icon-close-fill"></i>').attr("title", "撤销删除");
+			$(obj).parent().parent().addClass("error");
+		}else if(delFlag.val() == "1"){
+			delFlag.val("0");
+			$(obj).html('<i class="layui-icon layui-icon-delete"></i>').attr("title", "删除");
+			$(obj).parent().parent().removeClass("error");
 		}
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/test/testDataMain/">主子表列表</a></li>
-			<li class="layui-this"><a href="${ctx}/test/testDataMain/form?id=${testDataMain.id}">主子表<shiro:hasPermission name="test:testDataMain:edit">${not empty testDataMain.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="test:testDataMain:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+	}
+</script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="testDataMain" action="${ctx}/test/testDataMain/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">归属用户：</label>
 			<sys:treeselect id="user" name="user.id" value="${testDataMain.user.id}" labelName="user.name" labelValue="${testDataMain.user.name}"
@@ -146,10 +127,9 @@
 			</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="test:testDataMain:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="test:testDataMain:edit"><input id="btnSubmit" class="layui-btn" type="button" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

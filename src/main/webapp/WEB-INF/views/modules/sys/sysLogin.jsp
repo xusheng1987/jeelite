@@ -7,15 +7,14 @@
 	<link rel="stylesheet" href="${ctxStatic}/common/login.css" media="all">
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var form = layui.form;
 			form.on('submit', function(data){
 				// 登录
 				$.post("${ctx}/login", data.field, function (result) {
 					if (result.message) {
-						if(result.isValidateCodeLogin) {//显示验证码
+						/*if(result.isValidateCodeLogin) {//显示验证码
 							$("#validateCodeItem").show();
 							$("#validateCode").attr("lay-verify","required");
-						}
+						}*/
 						layer.msg(result.message, {icon: 2});
 					} else {
 						location.href="${ctx}";
@@ -36,18 +35,18 @@
         <div class="layadmin-user-login-main">
           <div class="layadmin-user-login-box layadmin-user-login-header">
             <h2>
-              <strong>Jeesite快速开发平台</strong>
+              <strong>Jeelite快速开发平台</strong>
             </h2>
           </div>
           <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
           <form id="loginForm" method="post">
             <div class="layui-form-item">
               <label class="layadmin-user-login-icon layui-icon layui-icon-username"></label>
-              <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名" class="layui-input">
+              <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-item">
               <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
-              <input type="password" name="password" id="password" lay-verify="required" placeholder="密码" class="layui-input">
+              <input type="password" name="password" id="password" lay-verify="required" placeholder="密码" autocomplete="new-password" class="layui-input">
             </div>
             <div class="layui-form-item" id="validateCodeItem" style="display:none">
                 <div class="layui-col-xs7">
@@ -71,7 +70,7 @@
           </div>
         </div>
         <div class="layadmin-user-login-footer">
-          Copyright &copy; 2012-${fns:getConfig('copyrightYear')} <a href="https://github.com/xusheng1987/jeesite-lite">${fns:getConfig('productName')}</a> - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')}
+          Copyright &copy; 2017-${fns:getConfig('copyrightYear')} <a href="https://github.com/xusheng1987/jeelite">${fns:getConfig('productName')}</a> - Powered By jeelite</a> ${fns:getConfig('version')}
         </div>
       </div>
 </body>

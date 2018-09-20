@@ -8,7 +8,7 @@
 	<description>Shiro Configuration</description>
 
     <!-- 加载配置属性文件 -->
-	<context:property-placeholder ignore-unresolvable="true" location="classpath:jeesite.properties" />
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:jeelite.properties" />
 
 	<!-- Shiro权限过滤过滤器定义 -->
 	<bean name="shiroFilterChainDefinitions" class="java.lang.String">
@@ -47,7 +47,7 @@
 	</bean>
 
 	<!-- 自定义会话管理配置 -->
-	<bean id="sessionManager" class="com.thinkgem.jeesite.common.security.shiro.session.SessionManager">
+	<bean id="sessionManager" class="com.github.flying.jeelite.common.security.shiro.session.SessionManager">
 		<property name="sessionDAO" ref="sessionDAO"/>
 
 		<!-- 会话超时时间，单位：毫秒  -->
@@ -65,20 +65,20 @@
 	<!-- 指定本系统SESSIONID, 默认为: JSESSIONID 问题: 与SERVLET容器名冲突, 如JETTY, TOMCAT 等默认JSESSIONID,
 		当跳出SHIRO SERVLET时如ERROR-PAGE容器会为JSESSIONID重新分配值导致登录会话丢失! -->
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-	    <constructor-arg name="name" value="jeesite.session.id"/>
+	    <constructor-arg name="name" value="jeelite.session.id"/>
 	</bean>
 
 	<!-- 自定义Session存储容器 -->
-<!-- 	<bean id="sessionDAO" class="com.thinkgem.jeesite.common.security.shiro.session.JedisSessionDAO"> -->
+<!-- 	<bean id="sessionDAO" class="com.github.flying.jeelite.common.security.shiro.session.JedisSessionDAO"> -->
 <!-- 		<property name="sessionKeyPrefix" value="${redis.keyPrefix}_session_" /> -->
 <!-- 	</bean> -->
-	<bean id="sessionDAO" class="com.thinkgem.jeesite.common.security.shiro.session.CacheSessionDAO">
+	<bean id="sessionDAO" class="com.github.flying.jeelite.common.security.shiro.session.CacheSessionDAO">
 		<property name="activeSessionsCacheName" value="activeSessionsCache" />
 		<property name="cacheManager" ref="shiroCacheManager" />
 	</bean>
 
 	<!-- 自定义系统缓存管理器-->
-<!-- 	<bean id="shiroCacheManager" class="com.thinkgem.jeesite.common.security.shiro.cache.JedisCacheManager"> -->
+<!-- 	<bean id="shiroCacheManager" class="com.github.flying.jeelite.common.security.shiro.cache.JedisCacheManager"> -->
 <!-- 		<property name="cacheKeyPrefix" value="${redis.keyPrefix}_cache_" /> -->
 <!-- 	</bean> -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
@@ -87,8 +87,8 @@
 
 	<!-- rememberMe管理器 -->
 	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
-		<!-- cipherKey生成:Encodes.encodeBase64(Arrays.copyOf("jeesite".getBytes("UTF-8"), 16)) -->
-		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('amVlc2l0ZQAAAAAAAAAAAA==')}" />
+		<!-- cipherKey生成:Encodes.encodeBase64(Arrays.copyOf("jeelite".getBytes("UTF-8"), 16)) -->
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('amVlbGl0ZQAAAAAAAAAAAA==')}" />
 		<property name="cookie" ref="rememberMeCookie" />
 	</bean>
 	<!-- cookie -->

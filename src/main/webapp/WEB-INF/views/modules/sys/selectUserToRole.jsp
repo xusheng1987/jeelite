@@ -1,19 +1,25 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>分配角色</title>
-	<meta name="decorator" content="default"/>
-	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
+<%@include file="/WEB-INF/views/include/treeview.jsp" %>
+<div class="layui-container">
+	<div id="assignRole" class="layui-row">
+		<div class="layui-col-xs4" style="border-right: 1px solid #A8A8A8;">
+			<p>所在部门：</p>
+			<div id="officeTree" class="ztree"></div>
+		</div>
+		<div class="layui-col-xs4" style="padding-left:16px;">
+			<p>待选人员：</p>
+			<div id="userTree" class="ztree"></div>
+		</div>
+		<div class="layui-col-xs4" style="padding-left:16px;border-left: 1px solid #A8A8A8;">
+			<p>已选人员：</p>
+			<div id="selectedTree" class="ztree"></div>
+		</div>
+	</div>
+</div>
 	<script type="text/javascript">
 		var officeTree;
 		var selectedTree;//zTree已选择对象
-
-		// 初始化
-		$(document).ready(function(){
-			officeTree = $.fn.zTree.init($("#officeTree"), setting, officeNodes);
-			selectedTree = $.fn.zTree.init($("#selectedTree"), setting, selectedNodes);
-		});
 
 		var setting = {view: {selectedMulti:false,nameIsHTML:true,showTitle:false,dblClickExpand:false},
 				data: {simpleData: {enable: true}},
@@ -83,24 +89,10 @@
 				top.layer.msg("取消清除操作！", {icon: 0});
 			});
 		};
+
+		// 初始化
+		$(document).ready(function(){
+			officeTree = $.fn.zTree.init($("#officeTree"), setting, officeNodes);
+			selectedTree = $.fn.zTree.init($("#selectedTree"), setting, selectedNodes);
+		});
 	</script>
-</head>
-<body>
-<div class="layui-container">
-	<div id="assignRole" class="layui-row">
-		<div class="layui-col-xs4" style="border-right: 1px solid #A8A8A8;">
-			<p>所在部门：</p>
-			<div id="officeTree" class="ztree"></div>
-		</div>
-		<div class="layui-col-xs4" style="padding-left:16px;">
-			<p>待选人员：</p>
-			<div id="userTree" class="ztree"></div>
-		</div>
-		<div class="layui-col-xs4" style="padding-left:16px;border-left: 1px solid #A8A8A8;">
-			<p>已选人员：</p>
-			<div id="selectedTree" class="ztree"></div>
-		</div>
-	</div>
-</div>
-</body>
-</html>

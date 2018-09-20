@@ -12,7 +12,7 @@
 	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
 		<property name="patterns">
 			<list>
-				<value>com.thinkgem.jeesite.modules.*.service.*</value>
+				<value>com.github.flying.jeelite.modules.*.service.*</value>
 			</list>
 		</property>
 	</bean>

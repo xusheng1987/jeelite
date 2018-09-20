@@ -1,31 +1,34 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>生成方案管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading();
-					form.submit();
-				}
-			});
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+	// 保存方案
+	function save() {
+		$('#flag').val('0');
+		postData();
+	}
+	// 保存并生成代码
+	function saveAndGenerate() {
+		$('#flag').val('1');
+		postData();
+	}
+	// 提交数据
+	function postData() {
+		var loadIndex = layer.load();
+		$.post($("#inputForm").attr("action"), $("#inputForm").serialize(), function (result) {
+			if (result.code == '200') {
+				layer.closeAll();
+				layer.msg(result.msg, {icon: 1});
+			} else {
+				layer.close(loadIndex);
+				layer.alert(result.msg, {icon: 2});
+			}
 		});
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/gen/genScheme/">生成方案列表</a></li>
-			<li class="layui-this"><a href="${ctx}/gen/genScheme/form?id=${genScheme.id}">生成方案<shiro:hasPermission name="gen:genScheme:edit">${not empty genScheme.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="gen:genScheme:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+	}
+</script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="genScheme" action="${ctx}/gen/genScheme/save" method="post" class="layui-form">
 		<form:hidden path="id"/><form:hidden path="flag"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">方案名称:</label>
 			<div class="layui-input-inline">
@@ -46,7 +49,7 @@
 			<div class="layui-input-inline">
 				<form:input path="packageName" htmlEscape="false" maxlength="500" class="required layui-input"/>
 			</div>
-			<div class="layui-form-mid layui-word-aux">建议模块包：com.thinkgem.jeesite.modules</div>
+			<div class="layui-form-mid layui-word-aux">建议模块包：com.github.flying.jeelite.modules</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">生成模块名:</label>
@@ -100,12 +103,11 @@
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<shiro:hasPermission name="gen:genScheme:edit">
-					<input id="btnSubmit" class="layui-btn" type="submit" value="保存方案" onclick="$('#flag').val('0');"/>&nbsp;
-					<input id="btnSubmit" class="layui-btn layui-btn-danger" type="submit" value="保存并生成代码" onclick="$('#flag').val('1');"/>&nbsp;
+					<input class="layui-btn" type="button" value="保存方案" onclick="save();"/>&nbsp;
+					<input class="layui-btn layui-btn-danger" type="button" value="保存并生成代码" onclick="saveAndGenerate();"/>&nbsp;
 				</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.thinkgem.jeesite</groupId>
-	<artifactId>jeesite-lite</artifactId>
+	<groupId>com.github.flying</groupId>
+	<artifactId>jeelite</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
 
@@ -37,12 +37,12 @@
 		<!-- jdbc driver setting -->
 		<mysql.driver.version>5.1.42</mysql.driver.version>
 		<oracle.driver.version>10.2.0.4.0</oracle.driver.version>
-		<mssql.driver.version>1.3.1</mssql.driver.version>
 
 		<!-- environment setting -->
 		<jdk.version>1.8</jdk.version>
 		<tomcat.version>2.2</tomcat.version>
-		<jetty.version>8.1.16.v20140903</jetty.version>
+		<jetty.version>8.1.22.v20160922</jetty.version>
+		<jetty-plugin.version>8.1.16.v20140903</jetty-plugin.version>
 		<webserver.port>8282</webserver.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -50,24 +50,20 @@
 
 	<!-- 设定主仓库，按设定顺序进行查找。 -->
 	<repositories>
-
 		<repository>
-			<id>jeesite-repos</id>
-			<name>Jeesite Repository</name>
+			<id>aliyun-repos</id>
+			<name>Aliyun Repository</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
-
 	</repositories>
 
 	<!-- 设定插件仓库 -->
 	<pluginRepositories>
-
 		<pluginRepository>
-			<id>jeesite-repos</id>
-			<name>Jeesite Repository</name>
+			<id>aliyun-repos</id>
+			<name>Aliyun Repository</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</pluginRepository>
-
 	</pluginRepositories>
 
 	<!-- 依赖项定义 -->
@@ -159,12 +155,6 @@
 			<version>${oracle.driver.version}</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.4.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>${mssql.driver.version}</version>
-			<scope>runtime</scope>
 		</dependency>
 		<!-- PERSISTENCE end -->
 
@@ -369,6 +359,20 @@
 		</dependency>
 		<!-- GENERAL UTILS end -->
 
+		<!-- jetty for functional test and executable war -->
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<scope>provided</scope>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<scope>provided</scope>
+			<version>${jetty.version}</version>
+		</dependency>
+
 		<!-- TEST begin -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -415,7 +419,6 @@
 				<version>2.6</version>
 				<configuration>
 					<warSourceExcludes>
-						static/jquery-validation/1.11.0/demo/**,
 						static/jquery-ztree/3.5.28/demo/**,
 						static/treeTable/demo/**,
 						test/**
@@ -441,7 +444,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
+				<version>${jetty-plugin.version}</version>
 				<configuration>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
@@ -518,25 +521,22 @@
 								<!-- mysql -->
 								<property name="dbunit.datatype" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
 
-								<!-- mssql
-								<property name="dbunit.datatype" value="org.dbunit.ext.mssql.MsSqlDataTypeFactory" /> -->
-
 								<!-- oracle
 								<property name="dbunit.datatype" value="org.dbunit.ext.oracle.Oracle10DataTypeFactory" /> -->
 
-								<property file="src/main/resources/jeesite.properties" />
+								<property file="src/main/resources/jeelite.properties" />
 								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
 									onerror="continue" encoding="${project.build.sourceEncoding}">
 									<classpath refid="maven.test.classpath" />
-									<transaction src="db/sys/jeesite_${jdbc.type}.sql"/>
-									<transaction src="db/gen/jeesite_${jdbc.type}.sql"/>
+									<transaction src="db/sys/jeelite_${jdbc.type}.sql"/>
+									<transaction src="db/gen/jeelite_${jdbc.type}.sql"/>
 									<transaction src="db/gen/example_${jdbc.type}.sql"/>
-									<transaction src="db/test/jeesite_${jdbc.type}.sql"/>
+									<transaction src="db/test/jeelite_${jdbc.type}.sql"/>
 								</sql>
 
 								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath" />
 
-								<!-- mysql、mssql -->
+								<!-- mysql -->
 								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
 									 password="${jdbc.password}">
 
@@ -548,7 +548,7 @@
 										<property name="datatypeFactory" value="${dbunit.datatype}" />
 									</dbconfig>
 									<classpath refid="maven.test.classpath" />
-									<operation type="INSERT" src="db/sys/jeesite_data.xls" format="xls" transaction="true"/>
+									<operation type="INSERT" src="db/sys/jeelite_data.xls" format="xls" transaction="true"/>
 
 								</dbunit>
 
