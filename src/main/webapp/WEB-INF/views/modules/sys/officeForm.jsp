@@ -1,31 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>机构管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading();
-					form.submit();
-				}
-			});
-		});
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/sys/office/list">机构列表</a></li>
-			<li class="layui-this"><a href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">机构<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">上级机构:</label>
             <sys:treeselect id="office" name="parent.id" value="${office.parent.id}" labelName="parent.name" labelValue="${office.parent.name}"
@@ -49,14 +27,6 @@
 			<div class="layui-input-inline">
 				<form:select path="type">
 					<form:options items="${fns:getDictList('sys_office_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">机构级别:</label>
-			<div class="layui-input-inline">
-				<form:select path="grade">
-					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>
@@ -110,22 +80,11 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="layui-textarea"/>
 			</div>
 		</div>
-		<c:if test="${empty office.id}">
-			<div class="layui-form-item">
-				<label class="layui-form-label">快速添加下级部门:</label>
-				<div class="layui-input-block">
-					<c:forEach items="${fns:getDictList('sys_office_common')}" var="dict">
-						<input type="checkbox" name="childDeptList" value="${dict.value}" title="${dict.label}">
-					</c:forEach>
-				</div>
-			</div>
-		</c:if>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="sys:office:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="sys:office:edit"><input class="layui-btn" type="button" value="保 存" onclick="save()"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

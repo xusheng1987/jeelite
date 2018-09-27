@@ -1,61 +1,44 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>主子表管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading();
-					form.submit();
-				}
-			});
+<script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function addRow(list, idx, tpl, row){
+		var laytpl = layui.laytpl;
+		var data = {"idx":idx, "row":row};
+		laytpl(tpl.innerHTML).render(data, function(html){
+			$(list).append(html);
 		});
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
+		$(list+idx).find("select").each(function(){
+			$(this).val($(this).attr("data-value"));
+		});
+		$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
+			var ss = $(this).attr("data-value").split(',');
+			for (var i=0; i<ss.length; i++){
+				if($(this).val() == ss[i]){
+					$(this).attr("checked","checked");
 				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
 			}
+		});
+	}
+	function delRow(obj, prefix){
+		var id = $(prefix+"_id");
+		var delFlag = $(prefix+"_delFlag");
+		if (id.val() == ""){
+			$(obj).parent().parent().remove();
+		}else if(delFlag.val() == "0"){
+			delFlag.val("1");
+			$(obj).html('<i class="layui-icon layui-icon-close-fill"></i>').attr("title", "撤销删除");
+			$(obj).parent().parent().addClass("error");
+		}else if(delFlag.val() == "1"){
+			delFlag.val("0");
+			$(obj).html('<i class="layui-icon layui-icon-delete"></i>').attr("title", "删除");
+			$(obj).parent().parent().removeClass("error");
 		}
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${ctx}/test/testDataMain/">主子表列表</a></li>
-			<li class="layui-this"><a href="${ctx}/test/testDataMain/form?id=${testDataMain.id}">主子表<shiro:hasPermission name="test:testDataMain:edit">${not empty testDataMain.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="test:testDataMain:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+	}
+</script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="testDataMain" action="${ctx}/test/testDataMain/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">归属用户：</label>
 			<sys:treeselect id="user" name="user.id" value="${testDataMain.user.id}" labelName="user.name" labelValue="${testDataMain.user.name}"
@@ -113,25 +96,25 @@
 							<tr><td colspan="4"><a href="javascript:" onclick="addRow('#testDataChildList', testDataChildRowIdx, testDataChildTpl);testDataChildRowIdx = testDataChildRowIdx + 1;" class="layui-btn layui-btn-primary">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table>
-					<script type="text/template" id="testDataChildTpl">//<!--
-						<tr id="testDataChildList{{idx}}">
+					<script type="text/html" id="testDataChildTpl">
+						<tr id="testDataChildList{{d.idx}}">
 							<td class="hide">
-								<input id="testDataChildList{{idx}}_id" name="testDataChildList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-								<input id="testDataChildList{{idx}}_delFlag" name="testDataChildList[{{idx}}].delFlag" type="hidden" value="0"/>
+								<input id="testDataChildList{{d.idx}}_id" name="testDataChildList[{{d.idx}}].id" type="hidden" value="{{# if(d.row){ }}{{d.row.id}}{{# } }}"/>
+								<input id="testDataChildList{{d.idx}}_delFlag" name="testDataChildList[{{d.idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<td>
-								<input id="testDataChildList{{idx}}_name" name="testDataChildList[{{idx}}].name" type="text" value="{{row.name}}" maxlength="100" class="layui-input"/>
+								<input id="testDataChildList{{d.idx}}_name" name="testDataChildList[{{d.idx}}].name" type="text" value="{{# if(d.row){ }}{{d.row.name}}{{# } }}" maxlength="100" class="layui-input"/>
 							</td>
 							<td>
-								<input id="testDataChildList{{idx}}_remarks" name="testDataChildList[{{idx}}].remarks" type="text" value="{{row.remarks}}" maxlength="255" class="layui-input"/>
+								<input id="testDataChildList{{d.idx}}_remarks" name="testDataChildList[{{d.idx}}].remarks" type="text" value="{{# if(d.row){ }}{{d.row.remarks}}{{# } }}" maxlength="255" class="layui-input"/>
 							</td>
 							<shiro:hasPermission name="test:testDataMain:edit"><td width="10">
-								{{#delBtn}}<a href="javascript:void(0)" onclick="delRow(this, '#testDataChildList{{idx}}')"><i class="layui-icon">&#xe640;</i></a>{{/delBtn}}
+								<a href="javascript:void(0)" onclick="delRow(this, '#testDataChildList{{d.idx}}')"><i class="layui-icon layui-icon-delete"></i></a>
 							</td></shiro:hasPermission>
-						</tr>//-->
+						</tr>
 					</script>
 					<script type="text/javascript">
-						var testDataChildRowIdx = 0, testDataChildTpl = $("#testDataChildTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						var testDataChildRowIdx = 0;
 						$(document).ready(function() {
 							var data = ${fns:toJson(testDataMain.testDataChildList)};
 							for (var i=0; i<data.length; i++){
@@ -144,10 +127,9 @@
 			</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="test:testDataMain:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="test:testDataMain:edit"><input id="btnSubmit" class="layui-btn" type="button" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>
+</div>

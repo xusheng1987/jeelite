@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.test.dao.TestDataDao">
+<mapper namespace="com.github.flying.jeelite.modules.test.dao.TestDataDao">
 
 	<sql id="testDataColumns">
 		a.id AS "id",
@@ -48,40 +48,14 @@
 			<if test="name != null and name != ''">
 				AND a.name LIKE
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 			<if test="sex != null and sex != ''">
 				AND a.sex = #{sex}
 			</if>
-			<if test="beginInDate != null and endInDate != null and beginInDate != '' and endInDate != ''">
+			<if test="beginInDate != null and endInDate != null">
 				AND a.in_date BETWEEN #{beginInDate} AND #{endInDate}
 			</if>
-		</where>
-		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${page.orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-
-	<select id="findAllList" resultType="TestData">
-		SELECT
-			<include refid="testDataColumns"/>
-		FROM test_data a
-		<include refid="testDataJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderByField != null and page.orderByField !=''">

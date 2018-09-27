@@ -8,93 +8,79 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>${functionNameSimple}管理</title>
-	<meta name="decorator" content="default"/>
-	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var tpl = $("#treeTableTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-			var data = ${"$"}{fns:toJson(list)}, ids = [], rootIds = [];
-			for (var i=0; i<data.length; i++){
-				ids.push(data[i].id);
-			}
-			ids = ',' + ids.join(',') + ',';
-			for (var i=0; i<data.length; i++){
-				if (ids.indexOf(','+data[i].parentId+',') == -1){
-					if ((','+rootIds.join(',')+',').indexOf(','+data[i].parentId+',') == -1){
-						rootIds.push(data[i].parentId);
-					}
-				}
-			}
-			for (var i=0; i<rootIds.length; i++){
-				addRow("#treeTableList", tpl, data, rootIds[i], true);
-			}
-			$("#treeTable").treeTable({expandLevel : 5});
-		});
-		function addRow(list, tpl, data, pid, root){
-			for (var i=0; i<data.length; i++){
-				var row = data[i];
-				if ((${"$"}{fns:jsGetVal('row.parentId')}) == pid){
-					$(list).append(Mustache.render(tpl, {
-						dict: {
-							<#list table.columnList as c>
-								<#if c.isList?? && c.isList == "1" && (c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox")>
-							${c.simpleJavaField}: getDictLabel(${"$"}{fns:toJson(fns:getDictList('${c.dictType}'))}, row.${c.simpleJavaField}),
-								</#if>
-							</#list>
-						blank123:0}, pid: (root?0:pid), row: row
-					}));
-					addRow(list, tpl, data, row.id);
-				}
-			}
-		}
-	</script>
+  <title>${functionNameSimple}管理</title>
+  <meta name="decorator" content="default"/>
+  <%@include file="/WEB-INF/views/include/treetable.jsp" %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var laytpl = layui.laytpl;
+      var data = ${"$"}{fns:toJson(list)};
+      laytpl(treeTableTpl.innerHTML).render(data, function(html){
+        $("#treeTableList").html(html);
+      });
+      $("#treeTable").treeTable({expandLevel : 5});
+    });
+  </script>
 </head>
 <body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li class="layui-this"><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
-			<shiro:hasPermission name="${permissionPrefix}:edit"><li><a href="${r"${ctx}"}/${urlPrefix}/form">${functionNameSimple}添加</a></li></shiro:hasPermission>
-		</ul>
-	</div><br/>
-	<sys:message content="${r"${message}"}"/>
-	<table id="treeTable" class="layui-table" lay-even>
-		<thead>
-			<tr>
-				<#list table.columnList as c>
-					<#if c.isList?? && c.isList == "1">
-				<th>${c.comments}</th>
-					</#if>
-				</#list>
-				<shiro:hasPermission name="${permissionPrefix}:edit"><th>操作</th></shiro:hasPermission>
-			</tr>
-		</thead>
-		<tbody id="treeTableList"></tbody>
-	</table>
-	<script type="text/template" id="treeTableTpl">
-		<tr id="{{row.id}}" pId="{{pid}}">
-			<#assign firstListField = true>
-			<#list table.columnList as c>
-				<#if c.isList?? && c.isList == "1">
-			<td<#if firstListField> class="layui-text"><a href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}"><#else>></#if>
-			<#if c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
-				{{dict.${c.simpleJavaField}}}
-			<#elseif c.showType == "userselect" || c.showType == "officeselect">
-				{{row.${c.javaFieldName}}}
-			<#else>
-				{{row.${c.javaFieldId}}}
-			</#if>
-			<#if firstListField></a></#if></td>
-					<#assign firstListField = false>
-				</#if>
-			</#list>
-			<shiro:hasPermission name="${permissionPrefix}:edit"><td>
-   				<a class="layui-btn layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}"><i class="layui-icon">&#xe642;</i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{row.id}}')"><i class="layui-icon">&#xe640;</i>删除</a>
-				<a class="layui-btn layui-btn-normal layui-btn-sm" href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{row.id}}"><i class="layui-icon">&#xe608;</i>添加下级${functionNameSimple}</a>
-			</td></shiro:hasPermission>
-		</tr>
-	</script>
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-header">${functionNameSimple}列表</div>
+      <div class="layui-card-body">
+        <div class="layui-inline">
+          <shiro:hasPermission name="${permissionPrefix}:edit"><input class="layui-btn" type="button" value="添加" onclick="openDialog('${functionNameSimple}添加', '${r"${ctx}"}/${urlPrefix}/form')"/></shiro:hasPermission>
+        </div>
+        <table id="treeTable" class="layui-table" style="margin-top:15px" lay-even>
+          <thead>
+            <tr>
+              <#list table.columnList as c>
+                <#if c.isList?? && c.isList == "1">
+              <th>${c.comments}</th>
+                </#if>
+              </#list>
+              <shiro:hasPermission name="${permissionPrefix}:edit"><th>操作</th></shiro:hasPermission>
+            </tr>
+          </thead>
+          <tbody id="treeTableList"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="treeTableTpl">
+  <#list table.columnList as c>
+    <#if (c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox") && c.simpleJavaField != 'delFlag'>
+    {{# var ${c.simpleJavaField}Data = ${"$"}{fns:getDictListJson('${c.dictType}')}; }}
+    </#if>
+  </#list>
+    {{# layui.each(d, function(index, item){ }}
+      <tr id="{{item.id}}" pId="{{item.parentId}}">
+        <#assign firstListField = true>
+        <#list table.columnList as c>
+          <#if c.isList?? && c.isList == "1">
+        <td<#if firstListField> class="layui-text">
+          <a href="${r"${ctx}"}/${urlPrefix}/form?id={{item.id}}"><#else>></#if>
+            <#if c.showType == "select" || c.showType == "checkbox" || c.showType == "radiobox">
+          {{getDictLabel(${c.simpleJavaField}Data, item.${c.simpleJavaField})}}
+            <#elseif c.showType == "userselect" || c.showType == "officeselect">
+          {{item.${c.javaFieldName}}}
+            <#else>
+          {{item.${c.javaFieldId}}}
+            </#if>
+            <#if firstListField></a></#if>
+        </td>
+            <#assign firstListField = false>
+          </#if>
+        </#list>
+        <shiro:hasPermission name="${permissionPrefix}:edit">
+        <td>
+          <a class="layui-btn layui-btn-sm" href="javascript:void(0)" onclick="openDialog('${functionNameSimple}修改', '${r"${ctx}"}/${urlPrefix}/form?id={{item.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
+          <a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="deleteItem('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{item.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+          <a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:void(0)" onclick="openDialog('添加下级${functionNameSimple}', '${r"${ctx}"}/${urlPrefix}/form?parent.id={{item.id}}')"><i class="layui-icon layui-icon-add-circle-fine"></i>添加下级${functionNameSimple}</a>
+        </td>
+        </shiro:hasPermission>
+      </tr>
+    {{# }); }}
+  </script>
 </body>
 </html>]]>
 	</content>

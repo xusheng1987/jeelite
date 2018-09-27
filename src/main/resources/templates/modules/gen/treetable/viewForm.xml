@@ -6,36 +6,14 @@
 	<content><![CDATA[
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<html>
-<head>
-	<title>${functionNameSimple}管理</title>
-	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading();
-					form.submit();
-				}
-			});
-		});
-	</script>
-</head>
-<body>
-	<div class="layui-tab">
-		<ul class="layui-tab-title">
-			<li><a href="${r"${ctx}"}/${urlPrefix}/">${functionNameSimple}列表</a></li>
-			<li class="layui-this"><a href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}&parent.id=${"${"+className+"parent.id}"}">${functionNameSimple}<shiro:hasPermission name="${permissionPrefix}:edit">${r"${not empty "+className+".id?'修改':'添加'}"}</shiro:hasPermission><shiro:lacksPermission name="${permissionPrefix}:edit">查看</shiro:lacksPermission></a></li>
-		</ul>
-	</div><br/>
+<script src="${"$"}{ctxStatic}/common/form.js" type="text/javascript"></script>
+<div class="layui-fluid">
 	<form:form id="inputForm" modelAttribute="${className}" action="${r"${ctx}"}/${urlPrefix}/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
-		<sys:message content="${r"${message}"}"/>
 		<#list table.columnList as c>
 			<#if c.simpleJavaField == 'parent'>
 		<div class="layui-form-item">
-			<label class="layui-form-label">上级${c.comments}:</label>
+			<label class="layui-form-label">${c.comments}:</label>
 			<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
 				title="${c.comments}" url="/${urlPrefix}/treeData" extId="${'$'}{${className}.id}" allowClear="true"/>
 		</div>
@@ -65,9 +43,8 @@
 			</div>
 			<#elseif c.showType == "radiobox">
 			<div class="layui-input-inline">
-				<input id="${c.javaFieldId}" type="hidden" value="${"$"}{${className}.${c.javaFieldId}}"/>
 				<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
-					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}">
+					<input type="radio" name="${c.javaFieldId}" value="${"$"}{dict.value}" title="${"$"}{dict.label}" ${"$"}{dict.value eq ${className}.${c.javaFieldId} ? 'checked' : ''}>
 				</c:forEach>
 			</div>
 			<#elseif c.showType == "dateselect">
@@ -93,12 +70,11 @@
 		</#list>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="${permissionPrefix}:edit"><input id="btnSubmit" class="layui-btn" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-				<input id="btnCancel" class="layui-btn layui-btn-normal" type="button" value="返 回" onclick="history.go(-1)"/>
+				<shiro:hasPermission name="${permissionPrefix}:edit"><input class="layui-btn" type="button" value="保 存" onclick="save()"/>&nbsp;</shiro:hasPermission>
+				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>
 	</form:form>
-</body>
-</html>]]>
+</div>]]>
 	</content>
 </template>

@@ -12,7 +12,7 @@
 	<sql id="${className}Columns">
 		<#assign columnField>
 			<#list table.columnList as c>
-		a.${c.name} AS "${c.javaFieldId}",
+		a.${c.name}<#if c.javaFieldId?contains(".")> AS "${c.javaFieldId}"</#if>,
 			</#list>
 			<#list table.columnList as c>
 				<#if c.showType?? && c.showType == "userselect">
@@ -35,83 +35,20 @@
 ${columnField?substring(0, columnField?last_index_of(","))}
 	</sql>
 
-	<#-- 输出字段关联表 -->
-	<sql id="${className}Joins">
-		<#-- 关联父表 -->
-		<#if table.parentExists>
-		LEFT JOIN ${table.parent.name} b ON b.id = a.${table.parentTableFk}
-		</#if>
-		<#-- 关联系统表 -->
-		<#list table.columnList as c>
-			<#if c.showType?? && c.showType == "userselect">
-		LEFT JOIN sys_user u${c_index + 1} ON u${c_index + 1}.id = a.${c.name}
-			<#elseif c.showType?? && c.showType == "officeselect">
-		LEFT JOIN sys_office o${c_index + 1} ON o${c_index + 1}.id = a.${c.name}
-			</#if>
-		</#list>
-	</sql>
-
 	<select id="get" resultType="${ClassName}">
 		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
 		WHERE a.id = ${"#"}{id}
-	</select>
-
-	<select id="findList" resultType="${ClassName}">
-		SELECT
-			<include refid="${className}Columns"/>
-		FROM ${table.name} a
-		<include refid="${className}Joins"/>
-		<where>
-			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
-			<#list table.columnList as c>
-				<#if (c.isQuery?? && c.isQuery == "1") || (table.parentExists && table.parentTableFk == c.name) || c.javaFieldId == 'parent.id' || c.javaFieldId == 'parentIds'>
-					<#if c.queryType ?? && c.queryType == 'between'>
-			<if test="begin${c.simpleJavaField?cap_first} != null and end${c.simpleJavaField?cap_first} != null <#if c.simpleJavaField != c.javaFieldId>and begin${c.javaFieldId?cap_first} != null and end${c.javaFieldId?cap_first} != null </#if>and begin${c.javaFieldId?cap_first} != '' and end${c.javaFieldId?cap_first} != ''">
-					<#else>
-			<if test="${c.simpleJavaField} != null<#if c.simpleJavaField != c.javaFieldId> and ${c.javaFieldId} != null</#if> and ${c.javaFieldId} != ''">
-					</#if>
-					<#if c.queryType ?? && c.queryType == 'between'>
-				AND a.${c.name} BETWEEN ${"#"}{begin${c.simpleJavaField?cap_first}} AND ${"#"}{end${c.simpleJavaField?cap_first}}
-					<#elseif c.queryType ?? && c.queryType == 'like'>
-				AND a.${c.name} LIKE
-					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+${"#"}{${c.javaFieldId}}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}},'%')</if>
-					<#elseif c.queryType ?? && c.queryType == 'left_like'>
-				AND a.${c.name} LIKE
-					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}</if>
-					<if test="dbName == 'mssql'">'%'+${"#"}{${c.javaFieldId}}</if>
-					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}})</if>
-					<#elseif c.queryType ?? && c.queryType == 'right_like'>
-				AND a.${c.name} LIKE
-					<if test="dbName == 'oracle'">${"#"}{${c.javaFieldId}}||'%'</if>
-					<if test="dbName == 'mssql'">${"#"}{${c.javaFieldId}}+'%'</if>
-					<if test="dbName == 'mysql'">concat(${"#"}{${c.javaFieldId}},'%')</if>
-					<#else>
-				AND a.${c.name} ${c.queryType} ${"#"}{${c.javaFieldId}}
-					</#if>
-			</if>
-				</#if>
-			</#list>
-		</where>
-		<#list table.columnList as c>
-			<#if c.name == 'sort'>
-		ORDER BY a.sort ASC
-			</#if>
-		</#list>
 	</select>
 
 	<select id="findAllList" resultType="${ClassName}">
 		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
-		<where>
-			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
-		</where>
+		<#if table.delFlagExists>
+		WHERE a.del_flag = ${"#"}{DEL_FLAG_NORMAL}
+		</#if>
 		<#list table.columnList as c>
 			<#if c.name == 'sort'>
 		ORDER BY a.sort ASC
@@ -125,7 +62,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			a.parent_id AS "parent.id",
 			a.parent_ids
 		FROM ${table.name} a
-		<include refid="${className}Joins"/>
 		<where>
 			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
 			AND a.parent_ids LIKE ${"#"}{parentIds}
@@ -165,9 +101,8 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			</#if>
 		</#list>
 	<#else>
-		WHERE id = ${"#"}{id} OR parent_ids LIKE 
+		WHERE id = ${"#"}{id} OR parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||${"#"}{id}||',%'</if>
-					<if test="dbName == 'mssql'">'%,'+${"#"}{id}+',%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', ${"#"}{id}, ',%')</if>
 	</#if>
 	</update>

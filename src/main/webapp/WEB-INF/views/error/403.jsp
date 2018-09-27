@@ -4,7 +4,8 @@
 <html>
 <head>
 	<title>403 - 操作权限不足</title>
-	<%@include file="/WEB-INF/views/include/head.jsp" %>
+	<link href="${ctxStatic}/layui/css/layui.css" type="text/css" rel="stylesheet" />
+	<link href="${ctxStatic}/common/jeelite.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 	<div style="margin:15px">

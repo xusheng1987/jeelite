@@ -10,17 +10,20 @@
 	</style>
 </head>
 <body>
-	<sys:message content="${message}"/>
 	<div id="content">
 		<div class="layui-row">
-			<div class="layui-col-md2">
+			<div class="layui-col-xs2" style="background-color:#fff">
+				<div style="height:auto;overflow:auto;padding:0 10px 0 10px">
 				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;width:200px;">
 					<legend>组织机构</legend>
 				</fieldset>
 				<div id="ztree" class="ztree"></div>
+				</div>
 			</div>
-			<div class="layui-col-md10 layui-tab-content" style="left:unset">
+			<div class="layui-col-xs10" style="position:absolute;right:0;top:0;bottom:0;">
+				<div style="height:100%;overflow:hidden;padding-left:10px">
 				<iframe id="officeContent" src="${ctx}/sys/user/list" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.MenuDao">
-	
+<mapper namespace="com.github.flying.jeelite.modules.sys.dao.MenuDao">
+
 	<sql id="menuColumns">
 		a.id,
 		a.parent_id AS "parent.id",
@@ -21,11 +21,11 @@
 		a.del_flag,
 		p.name AS "parent.name"
 	</sql>
-	
+
 	<sql id="menuJoins">
 		LEFT JOIN sys_menu p ON p.id = a.parent_id
     </sql>
-	
+
 	<select id="get" resultType="Menu">
 		SELECT
 			<include refid="menuColumns"/>
@@ -33,7 +33,7 @@
 		<include refid="menuJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findAllList" resultType="Menu">
 		SELECT
 			<include refid="menuColumns"/>
@@ -42,7 +42,7 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.sort
 	</select>
-	
+
 	<select id="findByParentIdsLike" resultType="Menu">
 		SELECT
 			a.id,
@@ -52,7 +52,7 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
 		ORDER BY a.sort
 	</select>
-	
+
 	<select id="findByUserId" resultType="Menu">
 		SELECT DISTINCT
 			<include refid="menuColumns"/>
@@ -62,30 +62,29 @@
 		JOIN sys_role r ON r.id = rm.role_id AND r.useable='1'
 		JOIN sys_user_role ur ON ur.role_id = r.id
 		JOIN sys_user u ON u.id = ur.user_id AND u.id = #{userId}
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND r.del_flag = #{DEL_FLAG_NORMAL} AND u.del_flag = #{DEL_FLAG_NORMAL} 
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND r.del_flag = #{DEL_FLAG_NORMAL} AND u.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.sort
 	</select>
-		
+
 	<update id="updateParentIds">
-		UPDATE sys_menu SET 
-			parent_id = #{parent.id}, 
+		UPDATE sys_menu SET
+			parent_id = #{parent.id},
 			parent_ids = #{parentIds}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="updateSort">
-		UPDATE sys_menu SET 
+		UPDATE sys_menu SET
 			sort = #{sort}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE sys_menu SET 
+		UPDATE sys_menu SET
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id} OR parent_ids LIKE 
+		WHERE id = #{id} OR parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>
-					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
 	</update>
-	
+
 </mapper>

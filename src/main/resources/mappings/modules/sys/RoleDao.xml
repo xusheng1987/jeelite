@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.RoleDao">
+<mapper namespace="com.github.flying.jeelite.modules.sys.dao.RoleDao">
 
     <resultMap id="roleResult" type="Role">
 		<id property="id" column="id" />
@@ -10,7 +10,6 @@
 		<result property="dataScope" column="dataScope" />
 		<result property="remarks" column="remarks" />
 		<result property="useable" column="useable" />
-		<result property="sysData" column="sysData" />
 		<collection property="menuList" ofType="Menu">
 			<id property="id" column="menuList.id" />
 		</collection>
@@ -32,8 +31,7 @@
 		a.del_flag,
     	o.name AS "office.name",
     	o.code,
-    	a.useable AS useable,
-    	a.sys_data AS sysData
+    	a.useable AS useable
     </sql>
 
 	<select id="get" resultMap="roleResult">
@@ -69,9 +67,6 @@
 		<if test="user != null and user.id != null and user.id != ''">
 			AND u.id = #{user.id}
 		</if>
-		<if test="user != null and user.loginName != null and user.loginName != ''">
-			AND u.login_name = #{user.loginName}
-		</if>
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		ORDER BY o.code, a.name
@@ -94,9 +89,7 @@
 		INSERT INTO sys_role_menu(role_id, menu_id)
 		<foreach collection="menuList" item="menu" separator=" union all ">
 			SELECT #{id}, #{menu.id}
-			<if test="dbName != 'mssql'">
 			FROM dual
-			</if>
 		</foreach>
 	</insert>
 
@@ -108,9 +101,7 @@
 		INSERT INTO sys_role_office(role_id, office_id)
 		<foreach collection="officeList" item="office" separator=" union all ">
 			SELECT #{id}, #{office.id}
-			<if test="dbName != 'mssql'">
 			FROM dual
-			</if>
 		</foreach>
 	</insert>
 

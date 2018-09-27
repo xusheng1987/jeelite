@@ -12,7 +12,7 @@
 	<sql id="${className}Columns">
 		<#assign columnField>
 			<#list table.columnList as c>
-		a.${c.name} AS "${c.javaFieldId}",
+		a.${c.name}<#if c.javaFieldId?contains(".")> AS "${c.javaFieldId}"</#if>,
 			</#list>
 			<#list table.columnList as c>
 				<#if c.showType?? && c.showType == "userselect">
@@ -69,26 +69,23 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			<#list table.columnList as c>
 				<#if (c.isQuery?? && c.isQuery == "1") || (table.parentExists && table.parentTableFk == c.name)>
 					<#if c.queryType ?? && c.queryType == 'between'>
-			<if test="begin${c.simpleJavaField?cap_first} != null and end${c.simpleJavaField?cap_first} != null <#if c.simpleJavaField != c.javaFieldId>and begin${c.javaFieldId?cap_first} != null and end${c.javaFieldId?cap_first} != null </#if>and begin${c.javaFieldId?cap_first} != '' and end${c.javaFieldId?cap_first} != ''">
+			<if test="begin${c.simpleJavaField?cap_first} != null and end${c.simpleJavaField?cap_first} != null<#if c.simpleJavaField != c.javaFieldId> and begin${c.javaFieldId?cap_first} != null and end${c.javaFieldId?cap_first} != null</#if><#if c.simpleJavaType == 'String' || c.simpleJavaType == 'Office' || c.simpleJavaType == 'User'> and begin${c.javaFieldId?cap_first} != '' and end${c.javaFieldId?cap_first} != ''</#if>">
 					<#else>
-			<if test="${c.simpleJavaField} != null<#if c.simpleJavaField != c.javaFieldId> and ${c.javaFieldId} != null</#if> and ${c.javaFieldId} != ''">
+			<if test="${c.simpleJavaField} != null<#if c.simpleJavaField != c.javaFieldId> and ${c.javaFieldId} != null</#if><#if c.simpleJavaType == 'String' || c.simpleJavaType == 'Office' || c.simpleJavaType == 'User'> and ${c.javaFieldId} != ''</#if>">
 					</#if>
 					<#if c.queryType ?? && c.queryType == 'between'>
 				AND a.${c.name} BETWEEN ${"#"}{begin${c.simpleJavaField?cap_first}} AND ${"#"}{end${c.simpleJavaField?cap_first}}
 					<#elseif c.queryType ?? && c.queryType == 'like'>
 				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+${"#"}{${c.javaFieldId}}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}},'%')</if>
 					<#elseif c.queryType ?? && c.queryType == 'left_like'>
 				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}</if>
-					<if test="dbName == 'mssql'">'%'+${"#"}{${c.javaFieldId}}</if>
 					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}})</if>
 					<#elseif c.queryType ?? && c.queryType == 'right_like'>
 				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">${"#"}{${c.javaFieldId}}||'%'</if>
-					<if test="dbName == 'mssql'">${"#"}{${c.javaFieldId}}+'%'</if>
 					<if test="dbName == 'mysql'">concat(${"#"}{${c.javaFieldId}},'%')</if>
 					<#else>
 				AND a.${c.name} ${c.queryType} ${"#"}{${c.javaFieldId}}
@@ -96,39 +93,6 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			</if>
 				</#if>
 			</#list>
-		</where>
-		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${"$"}{page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${"$"}{page.orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				<#if table.parentExists>
-					<#if table.createDateExists>
-				ORDER BY a.create_date ASC
-					</#if>
-				<#else>
-					<#if table.updateDateExists>
-				ORDER BY a.update_date DESC
-					</#if>
-				</#if>
-			</otherwise>
-		</choose>
-	</select>
-
-	<select id="findAllList" resultType="${ClassName}">
-		SELECT
-			<include refid="${className}Columns"/>
-		FROM ${table.name} a
-		<include refid="${className}Joins"/>
-		<where>
-			<#if table.delFlagExists>a.del_flag = ${"#"}{DEL_FLAG_NORMAL}</#if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderByField != null and page.orderByField !=''">

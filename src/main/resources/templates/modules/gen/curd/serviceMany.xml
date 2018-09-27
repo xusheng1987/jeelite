@@ -5,19 +5,16 @@
 	<fileName>${ClassName}Service.java</fileName>
 	<content><![CDATA[
 /**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
 package ${packageName}.${moduleName}.service;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.thinkgem.jeesite.common.service.BaseService;
-import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.github.flying.jeelite.common.service.BaseService;
+import com.github.flying.jeelite.common.utils.StringUtils;
 import ${packageName}.${moduleName}.dao.${ClassName}Dao;
 import ${packageName}.${moduleName}.entity.${ClassName};
 <#list table.childList as c>
@@ -27,7 +24,7 @@ import ${packageName}.${moduleName}.entity.${c.className?cap_first};
 
 /**
  * ${functionName}Service
- * 
+ *
  * @author ${functionAuthor}
  * @version ${functionVersion}
  */
@@ -40,6 +37,7 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 	private ${c.className?cap_first}Dao ${c.className?uncap_first}Dao;
 	</#list>
 
+	@Override
 	public ${ClassName} get(String id) {
 		${ClassName} ${className} = super.get(id);
 		<#list table.childList as c>
@@ -48,17 +46,10 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 		return ${className};
 	}
 
-	public List<${ClassName}> findList(${ClassName} ${className}) {
-		return super.findList(${className});
-	}
-
-	public Page<${ClassName}> findPage(Page<${ClassName}> page, ${ClassName} ${className}) {
-		return super.findPage(page, ${className});
-	}
-
+	@Override
 	@Transactional(readOnly = false)
 	public void save(${ClassName} ${className}) {
-		super.insertOrUpdate(${className});
+		super.save(${className});
 	<#list table.childList as c>
 		for (${c.className?cap_first} ${c.className?uncap_first} : ${className}.get${c.className?cap_first}List()) {
 			if (${c.className?uncap_first}.getId() == null) {
@@ -84,6 +75,7 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 	</#list>
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public void delete(${ClassName} ${className}) {
 		super.delete(${className});
