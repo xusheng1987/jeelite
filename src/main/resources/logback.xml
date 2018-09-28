@@ -18,6 +18,7 @@
 
 	<!-- project default level -->
 	<logger name="com.github.flying.jeelite" level="DEBUG" />
+	<logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" level="WARN" />
 
 	<root level="INFO">
 		<appender-ref ref="console" />

@@ -3,7 +3,6 @@
 <html>
 <head>
 	<title>${fns:getConfig('productName')} 登录</title>
-	<meta name="decorator" content="default"/>
 	<link rel="stylesheet" href="${ctxStatic}/common/login.css" media="all">
 	<script type="text/javascript">
 		$(document).ready(function() {

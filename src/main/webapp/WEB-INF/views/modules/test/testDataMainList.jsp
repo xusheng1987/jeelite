@@ -3,7 +3,6 @@
 <html>
 <head>
   <title>主子表管理</title>
-  <meta name="decorator" content="default"/>
 </head>
 <body>
   <div class="layui-fluid">

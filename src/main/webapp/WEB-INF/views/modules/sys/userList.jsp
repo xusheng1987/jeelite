@@ -3,7 +3,6 @@
 <html>
 <head>
 	<title>用户管理</title>
-	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#btnExport").click(function(){

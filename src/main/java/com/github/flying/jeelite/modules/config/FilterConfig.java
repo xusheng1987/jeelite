@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import com.github.flying.jeelite.common.config.Global;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 @Configuration
 public class FilterConfig {
@@ -35,5 +34,4 @@ public class FilterConfig {
 		filterRegistration.addUrlPatterns(Global.getAdminPath() + "/*");
 		return filterRegistration;
 	}
-
 }
