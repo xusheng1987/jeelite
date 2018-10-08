@@ -17,10 +17,12 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
@@ -78,6 +80,7 @@ public class RestExceptionHandler {
 			HttpRequestMethodNotSupportedException.class,
 			HttpMediaTypeNotSupportedException.class,
 			HttpMediaTypeNotAcceptableException.class,
+			MissingPathVariableException.class,
 			MissingServletRequestParameterException.class,
 			ServletRequestBindingException.class,
 			ConversionNotSupportedException.class,
@@ -87,7 +90,8 @@ public class RestExceptionHandler {
 			MethodArgumentNotValidException.class,
 			MissingServletRequestPartException.class,
 			BindException.class,
-			NoHandlerFoundException.class
+			NoHandlerFoundException.class,
+			AsyncRequestTimeoutException.class
 	})
 	public final ResponseEntity<?> handleException(Exception ex) {
 		HttpStatus status;
@@ -99,6 +103,8 @@ public class RestExceptionHandler {
 			status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 		} else if (ex instanceof HttpMediaTypeNotAcceptableException) {
 			status = HttpStatus.NOT_ACCEPTABLE;
+		} else if (ex instanceof MissingPathVariableException) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		} else if (ex instanceof MissingServletRequestParameterException) {
 			status = HttpStatus.BAD_REQUEST;
 		} else if (ex instanceof ServletRequestBindingException) {
@@ -119,6 +125,8 @@ public class RestExceptionHandler {
 			status = HttpStatus.BAD_REQUEST;
 		} else if (ex instanceof NoHandlerFoundException) {
 			status = HttpStatus.NOT_FOUND;
+		} else if (ex instanceof AsyncRequestTimeoutException) {
+			status = HttpStatus.SERVICE_UNAVAILABLE;
 		} else {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
