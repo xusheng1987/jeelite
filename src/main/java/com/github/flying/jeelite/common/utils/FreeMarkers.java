@@ -43,7 +43,7 @@ public class FreeMarkers {
 	}
 
 	public static Configuration buildConfiguration(String directory) throws IOException {
-		Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 		Resource path = new DefaultResourceLoader().getResource(directory);
 		cfg.setDirectoryForTemplateLoading(path.getFile());
 		return cfg;

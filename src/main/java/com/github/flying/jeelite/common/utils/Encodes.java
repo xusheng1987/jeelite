@@ -6,6 +6,8 @@ package com.github.flying.jeelite.common.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
@@ -23,7 +25,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class Encodes {
 
-	private static final String DEFAULT_URL_ENCODING = "UTF-8";
+	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 	private static final char[] BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
 	/**
@@ -55,11 +57,7 @@ public class Encodes {
 	 * Base64编码.
 	 */
 	public static String encodeBase64(String input) {
-		try {
-			return new String(Base64.encodeBase64(input.getBytes(DEFAULT_URL_ENCODING)));
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
+		return new String(Base64.encodeBase64(input.getBytes(DEFAULT_CHARSET)));
 	}
 
 	/**
@@ -73,11 +71,7 @@ public class Encodes {
 	 * Base64解码.
 	 */
 	public static String decodeBase64String(String input) {
-		try {
-			return new String(Base64.decodeBase64(input.getBytes()), DEFAULT_URL_ENCODING);
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
+		return new String(Base64.decodeBase64(input.getBytes()), DEFAULT_CHARSET);
 	}
 
 	/**
@@ -124,7 +118,7 @@ public class Encodes {
 	 */
 	public static String urlEncode(String part) {
 		try {
-			return URLEncoder.encode(part, DEFAULT_URL_ENCODING);
+			return URLEncoder.encode(part, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -134,9 +128,8 @@ public class Encodes {
 	 * URL 解码, Encode默认为UTF-8.
 	 */
 	public static String urlDecode(String part) {
-
 		try {
-			return URLDecoder.decode(part, DEFAULT_URL_ENCODING);
+			return URLDecoder.decode(part, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw Exceptions.unchecked(e);
 		}

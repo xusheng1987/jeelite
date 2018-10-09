@@ -75,18 +75,26 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
 	/**
-	 * 获得用户远程地址
+	 * 获得用户远程IP地址
 	 */
 	public static String getRemoteAddr(HttpServletRequest request){
-		String remoteAddr = request.getHeader("X-Real-IP");
-        if (isNotBlank(remoteAddr)) {
-        	remoteAddr = request.getHeader("X-Forwarded-For");
-        }else if (isNotBlank(remoteAddr)) {
+		String remoteAddr = request.getHeader("X-Forwarded-For");
+        if (isBlank(remoteAddr) || "unknown".equalsIgnoreCase(remoteAddr)) {
+        	remoteAddr = request.getHeader("X-Real-IP");
+        }
+        if (isBlank(remoteAddr) || "unknown".equalsIgnoreCase(remoteAddr)) {
         	remoteAddr = request.getHeader("Proxy-Client-IP");
-        }else if (isNotBlank(remoteAddr)) {
+        }
+        if (isBlank(remoteAddr) || "unknown".equalsIgnoreCase(remoteAddr)) {
         	remoteAddr = request.getHeader("WL-Proxy-Client-IP");
         }
-		return (remoteAddr != null ? remoteAddr : request.getRemoteAddr()).split(",")[0];// 有时会出现以，分割的多个IP
+        if (isBlank(remoteAddr) || "unknown".equalsIgnoreCase(remoteAddr)) {
+        	remoteAddr = request.getRemoteAddr();
+        }
+        if (isNotBlank(remoteAddr)) {
+        	return remoteAddr.split(",")[0];
+        }
+		return "unknown";
 	}
 
 	/**

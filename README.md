@@ -6,7 +6,7 @@ Jeelite是基于多个优秀的开源项目，高度整合封装而成的高效�
 是您快速完成项目的最佳基础平台解决方案，是您想学习Java平台的最佳学习案例，还是接私活的最佳助手。
 
 Jeelite是在Spring Framework基础上搭建的一个Java基础开发平台，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-Apache Shiro为权限授权层，Ehcahe对常用数据进行缓存。
+Apache Shiro为权限授权层，Ehcache对常用数据进行缓存。
 
 Jeelite主要定位于企业信息化领域，已内置企业信息化系统的基础功能和高效的代码生成工具，
 包括：系统权限组件、数据权限组件、数据字典组件、核心工具组件、视图操作组件、代码生成等。
@@ -51,14 +51,14 @@ Jeelite主要定位于企业信息化领域，已内置企业信息化系统的�
 * 核心框架：Spring Framework 4.2
 * 安全框架：Apache Shiro 1.3
 * 视图框架：Spring MVC 4.2
-* 服务端验证：Hibernate Validator 5.2
-* 布局框架：SiteMesh 2.4
+* 服务端验证：Hibernate Validator 5.3
+* 布局框架：SiteMesh 3
 * 任务调度：Spring Task 4.2
-* 持久层框架：MyBatis Plus 2.2
-* 数据库连接池：Alibaba Druid 1.0
+* 持久层框架：MyBatis Plus 2.3
+* 数据库连接池：Alibaba Druid 1.1
 * 缓存框架：Ehcache 2.6、Redis
 * 日志管理：SLF4J 1.7、Log4j
-* 工具类：Apache Commons、Jackson 2.7、Xstream 1.4、Guava 20.0、POI 3.16
+* 工具类：Apache Commons、Jackson 2.8、Xstream 1.4、Guava 20.0、POI 3.16
 
 2、前端
 
@@ -71,7 +71,6 @@ Jeelite主要定位于企业信息化领域，已内置企业信息化系统的�
 
 4、平台
 
-* 服务器中间件：在Java EE 5规范（Servlet 2.5、JSP 2.1）下开发，支持应用服务器中间件Tomcat 6+、Jboss 7+、WebLogic 10+、WebSphere 8+等
 * 数据库支持：目前仅提供MySql和Oracle数据库的支持，但不限于数据库，你可以很方便的更改为其它数据库
 * 开发环境：Jdk1.7+、Eclipse、Maven、Git
 

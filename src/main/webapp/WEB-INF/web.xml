@@ -52,7 +52,7 @@
 	<!-- SiteMesh -->
 	<filter>
 		<filter-name>sitemeshFilter</filter-name>
-		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+		<filter-class>com.github.flying.jeelite.common.filter.SiteMeshFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>sitemeshFilter</filter-name>

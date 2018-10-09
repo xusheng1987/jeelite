@@ -51,6 +51,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 	/**
 	 * 认证回调函数, 登录时调用
+	 * Authentication 是用来验证用户身份
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) {
@@ -103,6 +104,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 	/**
 	 * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用
+	 * Authorization 是授权访问控制，用于对用户进行的操作授权，证明该用户是否允许进行当前操作，如访问某个链接，某个资源文件等。
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {

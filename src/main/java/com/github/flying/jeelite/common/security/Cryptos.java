@@ -3,7 +3,7 @@
  */
 package com.github.flying.jeelite.common.security;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.github.flying.jeelite.common.utils.Encodes;
 import com.github.flying.jeelite.common.utils.Exceptions;
 
 /**
@@ -31,12 +30,9 @@ public class Cryptos {
 	private static final String AES_CBC = "AES/CBC/PKCS5Padding";
 	private static final String HMACSHA1 = "HmacSHA1";
 
-	private static final String DEFAULT_URL_ENCODING = "UTF-8";
 	private static final int DEFAULT_HMACSHA1_KEYSIZE = 160; //RFC2401
 	private static final int DEFAULT_AES_KEYSIZE = 128;
 	private static final int DEFAULT_IVSIZE = 16;
-
-	private static final byte[] DEFAULT_KEY = new byte[]{-97,88,-94,9,70,-76,126,25,0,3,-20,113,108,28,69,125};
 
 	private static SecureRandom random = new SecureRandom();
 
@@ -91,33 +87,6 @@ public class Cryptos {
 	 * 使用AES加密原始字符串.
 	 *
 	 * @param input 原始输入字符数组
-	 */
-	public static String aesEncrypt(String input) {
-		try {
-			return Encodes.encodeHex(aesEncrypt(input.getBytes(DEFAULT_URL_ENCODING), DEFAULT_KEY));
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-	}
-
-	/**
-	 * 使用AES加密原始字符串.
-	 *
-	 * @param input 原始输入字符数组
-	 * @param key 符合AES要求的密钥
-	 */
-	public static String aesEncrypt(String input, String key) {
-		try {
-			return Encodes.encodeHex(aesEncrypt(input.getBytes(DEFAULT_URL_ENCODING), Encodes.decodeHex(key)));
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-	}
-
-	/**
-	 * 使用AES加密原始字符串.
-	 *
-	 * @param input 原始输入字符数组
 	 * @param key 符合AES要求的密钥
 	 */
 	public static byte[] aesEncrypt(byte[] input, byte[] key) {
@@ -139,37 +108,11 @@ public class Cryptos {
 	 * 使用AES解密字符串, 返回原始字符串.
 	 *
 	 * @param input Hex编码的加密字符串
-	 */
-	public static String aesDecrypt(String input) {
-		try {
-			return new String(aesDecrypt(Encodes.decodeHex(input), DEFAULT_KEY), DEFAULT_URL_ENCODING);
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-	}
-
-	/**
-	 * 使用AES解密字符串, 返回原始字符串.
-	 *
-	 * @param input Hex编码的加密字符串
 	 * @param key 符合AES要求的密钥
 	 */
-	public static String aesDecrypt(String input, String key) {
-		try {
-			return new String(aesDecrypt(Encodes.decodeHex(input), Encodes.decodeHex(key)), DEFAULT_URL_ENCODING);
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-	}
-
-	/**
-	 * 使用AES解密字符串, 返回原始字符串.
-	 *
-	 * @param input Hex编码的加密字符串
-	 * @param key 符合AES要求的密钥
-	 */
-	public static byte[] aesDecrypt(byte[] input, byte[] key) {
-		return aes(input, key, Cipher.DECRYPT_MODE);
+	public static String aesDecrypt(byte[] input, byte[] key) {
+		byte[] decryptResult = aes(input, key, Cipher.DECRYPT_MODE);
+		return new String(decryptResult, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -179,8 +122,9 @@ public class Cryptos {
 	 * @param key 符合AES要求的密钥
 	 * @param iv 初始向量
 	 */
-	public static byte[] aesDecrypt(byte[] input, byte[] key, byte[] iv) {
-		return aes(input, key, iv, Cipher.DECRYPT_MODE);
+	public static String aesDecrypt(byte[] input, byte[] key, byte[] iv) {
+		byte[] decryptResult = aes(input, key, iv, Cipher.DECRYPT_MODE);
+		return new String(decryptResult, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -224,13 +168,6 @@ public class Cryptos {
 	/**
 	 * 生成AES密钥,返回字节数组, 默认长度为128位(16字节).
 	 */
-	public static String generateAesKeyString() {
-		return Encodes.encodeHex(generateAesKey(DEFAULT_AES_KEYSIZE));
-	}
-
-	/**
-	 * 生成AES密钥,返回字节数组, 默认长度为128位(16字节).
-	 */
 	public static byte[] generateAesKey() {
 		return generateAesKey(DEFAULT_AES_KEYSIZE);
 	}
@@ -257,4 +194,5 @@ public class Cryptos {
 		random.nextBytes(bytes);
 		return bytes;
 	}
+	
 }

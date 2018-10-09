@@ -1,15 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<title><sitemesh:title/> - Powered By jeelite</title>
+	<title><sitemesh:write property='title'/> - Powered By Jeelite</title>
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
-	<sitemesh:head/>
+	<sitemesh:write property='head'/>
 </head>
 <body>
-	<sitemesh:body/>
+	<sitemesh:write property='body'/>
 	<script src="${ctxStatic}/layui/layui.all.js" type="text/javascript"></script>
 </body>
 </html>

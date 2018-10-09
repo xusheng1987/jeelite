@@ -30,9 +30,7 @@
         <property name="plugins">
             <array>
                 <!-- 分页插件配置 -->
-                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-                    <property name="dialectType" value="mysql" />
-                </bean>
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor" />
             </array>
         </property>
 	    <!-- 全局配置注入 -->
@@ -42,8 +40,9 @@
 	    <!--
 			AUTO->`0`("数据库ID自增")
 		 	INPUT->`1`(用户输入ID")
-			ID_WORKER->`2`("全局唯一ID")
-			UUID->`3`("全局唯一ID")
+			ID_WORKER->`2`("分布式全局唯一ID Long类型")
+			UUID->`3`("32位UUID字符串")
+			ID_WORKER_STR->`5`("分布式全局唯一ID 字符串类型")
 		-->
 	    <property name="idType" value="3" />
         <property name="sqlInjector">
@@ -77,29 +76,10 @@
 	<!-- 配置 JSR303 Bean Validator 定义 -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
-	<!-- 缓存配置 -->
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath:${ehcache.configFile}" />
-	</bean>
-
 	<!-- 计划任务配置，用 @Service @Lazy(false)标注类，用@Scheduled(cron = "0 0 2 * * ?")标注方法 -->
     <task:executor id="executor" pool-size="10"/> <task:scheduler id="scheduler" pool-size="10"/>
     <task:annotation-driven scheduler="scheduler" executor="executor" proxy-target-class="true"/>
 
-	<!-- druid输出日志 -->
-	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
-		<property name="statementExecutableSqlLogEnable" value="true" />
-		<property name="statementPrepareAfterLogEnabled" value="false" />
-		<property name="statementParameterSetLogEnabled" value="false" />
-		<property name="statementExecuteAfterLogEnabled" value="false" />
-		<property name="statementCloseAfterLogEnabled" value="false" />
-		<property name="statementExecuteQueryAfterLogEnabled" value="false" />
-		<property name="statementSqlFormatOption">
-			<bean class="com.alibaba.druid.sql.SQLUtils.FormatOption">
-				<property name="prettyFormat" value="false"/>
-			</bean>
-		</property>
-	</bean>
 	<!-- 数据源配置 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 	    <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
@@ -131,11 +111,6 @@
 
 		<!-- 配置监控统计拦截的filters -->
 	    <property name="filters" value="stat" />
-		<!-- <property name="proxyFilters">
-			<list>
-				<ref bean="log-filter" />
-			</list>
-		</property> -->
 	</bean>
 
 </beans>

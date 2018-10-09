@@ -30,10 +30,12 @@ else {
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color:#fff">
 <head>
 	<title>500 - 系统内部错误</title>
-	<%@include file="/WEB-INF/views/include/head.jsp" %>
+	<script src="${ctxStatic}/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+	<link href="${ctxStatic}/layui/css/layui.css" type="text/css" rel="stylesheet" />
+	<link href="${ctxStatic}/common/jeelite.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div style="margin:15px">

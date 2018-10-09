@@ -55,8 +55,7 @@
 
 		<!-- 定时清理失效会话, 清理用户直接关闭浏览器造成的孤立会话   -->
 		<property name="sessionValidationInterval" value="${session.sessionTimeoutClean}"/>
-<!--  		<property name="sessionValidationSchedulerEnabled" value="false"/> -->
- 		<property name="sessionValidationSchedulerEnabled" value="true"/>
+		<property name="sessionValidationSchedulerEnabled" value="true"/>
 
 		<property name="sessionIdCookie" ref="sessionIdCookie"/>
 		<property name="sessionIdCookieEnabled" value="true"/>
@@ -82,13 +81,13 @@
 <!-- 		<property name="cacheKeyPrefix" value="${redis.keyPrefix}_cache_" /> -->
 <!-- 	</bean> -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-		<property name="cacheManager" ref="cacheManager"/>
+		<property name="cacheManagerConfigFile" value="classpath:${ehcache.configFile}"/>
 	</bean>
 
 	<!-- rememberMe管理器 -->
 	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
-		<!-- cipherKey生成:Encodes.encodeBase64(Arrays.copyOf("jeelite".getBytes("UTF-8"), 16)) -->
-		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('amVlbGl0ZQAAAAAAAAAAAA==')}" />
+		<!-- cipherKey生成:Encodes.encodeBase64(Cryptos.generateAesKey()) -->
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('EdMJnZKDsTGfz3OecEuGaA==')}" />
 		<property name="cookie" ref="rememberMeCookie" />
 	</bean>
 	<!-- cookie -->

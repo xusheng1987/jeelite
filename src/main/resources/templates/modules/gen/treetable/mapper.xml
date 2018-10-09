@@ -12,7 +12,7 @@
 	<sql id="${className}Columns">
 		<#assign columnField>
 			<#list table.columnList as c>
-		a.${c.name} AS "${c.javaFieldId}",
+		a.${c.name}<#if c.javaFieldId?contains(".")> AS "${c.javaFieldId}"</#if>,
 			</#list>
 			<#list table.columnList as c>
 				<#if c.showType?? && c.showType == "userselect">
