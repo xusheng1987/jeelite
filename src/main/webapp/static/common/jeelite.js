@@ -246,13 +246,21 @@ function reloadTable() {
 function queryParams() {
 	var params = {};
     $('#searchForm').find('input[name]').each(function () {
-    	if($(this).is(":checkbox") || $(this).is(":radio")) {
+    	if($(this).is(":checkbox")) {
+    		if ($(this).is(":checked")) {
+                params[$(this).attr('name')] = $(this).val();
+    		} else {
+                params[$(this).attr('name')] = '';
+    		}
+    		return true;
+    	}
+    	if($(this).is(":radio")) {
     		if ($(this).is(":checked")) {
                 params[$(this).attr('name')] = $(this).val();
     		}
-    	} else {
-            params[$(this).attr('name')] = $(this).val();
+    		return true;
     	}
+        params[$(this).attr('name')] = $(this).val();
     });
     $('#searchForm').find('select').each(function () {
         params[$(this).attr('name')] = $(this).val();

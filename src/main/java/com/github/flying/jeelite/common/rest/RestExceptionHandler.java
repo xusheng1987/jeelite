@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -34,14 +35,13 @@ import com.google.common.collect.Maps;
  * 控制层异常统一处理
  */
 @ControllerAdvice
-@SuppressWarnings("unused")
 public class RestExceptionHandler {
 
 	/**
 	 * 授权异常
 	 */
-	@ExceptionHandler(UnauthorizedException.class)
-	public String unauthorizedException(UnauthorizedException ex) {
+	@ExceptionHandler({UnauthorizedException.class, AuthenticationException.class})
+	public String unauthorizedException() {
 		return "error/403";
 	}
 

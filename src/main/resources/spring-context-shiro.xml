@@ -18,19 +18,22 @@
 				/userfiles/** = anon
 				${adminPath}/login = authc
 				${adminPath}/logout = logout
-				${adminPath}/** = user
+				${adminPath}/** = forceLogout,user
 			</value>
 		</constructor-arg>
 	</bean>
-
+	<!-- 强制用户下线过滤器 -->
+	<bean id="forceLogoutFilter" class="com.github.flying.jeelite.common.filter.ForceLogoutFilter"/>
+	
 	<!-- 安全认证过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="${adminPath}/login" />
-		<property name="successUrl" value="${adminPath}?login" />
+		<property name="successUrl" value="${adminPath}" />
 		<property name="filters">
             <map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="forceLogout" value-ref="forceLogoutFilter"/>
             </map>
         </property>
 		<property name="filterChainDefinitions">
@@ -69,9 +72,11 @@
 
 	<!-- 自定义Session存储容器 -->
 <!-- 	<bean id="sessionDAO" class="com.github.flying.jeelite.common.security.shiro.session.JedisSessionDAO"> -->
+<!-- 		<property name="sessionIdGenerator" ref="idGen" /> -->
 <!-- 		<property name="sessionKeyPrefix" value="${redis.keyPrefix}_session_" /> -->
 <!-- 	</bean> -->
 	<bean id="sessionDAO" class="com.github.flying.jeelite.common.security.shiro.session.CacheSessionDAO">
+		<property name="sessionIdGenerator" ref="idGen" />
 		<property name="activeSessionsCacheName" value="activeSessionsCache" />
 		<property name="cacheManager" ref="shiroCacheManager" />
 	</bean>
@@ -81,7 +86,7 @@
 <!-- 		<property name="cacheKeyPrefix" value="${redis.keyPrefix}_cache_" /> -->
 <!-- 	</bean> -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-		<property name="cacheManagerConfigFile" value="classpath:${ehcache.configFile}"/>
+		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
 
 	<!-- rememberMe管理器 -->

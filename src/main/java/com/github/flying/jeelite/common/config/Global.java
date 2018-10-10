@@ -105,6 +105,13 @@ public class Global {
 	}
 
 	/**
+	 * 获取session强制退出标记key
+	 */
+	public static String getSessionForceLogoutKey() {
+		return getConfig("session.forceLogoutKey");
+	}
+
+	/**
 	 * 获取上传文件的根目录
 	 */
 	public static String getUserfilesBaseDir() {
