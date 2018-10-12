@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>用户管理</title>
+	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
 	<style type="text/css">
 		.ztree {display: inline-block; width: 180px; padding: 10px; border: 1px solid #ddd; overflow: auto;}
@@ -34,7 +35,7 @@
 				}
 			}
 		};
-
+		
 		function refreshTree(){
 			$.getJSON("${ctx}/sys/office/treeData",function(data){
 				$.fn.zTree.init($("#ztree"), setting, data).expandAll(true);

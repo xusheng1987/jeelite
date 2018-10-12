@@ -3,6 +3,7 @@
 <html>
 <head>
   <title>单表管理</title>
+  <meta name="decorator" content="default"/>
 </head>
 <body>
   <div class="layui-fluid">

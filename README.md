@@ -36,7 +36,7 @@ Jeelite主要定位于企业信息化领域，已内置企业信息化系统的�
 
 1. 使用 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 协议，源代码完全开源，无商业限制。
 2. 使用目前主流的Java EE开发框架，简单易学，学习成本低。
-3. 数据库无限制，目前支持MySql、Oracle、SQL Server，可扩充支持PostgreSQL、H2等。
+3. 数据库无限制，目前支持MySql、Oracle，可扩充支持SQL Server、PostgreSQL、H2等。
 4. 模块化设计，层次结构清晰。内置一系列企业信息管理的基础功能。
 5. 操作权限控制精密细致，对所有管理链接都进行权限验证，可控制到按钮。
 6. 数据权限控制精密细致，对指定数据集权限进行过滤，七种数据权限可供选择。
@@ -51,7 +51,7 @@ Jeelite主要定位于企业信息化领域，已内置企业信息化系统的�
 * 核心框架：SpringBoot 1.5
 * 安全框架：Apache Shiro 1.3
 * 服务端验证：Hibernate Validator 5.3
-* 布局框架：SiteMesh 2.4
+* 布局框架：SiteMesh 3
 * 持久层框架：MyBatis Plus 2.3
 * 数据库连接池：Alibaba Druid 1.1
 * 缓存框架：Ehcache 2.6、Redis
@@ -96,13 +96,13 @@ Jeelite主要定位于企业信息化领域，已内置企业信息化系统的�
 
 ## 常见问题
 
-1. 用一段时间提示内存溢出，请修改JVM参数：-Xmx512m -XX:MaxPermSize=256m
+1. 用一段时间提示内存溢出，请修改JVM参数：-Xms256m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m
 2. 有时出现文字乱码：修改Tomcat的server.xml文件的Connector项，增加URIEncoding="UTF-8"
 3. 为什么新建菜单后看不到新建的菜单？因为授权问题，菜单管理只允许最高管理员账号管理（最高管理员默认账号：admin 密码：admin）。
 
 ## 更多文档
 
-* <https://github.com/xusheng1987/jeelite/tree/master/doc>
+* <https://github.com/xusheng1987/jeelite/tree/springboot/doc>
 
 ## 版权声明
 

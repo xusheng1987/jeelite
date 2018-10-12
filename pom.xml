@@ -82,6 +82,10 @@
 		</dependency>
 		<!-- CACHE begin -->
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
 			<version>${ehcache.version}</version>
@@ -215,5 +219,72 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- 初始化数据库 -->
+		<profile>
+			<id>init-db</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.dbunit</groupId>
+					<artifactId>dbunit</artifactId>
+					<version>2.5.4</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>
+					<version>${poi.version}</version>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<configuration>
+							<target>
+
+								<!-- mysql -->
+								<property name="dbunit.datatype" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
+
+								<!-- oracle
+								<property name="dbunit.datatype" value="org.dbunit.ext.oracle.Oracle10DataTypeFactory" /> -->
+
+								<property file="src/main/resources/application.properties" />
+								<sql driver="${spring.datasource.driver-class-name}" url="${spring.datasource.url}" userid="${spring.datasource.username}" password="${spring.datasource.password}"
+									onerror="continue" encoding="${project.build.sourceEncoding}">
+									<classpath refid="maven.test.classpath" />
+									<transaction src="db/sys/jeelite_${jdbc.type}.sql"/>
+									<transaction src="db/gen/jeelite_${jdbc.type}.sql"/>
+									<transaction src="db/gen/example_${jdbc.type}.sql"/>
+									<transaction src="db/test/jeelite_${jdbc.type}.sql"/>
+								</sql>
+
+								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath" />
+
+								<!-- mysql -->
+								<dbunit driver="${spring.datasource.driver-class-name}" url="${spring.datasource.url}" userid="${spring.datasource.username}"
+									 password="${spring.datasource.password}">
+
+								<!-- oracle
+								<dbunit driver="${spring.datasource.driver-class-name}" url="${spring.datasource.url}" userid="${spring.datasource.username}"
+									password="${spring.datasource.password}" schema="${spring.datasource.username}" > -->
+
+									<dbconfig>
+										<property name="datatypeFactory" value="${dbunit.datatype}" />
+									</dbconfig>
+									<classpath refid="maven.test.classpath" />
+									<operation type="INSERT" src="db/sys/jeelite_data.xls" format="xls" transaction="true"/>
+
+								</dbunit>
+
+							</target>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

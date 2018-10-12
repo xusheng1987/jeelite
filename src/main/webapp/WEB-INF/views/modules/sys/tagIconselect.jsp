@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>图标选择</title>
+	<meta name="decorator" content="default"/>
     <style type="text/css">
     	.page-header {clear:both;margin:0 20px;padding-top:20px;}
 		.the-icons {padding:25px 10px 15px;list-style:none;}
@@ -34,9 +35,9 @@
 <body>
 <input type="hidden" id="icon" value="${value}" />
 <div id="icons">
-
+		
 	    <h2 class="page-header"> Web 应用的图标</h2>
-
+	    
 	    <ul class="the-icons">
 	      <li><i class="icon-adjust"></i> icon-adjust</li>
 	      <li><i class="icon-asterisk"></i> icon-asterisk</li>
@@ -76,7 +77,7 @@
 	      <li><i class="icon-desktop"></i> icon-desktop</li>
 	      <li><i class="icon-download"></i> icon-download</li>
 	      <li><i class="icon-download-alt"></i> icon-download-alt</li>
-
+	    
 
 	      <li><i class="icon-edit"></i> icon-edit</li>
 	      <li><i class="icon-envelope"></i> icon-envelope</li>
@@ -116,7 +117,7 @@
 	      <li><i class="icon-lightbulb"></i> icon-lightbulb</li>
 	      <li><i class="icon-lock"></i> icon-lock</li>
 	      <li><i class="icon-unlock"></i> icon-unlock</li>
-
+	    
 
 	      <li><i class="icon-magic"></i> icon-magic</li>
 	      <li><i class="icon-magnet"></i> icon-magnet</li>
@@ -156,7 +157,7 @@
 	      <li><i class="icon-rss"></i> icon-rss</li>
 	      <li><i class="icon-screenshot"></i> icon-screenshot</li>
 	      <li><i class="icon-search"></i> icon-search</li>
-
+	    
 
 	      <li><i class="icon-share"></i> icon-share</li>
 	      <li><i class="icon-share-alt"></i> icon-share-alt</li>
@@ -196,10 +197,10 @@
 	      <li><i class="icon-zoom-in"></i> icon-zoom-in</li>
 	      <li><i class="icon-zoom-out"></i> icon-zoom-out</li>
 	    </ul>
-
-
+	
+	  
 	    <h2 class="page-header">文本编辑器图标</h2>
-
+	  
 	    <ul class="the-icons">
 	      <li><i class="icon-file"></i> icon-file</li>
 	      <li><i class="icon-file-alt"></i> icon-file-alt</li>
@@ -209,7 +210,7 @@
 	      <li><i class="icon-save"></i> icon-save</li>
 	      <li><i class="icon-undo"></i> icon-undo</li>
 	      <li><i class="icon-repeat"></i> icon-repeat</li>
-
+	    
 
 	      <li><i class="icon-text-height"></i> icon-text-height</li>
 	      <li><i class="icon-text-width"></i> icon-text-width</li>
@@ -219,7 +220,7 @@
 	      <li><i class="icon-align-justify"></i> icon-align-justify</li>
 	      <li><i class="icon-indent-left"></i> icon-indent-left</li>
 	      <li><i class="icon-indent-right"></i> icon-indent-right</li>
-
+	    
 
 	      <li><i class="icon-font"></i> icon-font</li>
 	      <li><i class="icon-bold"></i> icon-bold</li>
@@ -229,7 +230,7 @@
 	      <li><i class="icon-link"></i> icon-link</li>
 	      <li><i class="icon-paper-clip"></i> icon-paper-clip</li>
 	      <li><i class="icon-columns"></i> icon-columns</li>
-
+	    
 
 	      <li><i class="icon-table"></i> icon-table</li>
 	      <li><i class="icon-th-large"></i> icon-th-large</li>
@@ -240,9 +241,9 @@
 	      <li><i class="icon-list-ul"></i> icon-list-ul</li>
 	      <li><i class="icon-list-alt"></i> icon-list-alt</li>
 	    </ul>
-
+	
 	    <h2 class="page-header">指示方向的图标</h2>
-
+	  
 	    <ul class="the-icons">
 	      <li><i class="icon-angle-left"></i> icon-angle-left</li>
 	      <li><i class="icon-angle-right"></i> icon-angle-right</li>
@@ -252,7 +253,7 @@
 	      <li><i class="icon-arrow-left"></i> icon-arrow-left</li>
 	      <li><i class="icon-arrow-right"></i> icon-arrow-right</li>
 	      <li><i class="icon-arrow-up"></i> icon-arrow-up</li>
-
+	    
 
 	      <li><i class="icon-caret-down"></i> icon-caret-down</li>
 	      <li><i class="icon-caret-left"></i> icon-caret-left</li>
@@ -262,7 +263,7 @@
 	      <li><i class="icon-chevron-left"></i> icon-chevron-left</li>
 	      <li><i class="icon-chevron-right"></i> icon-chevron-right</li>
 	      <li><i class="icon-chevron-up"></i> icon-chevron-up</li>
-
+	    
 
 	      <li><i class="icon-circle-arrow-down"></i> icon-circle-arrow-down</li>
 	      <li><i class="icon-circle-arrow-left"></i> icon-circle-arrow-left</li>
@@ -272,7 +273,7 @@
 	      <li><i class="icon-double-angle-right"></i> icon-double-angle-right</li>
 	      <li><i class="icon-double-angle-up"></i> icon-double-angle-up</li>
 	      <li><i class="icon-double-angle-down"></i> icon-double-angle-down</li>
-
+	    
 
 	      <li><i class="icon-hand-down"></i> icon-hand-down</li>
 	      <li><i class="icon-hand-left"></i> icon-hand-left</li>
@@ -281,76 +282,76 @@
 	      <li><i class="icon-circle"></i> icon-circle</li>
 	      <li><i class="icon-circle-blank"></i> icon-circle-blank</li>
 	    </ul>
-
-
+	  
+	
 	    <h2 class="page-header">视频播放器图标</h2>
-
+	  
 	    <ul class="the-icons">
 	      <li><i class="icon-play-circle"></i> icon-play-circle</li>
 	      <li><i class="icon-play"></i> icon-play</li>
 	      <li><i class="icon-pause"></i> icon-pause</li>
 	      <li><i class="icon-stop"></i> icon-stop</li>
-
+	    
 
 	      <li><i class="icon-step-backward"></i> icon-step-backward</li>
 	      <li><i class="icon-fast-backward"></i> icon-fast-backward</li>
 	      <li><i class="icon-backward"></i> icon-backward</li>
 	      <li><i class="icon-forward"></i> icon-forward</li>
-
+	    
 
 	      <li><i class="icon-fast-forward"></i> icon-fast-forward</li>
 	      <li><i class="icon-step-forward"></i> icon-step-forward</li>
 	      <li><i class="icon-eject"></i> icon-eject</li>
-
+	    
 
 	      <li><i class="icon-fullscreen"></i> icon-fullscreen</li>
 	      <li><i class="icon-resize-full"></i> icon-resize-full</li>
 	      <li><i class="icon-resize-small"></i> icon-resize-small</li>
 	    </ul>
-
-
+	
+	
 	    <h2 class="page-header">SNS图标</h2>
-
+	  
 	    <ul class="the-icons">
 	      <li><i class="icon-phone"></i> icon-phone</li>
 	      <li><i class="icon-phone-sign"></i> icon-phone-sign</li>
 	      <li><i class="icon-facebook"></i> icon-facebook</li>
 	      <li><i class="icon-facebook-sign"></i> icon-facebook-sign</li>
-
+	    
 
 	      <li><i class="icon-twitter"></i> icon-twitter</li>
 	      <li><i class="icon-twitter-sign"></i> icon-twitter-sign</li>
 	      <li><i class="icon-github"></i> icon-github</li>
 	      <li><i class="icon-github-alt"></i> icon-github-alt</li>
-
+	    
 
 	      <li><i class="icon-github-sign"></i> icon-github-sign</li>
 	      <li><i class="icon-linkedin"></i> icon-linkedin</li>
 	      <li><i class="icon-linkedin-sign"></i> icon-linkedin-sign</li>
 	      <li><i class="icon-pinterest"></i> icon-pinterest</li>
-
+	    
 
 	      <li><i class="icon-pinterest-sign"></i> icon-pinterest-sign</li>
 	      <li><i class="icon-google-plus"></i> icon-google-plus</li>
 	      <li><i class="icon-google-plus-sign"></i> icon-google-plus-sign</li>
 	      <li><i class="icon-sign-blank"></i> icon-sign-blank</li>
 	    </ul>
-
-
+	  
+	  
 	    <h2 class="page-header">医疗图标</h2>
-
+	  
 	    <ul class="the-icons">
 	      <li><i class="icon-ambulance"></i> icon-ambulance</li>
 	      <li><i class="icon-beaker"></i> icon-beaker</li>
-
+	    
 
 	      <li><i class="icon-h-sign"></i> icon-h-sign</li>
 	      <li><i class="icon-hospital"></i> icon-hospital</li>
-
+	    
 
 	      <li><i class="icon-medkit"></i> icon-medkit</li>
 	      <li><i class="icon-plus-sign-alt"></i> icon-plus-sign-alt</li>
-
+	    
 
 	      <li><i class="icon-stethoscope"></i> icon-stethoscope</li>
 	      <li><i class="icon-user-md"></i> icon-user-md</li>

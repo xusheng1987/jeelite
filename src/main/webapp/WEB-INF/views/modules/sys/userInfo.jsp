@@ -3,6 +3,7 @@
 <html>
 <head>
   <title>个人信息</title>
+  <meta name="decorator" content="default"/>
   <script src="${ctxStatic}/common/form.js" type="text/javascript"></script>
 </head>
 <body>

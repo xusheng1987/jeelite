@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>分配角色</title>
+	<meta name="decorator" content="default"/>
 </head>
 <body>
 <div class="layui-fluid">

@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>生成方案管理</title>
+	<meta name="decorator" content="default"/>
 </head>
 <body>
   <div class="layui-fluid">

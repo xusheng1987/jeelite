@@ -18,17 +18,20 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import com.github.flying.jeelite.common.config.Global;
+import com.github.flying.jeelite.common.filter.ForceLogoutFilter;
 import com.github.flying.jeelite.common.security.shiro.cache.JedisCacheManager;
 import com.github.flying.jeelite.common.security.shiro.session.CacheSessionDAO;
 import com.github.flying.jeelite.common.security.shiro.session.JedisSessionDAO;
 import com.github.flying.jeelite.common.security.shiro.session.SessionDAO;
 import com.github.flying.jeelite.common.security.shiro.session.SessionManager;
 import com.github.flying.jeelite.common.utils.Encodes;
+import com.github.flying.jeelite.common.utils.IdGen;
 import com.github.flying.jeelite.modules.sys.security.FormAuthenticationFilter;
 import com.github.flying.jeelite.modules.sys.security.SystemAuthorizingRealm;
 
@@ -46,6 +49,9 @@ public class ShiroConfig {
 		Map<String, Filter> filtersMap = shiroFilterFactoryBean.getFilters();
 		FormAuthenticationFilter formAuthenticationFilter = new FormAuthenticationFilter();
 		filtersMap.put("authc", formAuthenticationFilter);
+		// 强制用户下线过滤器
+		ForceLogoutFilter forceLogoutFilter = new ForceLogoutFilter();
+		filtersMap.put("forceLogout", forceLogoutFilter);
 		shiroFilterFactoryBean.setFilters(filtersMap);
 		// 配置登录的url和登录成功的url
 		String adminPath = Global.getAdminPath();
@@ -57,7 +63,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/userfiles/**", "anon");
 		filterChainDefinitionMap.put(adminPath + "/login", "authc");
 		filterChainDefinitionMap.put(adminPath + "/logout", "logout");
-		filterChainDefinitionMap.put(adminPath + "/**", "user");
+		filterChainDefinitionMap.put(adminPath + "/**", "forceLogout,user");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}
@@ -145,6 +151,7 @@ public class ShiroConfig {
 	@ConditionalOnProperty(name = "redis.enabled", havingValue = "false", matchIfMissing = true)
 	public SessionDAO cacheSessionDAO(CacheManager cacheManager) {
 		CacheSessionDAO sessionDAO = new CacheSessionDAO();
+		sessionDAO.setSessionIdGenerator(new IdGen());
 		sessionDAO.setCacheManager(cacheManager);
 		sessionDAO.setActiveSessionsCacheName("activeSessionsCache");
 		return sessionDAO;
@@ -157,18 +164,19 @@ public class ShiroConfig {
 	@ConditionalOnProperty(name = "redis.enabled", havingValue = "true", matchIfMissing = false)
 	public SessionDAO jedisSessionDAO() {
 		JedisSessionDAO sessionDAO = new JedisSessionDAO();
+		sessionDAO.setSessionIdGenerator(new IdGen());
 		sessionDAO.setSessionKeyPrefix(Global.getConfig("redis.keyPrefix") + "_session_");
 		return sessionDAO;
 	}
-
+	
 	/**
 	 * shiro缓存管理器(ehcache)
 	 */
 	@Bean
 	@ConditionalOnProperty(name = "redis.enabled", havingValue = "false", matchIfMissing = true)
-	public CacheManager ehCacheManager() {
+	public CacheManager ehCacheManager(EhCacheManagerFactoryBean ehCache) {
 		EhCacheManager cacheManager = new EhCacheManager();
-		cacheManager.setCacheManagerConfigFile("classpath:cache/ehcache-local.xml");
+		cacheManager.setCacheManager(ehCache.getObject());
 		return cacheManager;
 	}
 
