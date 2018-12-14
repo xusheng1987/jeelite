@@ -43,7 +43,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		String adminPath = Global.getAdminPath();
-		registry.addInterceptor(new LogInterceptor()).addPathPatterns(adminPath + "/**")
+		registry.addInterceptor(new LogInterceptor()).addPathPatterns(adminPath + "/**", "/api/**")
 				.excludePathPatterns(adminPath + "/").excludePathPatterns(adminPath + "/login")
 				.excludePathPatterns(adminPath + "/sys/menu/tree")
 				.excludePathPatterns(adminPath + "/sys/menu/treeData");

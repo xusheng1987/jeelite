@@ -8,6 +8,7 @@ $(document).ready(function() {
 	    ,id: 'table'
 	    ,even: true //开启隔行背景
 	    ,page: true //开启分页
+	    ,autoSort:false //在服务端排序，而不是前端处理排序
 	    ,where: queryParams() //接口的其它参数
 	    ,request: {pageName: 'pageNo'} //对分页请求的参数重新设定名称
 	});
@@ -28,6 +29,9 @@ $(document).ready(function() {
 		params['order'] = obj.type; //排序方式：desc（降序）、asc（升序）、null（空对象，默认排序）
 		table.reload('table', {
 			initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态
+			page: {
+				curr: 1//重新从第 1 页开始
+			},
 			where: params
 		});
 	});

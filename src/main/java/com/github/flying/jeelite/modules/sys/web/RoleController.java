@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.flying.jeelite.common.config.Global;
+import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.Collections3;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
@@ -87,7 +87,7 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "save")
-	public ResponseEntity save(Role role) {
+	public Result save(Role role) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -103,7 +103,7 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "delete")
-	public ResponseEntity delete(Role role) {
+	public Result delete(Role role) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -172,7 +172,7 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "outrole")
-	public ResponseEntity outrole(String userId, String roleId) {
+	public Result outrole(String userId, String roleId) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -197,7 +197,7 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "assignrole")
-	public ResponseEntity assignRole(Role role, String[] idsArr) {
+	public Result assignRole(Role role, String[] idsArr) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}

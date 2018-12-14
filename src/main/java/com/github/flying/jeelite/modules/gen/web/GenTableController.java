@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.github.flying.jeelite.common.persistence.PageFactory;
+import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.modules.gen.entity.GenTable;
@@ -72,7 +72,7 @@ public class GenTableController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("gen:genTable:view")
 	@RequestMapping(value = "next")
-	public ResponseEntity next(GenTable genTable) {
+	public Result next(GenTable genTable) {
 		// 验证表是否存在
 		if (StringUtils.isBlank(genTable.getId()) && !genTableService.checkTableName(genTable.getName())) {
 			return renderError("下一步失败！" + genTable.getName() + " 表已经添加！");
@@ -96,7 +96,7 @@ public class GenTableController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("gen:genTable:edit")
 	@RequestMapping(value = "save")
-	public ResponseEntity save(GenTable genTable) {
+	public Result save(GenTable genTable) {
 		beanValidator(genTable);
 		
 		// 验证表是否已经存在
@@ -110,7 +110,7 @@ public class GenTableController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("gen:genTable:edit")
 	@RequestMapping(value = "delete")
-	public ResponseEntity delete(GenTable genTable) {
+	public Result delete(GenTable genTable) {
 		genTableService.delete(genTable);
 		return renderSuccess("删除业务表成功");
 	}
@@ -118,7 +118,7 @@ public class GenTableController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("gen:genTable:edit")
 	@RequestMapping(value = "batchDelete")
-	public ResponseEntity batchDelete(String ids) {
+	public Result batchDelete(String ids) {
 		genTableService.batchDelete(ids);
 		return renderSuccess("批量删除业务表成功");
 	}

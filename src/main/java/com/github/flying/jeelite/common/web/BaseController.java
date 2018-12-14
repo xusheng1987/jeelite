@@ -18,16 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
 import com.github.flying.jeelite.common.mapper.JsonMapper;
+import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.DateUtils;
-import com.google.common.collect.Maps;
 
 /**
  * 控制器支持类
@@ -65,42 +63,43 @@ public abstract class BaseController {
 	/**
 	 * 设置客户端成功响应
 	 */
-	protected ResponseEntity<?> renderSuccess() {
-		return render(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), null);
+	protected Result renderSuccess() {
+		return renderSuccess("success");
 	}
 
 	/**
 	 * 设置客户端成功响应
 	 */
-	protected ResponseEntity<?> renderSuccess(Object data) {
-		return render(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), data);
+	protected Result renderSuccess(String msg) {
+		return renderSuccess(msg, null);
 	}
 
 	/**
 	 * 设置客户端成功响应
 	 */
-	protected ResponseEntity<?> renderSuccess(String msg) {
-		return render(HttpStatus.OK.value(), msg, null);
+	protected Result renderSuccess(Object data) {
+		return renderSuccess("success", data);
+	}
+
+	/**
+	 * 设置客户端成功响应
+	 */
+	protected Result renderSuccess(String msg, Object data) {
+		return new Result(200, msg, data);
 	}
 
 	/**
 	 * 设置客户端错误响应
 	 */
-	protected ResponseEntity<?> renderError(String errorMsg) {
-		return render(201, errorMsg, null);
+	protected Result renderError(String errorMsg) {
+		return renderError(201, errorMsg);
 	}
 
 	/**
-	 * 设置客户端响应
+	 * 设置客户端错误响应
 	 */
-	protected ResponseEntity<?> render(int code, String msg, Object data) {
-		Map map = Maps.newHashMap();
-		if (data != null) {
-			map.put("data", data);
-		}
-		map.put("code", code);
-		map.put("msg", msg);
-		return ResponseEntity.ok(map);
+	protected Result renderError(int code, String errorMsg) {
+		return new Result(code, errorMsg);
 	}
 
 	/**

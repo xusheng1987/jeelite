@@ -1,7 +1,6 @@
 package com.github.flying.jeelite.common.rest;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
 
@@ -10,7 +9,6 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.BindException;
@@ -23,13 +21,13 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
-import com.google.common.collect.Maps;
 
 /**
  * 控制层异常统一处理
@@ -49,27 +47,23 @@ public class RestExceptionHandler {
 	 * 处理RestException.
 	 */
 	@ExceptionHandler(RestException.class)
-	public final ResponseEntity<?> handleException(RestException ex) {
-		Map map = Maps.newHashMap();
-		map.put("code", ex.status.value());
-		map.put("msg", ex.getMessage());
-		return ResponseEntity.ok(map);
+	@ResponseBody
+	public final Result handleRestException(RestException ex) {
+		return new Result(ex.status.value(), ex.getMessage());
 	}
 
 	/**
 	 * Validation异常
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
-	public final ResponseEntity<?> handleException(ConstraintViolationException ex) {
+	@ResponseBody
+	public final Result handleValidationException(ConstraintViolationException ex) {
 		List<String> errors = BeanValidators.extractMessage(ex.getConstraintViolations());
 		StringBuilder sb = new StringBuilder();
 		for (String message : errors){
 			sb.append(message).append(errors.size()>1?"<br/>":"");
 		}
-		Map map = Maps.newHashMap();
-		map.put("code", HttpStatus.BAD_REQUEST.value());
-		map.put("msg", sb.toString());
-		return ResponseEntity.ok(map);
+		return new Result(HttpStatus.BAD_REQUEST.value(), sb.toString());
 	}
 
 	/**
@@ -93,7 +87,8 @@ public class RestExceptionHandler {
 			NoHandlerFoundException.class,
 			AsyncRequestTimeoutException.class
 	})
-	public final ResponseEntity<?> handleException(Exception ex) {
+	@ResponseBody
+	public final Result handleStandardException(Exception ex) {
 		HttpStatus status;
 		if (ex instanceof NoSuchRequestHandlingMethodException) {
 			status = HttpStatus.NOT_FOUND;
@@ -130,9 +125,6 @@ public class RestExceptionHandler {
 		} else {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		Map map = Maps.newHashMap();
-		map.put("code", status.value());
-		map.put("msg", status.getReasonPhrase());
-		return ResponseEntity.ok(map);
+		return new Result(status.value(), status.getReasonPhrase());
 	}
 }

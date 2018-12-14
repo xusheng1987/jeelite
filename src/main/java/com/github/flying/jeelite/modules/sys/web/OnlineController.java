@@ -9,12 +9,12 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.flying.jeelite.common.config.Global;
+import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.security.shiro.session.SessionDAO;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.web.BaseController;
@@ -81,7 +81,7 @@ public class OnlineController extends BaseController {
 	@RequiresPermissions("sys:online:edit")
 	@RequestMapping(value = "tickOut")
 	@ResponseBody
-	public ResponseEntity tickOut(String sessionId) {
+	public Result tickOut(String sessionId) {
 		Session session = sessionDAO.readSession(sessionId);
 		if (session != null) {
 			// 获取当前会话

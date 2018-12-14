@@ -50,7 +50,7 @@ public class LogUtils {
 	 */
 	public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title, Integer costTime){
 		User user = UserUtils.getUser();
-		if (user != null && user.getId() != null){
+//		if (user != null && user.getId() != null){
 			Log log = new Log();
 			log.setTitle(title);
 			log.setType(ex == null ? Log.TYPE_ACCESS : Log.TYPE_EXCEPTION);
@@ -64,7 +64,7 @@ public class LogUtils {
 			log.setCostTime(costTime);
 			// 异步保存日志
 			new SaveLogThread(log, handler, ex).start();
-		}
+//		}
 	}
 
 	/**

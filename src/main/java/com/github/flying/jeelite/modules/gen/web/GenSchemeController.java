@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.github.flying.jeelite.common.persistence.PageFactory;
+import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.modules.gen.entity.GenScheme;
@@ -78,7 +78,7 @@ public class GenSchemeController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("gen:genScheme:edit")
 	@RequestMapping(value = "save")
-	public ResponseEntity save(GenScheme genScheme) {
+	public Result save(GenScheme genScheme) {
 		beanValidator(genScheme);
 
 		String result = genSchemeService.saveScheme(genScheme);
@@ -88,7 +88,7 @@ public class GenSchemeController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("gen:genScheme:edit")
 	@RequestMapping(value = "delete")
-	public ResponseEntity delete(GenScheme genScheme) {
+	public Result delete(GenScheme genScheme) {
 		genSchemeService.delete(genScheme);
 		return renderSuccess("删除生成方案成功");
 	}

@@ -14,7 +14,6 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +27,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.persistence.PageFactory;
+import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.IdGen;
 import com.github.flying.jeelite.common.utils.JxlsUtils;
@@ -103,7 +103,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
-	public ResponseEntity save(User user) {
+	public Result save(User user) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -137,7 +137,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "delete")
-	public ResponseEntity delete(User user) {
+	public Result delete(User user) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -154,7 +154,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "batchDelete")
-	public ResponseEntity batchDelete(String ids) {
+	public Result batchDelete(String ids) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -193,7 +193,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "import", method = RequestMethod.POST)
-	public ResponseEntity importFile(MultipartFile file) {
+	public Result importFile(MultipartFile file) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -287,7 +287,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("user")
 	@RequestMapping(value = "info/save")
-	public ResponseEntity infoSave(User user) {
+	public Result infoSave(User user) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
@@ -323,7 +323,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("user")
 	@RequestMapping(value = "modifyPwd/save")
-	public ResponseEntity modifyPwd(String oldPassword, String newPassword) {
+	public Result modifyPwd(String oldPassword, String newPassword) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
