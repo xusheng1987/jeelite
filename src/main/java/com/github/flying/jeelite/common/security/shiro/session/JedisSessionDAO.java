@@ -19,13 +19,14 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
-import com.google.common.collect.Sets;
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.JedisUtils;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.Servlets;
+import com.google.common.collect.Sets;
 
 import redis.clients.jedis.Jedis;
 
@@ -36,6 +37,11 @@ import redis.clients.jedis.Jedis;
  * @version 2014-7-20
  */
 public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
+	
+	@Value("${spring.mvc.view.prefix}")
+	private String viewPrefix;
+	@Value("${spring.mvc.view.suffix}")
+	private String viewSuffix;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -55,8 +61,7 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 				return;
 			}
 			// 如果是视图文件，则不更新SESSION
-			if (StringUtils.startsWith(uri, Global.getConfig("web.view.prefix"))
-					&& StringUtils.endsWith(uri, Global.getConfig("web.view.suffix"))) {
+			if (StringUtils.startsWith(uri, viewPrefix) && StringUtils.endsWith(uri, viewSuffix)) {
 				return;
 			}
 			// 手动控制不更新SESSION

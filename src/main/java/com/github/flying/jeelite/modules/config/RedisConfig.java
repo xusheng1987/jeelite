@@ -1,10 +1,9 @@
 package com.github.flying.jeelite.modules.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.github.flying.jeelite.common.config.Global;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -12,7 +11,16 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @ConditionalOnProperty(name = "redis.enabled", havingValue = "true")
 public class RedisConfig {
-	
+
+	@Value("${redis.host}")
+	private String host;
+	@Value("${redis.port}")
+	private int port;
+	@Value("${redis.timeout}")
+	private int timeout;
+	@Value("${redis.password}")
+	private String password;
+
 	@Bean
 	public JedisPool jedisPool() {
 		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
@@ -24,8 +32,7 @@ public class RedisConfig {
 		jedisPoolConfig.setMaxWaitMillis(3000L);
 		// 当调用borrow Object方法时，是否进行有效性检查
 		jedisPoolConfig.setTestOnBorrow(true);
-		return new JedisPool(jedisPoolConfig, Global.getConfig("redis.host"), Integer.parseInt(Global.getConfig("redis.port")),
-				Integer.parseInt(Global.getConfig("redis.timeout")), Global.getConfig("redis.password"));
+		return new JedisPool(jedisPoolConfig, host, port, timeout, password);
 	}
 
 }

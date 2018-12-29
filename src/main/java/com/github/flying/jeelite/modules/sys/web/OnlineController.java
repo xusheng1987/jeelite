@@ -69,7 +69,9 @@ public class OnlineController extends BaseController {
 			Principal principal = (Principal)pc.getPrimaryPrincipal();
 			map.put("loginName", principal.getLoginName()); //登录名
 			map.put("name", principal.getName()); //姓名
-			map.put("host", session.getHost()); //主机
+			map.put("host", principal.getHost()); //主机
+			map.put("browser", principal.getBrowser()); //浏览器类型
+			map.put("os", principal.getOs()); //操作系统
 			list.add(map);
 		}
 		return jsonPage(list.size(), list);

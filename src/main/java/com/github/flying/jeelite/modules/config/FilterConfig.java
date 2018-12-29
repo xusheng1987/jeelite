@@ -1,14 +1,16 @@
 package com.github.flying.jeelite.modules.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-import com.github.flying.jeelite.common.config.Global;
-
 @Configuration
 public class FilterConfig {
+
+	@Value("${adminPath}")
+	private String adminPath;
 
 	/**
 	 * shiro filter
@@ -31,7 +33,7 @@ public class FilterConfig {
 		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
 		SiteMeshFilter sitemeshFilter = new SiteMeshFilter();
 		filterRegistration.setFilter(sitemeshFilter);
-		filterRegistration.addUrlPatterns(Global.getAdminPath() + "/*");
+		filterRegistration.addUrlPatterns(adminPath + "/*");
 		return filterRegistration;
 	}
 }

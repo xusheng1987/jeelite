@@ -11,10 +11,6 @@
 				// 登录
 				$.post("${ctx}/login", data.field, function (result) {
 					if (result.message) {
-						/*if(result.isValidateCodeLogin) {//显示验证码
-							$("#validateCodeItem").show();
-							$("#validateCode").attr("lay-verify","required");
-						}*/
 						layer.msg(result.message, {icon: 2});
 					} else {
 						location.href="${ctx}";
@@ -48,18 +44,20 @@
               <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
               <input type="password" name="password" id="password" lay-verify="required" placeholder="密码" autocomplete="new-password" class="layui-input">
             </div>
-            <div class="layui-form-item" id="validateCodeItem" style="display:none">
+            <c:if test="${fns:getConfig('captchaEnabled') == 'true'}">
+            <div class="layui-form-item" id="validateCodeItem">
                 <div class="layui-col-xs7">
                   <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"></label>
-                  <input type="text" name="validateCode" id="validateCode" placeholder="图形验证码" class="layui-input">
+                  <input type="text" name="validateCode" id="validateCode" lay-verify="required" placeholder="图形验证码" class="layui-input">
                 </div>
                 <div class="layui-col-xs4">
                   <div style="margin-left: 10px;">
-                    <img src="${pageContext.request.contextPath}/servlet/validateCodeServlet" onclick="$(this).attr('src','${pageContext.request.contextPath}/servlet/validateCodeServlet?'+new Date().getTime());"
+                    <img src="${ctp}/validateCode" onclick="$(this).attr('src','${ctp}/validateCode?'+new Date().getTime());"
                        class="layadmin-user-login-codeimg"/>
                   </div>
                 </div>
             </div>
+            </c:if>
             <div class="layui-form-item" style="margin-bottom: 20px;">
               <input type="checkbox" name="rememberMe" id="rememberMe" lay-skin="primary" title="记住密码（公共场所慎用）">
             </div>

@@ -14,12 +14,13 @@ import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.springframework.beans.factory.annotation.Value;
 
-import com.google.common.collect.Sets;
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.Servlets;
+import com.google.common.collect.Sets;
 
 /**
  * 系统安全认证实现类
@@ -28,6 +29,11 @@ import com.github.flying.jeelite.common.web.Servlets;
  * @version 2014-7-24
  */
 public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements SessionDAO {
+	
+	@Value("${spring.mvc.view.prefix}")
+	private String viewPrefix;
+	@Value("${spring.mvc.view.suffix}")
+	private String viewSuffix;
 
 	public CacheSessionDAO() {
 		super();
@@ -47,8 +53,7 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 				return;
 			}
 			// 如果是视图文件，则不更新SESSION
-			if (StringUtils.startsWith(uri, Global.getConfig("web.view.prefix"))
-					&& StringUtils.endsWith(uri, Global.getConfig("web.view.suffix"))) {
+			if (StringUtils.startsWith(uri, viewPrefix) && StringUtils.endsWith(uri, viewSuffix)) {
 				return;
 			}
 			// 手动控制不更新SESSION

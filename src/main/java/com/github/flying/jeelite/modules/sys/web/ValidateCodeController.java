@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
-package com.github.flying.jeelite.common.servlet;
+package com.github.flying.jeelite.modules.sys.web;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -12,56 +12,36 @@ import java.io.OutputStream;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.github.flying.jeelite.common.web.BaseController;
 
 /**
  * 生成随机验证码
  * @author flying
  * @version 2014-7-27
  */
-@SuppressWarnings("serial")
-public class ValidateCodeServlet extends HttpServlet {
+@Controller
+public class ValidateCodeController extends BaseController {
 
 	public static final String VALIDATE_CODE = "validateCode";
 
 	private int w = 80;
 	private int h = 40;
 
-	public ValidateCodeServlet() {
-		super();
-	}
-
-	public static boolean validate(HttpServletRequest request, String validateCode){
-		String code = (String)request.getSession().getAttribute(VALIDATE_CODE);
-		return validateCode.toUpperCase().equals(code);
-	}
-
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String validateCode = request.getParameter(VALIDATE_CODE); // AJAX验证，成功返回true
-		if (StringUtils.isNotBlank(validateCode)){
-			response.getOutputStream().print(validate(request, validateCode)?"true":"false");
-		}else{
-			this.doPost(request, response);
-		}
-	}
-
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	@RequestMapping(value = "validateCode")
+	public String getValidateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		createImage(request,response);
+		return null;
 	}
 
-	private void createImage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-
+	private void createImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
@@ -95,7 +75,6 @@ public class ValidateCodeServlet extends HttpServlet {
 		OutputStream out = response.getOutputStream();
 		ImageIO.write(image, "JPEG", out);
 		out.close();
-
 	}
 
 	private Color getRandColor(int fc,int bc) {

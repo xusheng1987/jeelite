@@ -3,8 +3,7 @@ package com.github.flying.jeelite.modules.config;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -14,14 +13,15 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.mapper.JsonMapper;
-import com.github.flying.jeelite.common.servlet.ValidateCodeServlet;
 import com.github.flying.jeelite.modules.sys.interceptor.LogInterceptor;
 import com.google.common.collect.Lists;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
+
+	@Value("${adminPath}")
+	private String adminPath;
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -42,7 +42,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		String adminPath = Global.getAdminPath();
 		registry.addInterceptor(new LogInterceptor()).addPathPatterns(adminPath + "/**", "/api/**")
 				.excludePathPatterns(adminPath + "/").excludePathPatterns(adminPath + "/login")
 				.excludePathPatterns(adminPath + "/sys/menu/tree")
@@ -54,17 +53,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("redirect:" + Global.getAdminPath());
-	}
-
-	/**
-	 * 验证码获取servlet
-	 */
-	@Bean
-	public ServletRegistrationBean servletRegistration() {
-		ServletRegistrationBean registration = new ServletRegistrationBean(new ValidateCodeServlet(),
-				"/servlet/validateCodeServlet");
-		return registration;
+		registry.addViewController("/").setViewName("redirect:" + adminPath);
 	}
 
 }

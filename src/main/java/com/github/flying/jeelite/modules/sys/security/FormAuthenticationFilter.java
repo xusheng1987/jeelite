@@ -26,9 +26,6 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 	public static final String DEFAULT_CAPTCHA_PARAM = "validateCode";
 	public static final String DEFAULT_MESSAGE_PARAM = "message";
 
-	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
-	private String messageParam = DEFAULT_MESSAGE_PARAM;
-
 	@Override
 	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
 		String username = getUsername(request);
@@ -78,21 +75,11 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		return StringUtils.toBoolean(isRememberMe);
 	}
 
-	public String getCaptchaParam() {
-		return captchaParam;
-	}
-
+	/**
+	 * 获取验证码
+	 */
 	protected String getCaptcha(ServletRequest request) {
-		return WebUtils.getCleanParam(request, getCaptchaParam());
-	}
-
-	public String getMessageParam() {
-		return messageParam;
-	}
-
-	@Override
-	protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
-		WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
+		return WebUtils.getCleanParam(request, DEFAULT_CAPTCHA_PARAM);
 	}
 
 	/**
@@ -105,14 +92,13 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		if (IncorrectCredentialsException.class.getName().equals(className)
 				|| UnknownAccountException.class.getName().equals(className)) {
 			message = "用户名或密码错误，请重试";
-		} else if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")) {
+		} else if (StringUtils.startsWith(e.getMessage(), "msg:")) {
 			message = StringUtils.replace(e.getMessage(), "msg:", "");
 		} else {
 			message = "系统出现点问题，请稍后再试";
-			e.printStackTrace(); // 输出到控制台
+			e.printStackTrace();
 		}
-		request.setAttribute(getFailureKeyAttribute(), className);
-		request.setAttribute(getMessageParam(), message);
+		request.setAttribute(DEFAULT_MESSAGE_PARAM, message);
 		return true;
 	}
 

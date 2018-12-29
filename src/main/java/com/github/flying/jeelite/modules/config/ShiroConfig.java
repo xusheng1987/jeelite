@@ -17,13 +17,13 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.filter.ForceLogoutFilter;
 import com.github.flying.jeelite.common.security.shiro.cache.JedisCacheManager;
 import com.github.flying.jeelite.common.security.shiro.session.CacheSessionDAO;
@@ -37,6 +37,15 @@ import com.github.flying.jeelite.modules.sys.security.SystemAuthorizingRealm;
 
 @Configuration
 public class ShiroConfig {
+
+	@Value("${adminPath}")
+	private String adminPath;
+	@Value("${session.sessionTimeout}")
+	private Long sessionTimeout;
+	@Value("${session.sessionTimeoutClean}")
+	private Long sessionTimeoutClean;
+	@Value("${redis.keyPrefix}")
+	private String redisKeyPrefix;
 
 	/**
 	 * shiro认证过滤器
@@ -54,7 +63,6 @@ public class ShiroConfig {
 		filtersMap.put("forceLogout", forceLogoutFilter);
 		shiroFilterFactoryBean.setFilters(filtersMap);
 		// 配置登录的url和登录成功的url
-		String adminPath = Global.getAdminPath();
 		shiroFilterFactoryBean.setLoginUrl(adminPath + "/login");
 		shiroFilterFactoryBean.setSuccessUrl(adminPath);
 		// 配置访问权限
@@ -98,21 +106,21 @@ public class ShiroConfig {
 	/**
 	 *  shiro生命周期处理器，实现初始化和销毁回调
 	 */
-	@Bean(name = "lifecycleBeanPostProcessor")
-	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-		return new LifecycleBeanPostProcessor();
-	}
+//	@Bean(name = "lifecycleBeanPostProcessor")
+//	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+//		return new LifecycleBeanPostProcessor();
+//	}
 
 	/**
 	 * shiro过滤器代理配置
 	 */
-	@Bean
-	@DependsOn("lifecycleBeanPostProcessor")
-	public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-		DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
-		proxyCreator.setProxyTargetClass(true);
-		return proxyCreator;
-	}
+//	@Bean
+//	@DependsOn("lifecycleBeanPostProcessor")
+//	public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+//		DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
+//		proxyCreator.setProxyTargetClass(true);
+//		return proxyCreator;
+//	}
 
 	/**
 	 *  启用Shrio授权注解拦截方式，AOP式方法级权限检查
@@ -131,11 +139,11 @@ public class ShiroConfig {
 	public SessionManager sessionManager(SessionDAO sessionDAO) {
 		SessionManager sessionManager = new SessionManager();
 		sessionManager.setSessionDAO(sessionDAO);
-		sessionManager.setGlobalSessionTimeout(Long.parseLong(Global.getConfig("session.sessionTimeout")));
+		sessionManager.setGlobalSessionTimeout(sessionTimeout);
 		// url中是否显示session Id
 		sessionManager.setSessionIdUrlRewritingEnabled(false);
 		// 定时清理失效会话, 清理用户直接关闭浏览器造成的孤立会话
-		sessionManager.setSessionValidationInterval(Long.parseLong(Global.getConfig("session.sessionTimeoutClean")));
+		sessionManager.setSessionValidationInterval(sessionTimeoutClean);
 		sessionManager.setSessionValidationSchedulerEnabled(true);
 		// 指定本系统SESSIONID, 默认为: JSESSIONID 问题: 与SERVLET容器名冲突, 如JETTY, TOMCAT 等默认JSESSIONID,
 		// 当跳出SHIRO SERVLET时如ERROR-PAGE容器会为JSESSIONID重新分配值导致登录会话丢失
@@ -165,7 +173,7 @@ public class ShiroConfig {
 	public SessionDAO jedisSessionDAO() {
 		JedisSessionDAO sessionDAO = new JedisSessionDAO();
 		sessionDAO.setSessionIdGenerator(new IdGen());
-		sessionDAO.setSessionKeyPrefix(Global.getConfig("redis.keyPrefix") + "_session_");
+		sessionDAO.setSessionKeyPrefix(redisKeyPrefix + "_session_");
 		return sessionDAO;
 	}
 	
@@ -187,7 +195,7 @@ public class ShiroConfig {
 	@ConditionalOnProperty(name = "redis.enabled", havingValue = "true", matchIfMissing = false)
 	public CacheManager jedisCacheManager() {
 		JedisCacheManager cacheManager = new JedisCacheManager();
-		cacheManager.setCacheKeyPrefix(Global.getConfig("redis.keyPrefix") + "_cache_");
+		cacheManager.setCacheKeyPrefix(redisKeyPrefix + "_cache_");
 		return cacheManager;
 	}
 
