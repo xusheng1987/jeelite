@@ -263,6 +263,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- IP地址库 -->
+		<dependency>
+			<groupId>org.lionsoul</groupId>
+			<artifactId>ip2region</artifactId>
+			<version>1.7.2</version>
+		</dependency>
 
 		<!-- 应用监控
 		<dependency>

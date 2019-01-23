@@ -29,6 +29,7 @@
 		      ,{field: 'loginName', title: '登录名'}
 		      ,{field: 'name', title: '姓名'}
 		      ,{field: 'host', title: '主机'}
+		      ,{field: 'ipAddress', title: 'IP地址'}
 		      ,{field: 'browser', title: '浏览器'}
 		      ,{field: 'os', title: '操作系统'}
 	  	      <shiro:hasPermission name="sys:online:edit">

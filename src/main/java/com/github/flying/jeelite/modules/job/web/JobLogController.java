@@ -56,7 +56,9 @@ public class JobLogController extends BaseController {
 	@RequiresPermissions("job:view")
 	@RequestMapping(value = "data")
 	public Map listData(JobLog jobLog) {
-		jobLog.setEndCreateDate(DateUtils.parseDate(DateUtils.formatDate(jobLog.getEndCreateDate()) + " 23:59:59"));
+		if (jobLog.getEndCreateDate() != null) {
+			jobLog.setEndCreateDate(DateUtils.parseDate(DateUtils.formatDate(jobLog.getEndCreateDate()) + " 23:59:59"));
+		}
 		Page<JobLog> page = jobLogService.findPage(new PageFactory<JobLog>().defaultPage(), jobLog);
 		return jsonPage(page);
 	}

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.utils.Encodes;
+import com.github.flying.jeelite.common.utils.IPUtils;
 import com.github.flying.jeelite.common.utils.UserAgentUtils;
 import com.github.flying.jeelite.common.web.Servlets;
 import com.github.flying.jeelite.modules.sys.entity.Menu;
@@ -75,6 +76,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			HttpServletRequest request = Servlets.getRequest();
 			Principal principal = new Principal(user);
 			principal.setHost(StringUtils.getRemoteAddr(request));//主机
+			principal.setIpAddress(IPUtils.getIpInfo(principal.getHost()));//IP地址
 			principal.setBrowser(UserAgentUtils.getBrowser(request));//浏览器类型
 			principal.setOs(UserAgentUtils.getOperatingSystem(request));//操作系统
 			return new SimpleAuthenticationInfo(principal, user.getPassword().substring(16),
@@ -162,6 +164,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		private String loginName; // 登录名
 		private String name; // 姓名
 		private String host; // 主机
+		private String ipAddress; // IP对应的地址
 		private String browser; // 浏览器类型
 		private String os; // 操作系统
 
@@ -189,6 +192,14 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 		public void setHost(String host) {
 			this.host = host;
+		}
+
+		public String getIpAddress() {
+			return ipAddress;
+		}
+
+		public void setIpAddress(String ipAddress) {
+			this.ipAddress = ipAddress;
 		}
 
 		public String getBrowser() {

@@ -15,7 +15,7 @@
             <div class="layui-inline">
               <label class="layui-form-label">bean名称：</label>
               <div class="layui-input-inline">
-                <input name="beanName" type="text" maxlength="200" class="layui-input input-medium"/>
+                <input name="beanName" type="text" maxlength="100" class="layui-input input-medium"/>
               </div>
             </div>
             <div class="layui-inline">
@@ -61,7 +61,8 @@
       table.render({
         url: '${ctx}/job/log/data' //数据接口
         ,cols: [[ //表头
-           {field: 'beanName', title: 'bean名称'}
+           {type: 'numbers', fixed:'left'}
+          ,{field: 'beanName', sort: true, title: 'bean名称'}
           ,{field: 'methodName', title: '方法名'}
           ,{field: 'params', title: '参数'}
           ,{title: '执行状态', templet: function(d) {
@@ -72,7 +73,7 @@
         	  }
            }}
           ,{field: 'costTime', title: '耗时(毫秒)'}
-          ,{field: 'createDate', title: '执行时间'}
+          ,{field: 'createDate', sort: true, title: '执行时间'}
         ]]
       });
     });

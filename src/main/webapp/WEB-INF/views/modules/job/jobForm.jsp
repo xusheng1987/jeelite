@@ -19,7 +19,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">bean名称：</label>
 			<div class="layui-input-inline">
-				<form:input path="beanName" htmlEscape="false" maxlength="200" class="layui-input required"/>
+				<form:input path="beanName" htmlEscape="false" maxlength="100" class="layui-input required"/>
 			</div>
 			<div class="layui-form-mid layui-word-aux"><font color="red">*</font></div>
 		</div>
@@ -33,7 +33,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">参数：</label>
 			<div class="layui-input-inline">
-				<form:input path="params" htmlEscape="false" maxlength="2000" class="layui-input "/>
+				<form:input path="params" htmlEscape="false" maxlength="100" class="layui-input "/>
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -46,7 +46,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">备注：</label>
 			<div class="layui-input-inline">
-				<form:input path="remark" htmlEscape="false" maxlength="255" class="layui-input "/>
+				<form:textarea path="remark" htmlEscape="false" rows="3" maxlength="255" class="layui-textarea"/>
 			</div>
 		</div>
 		<div class="layui-form-item">

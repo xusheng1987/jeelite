@@ -73,7 +73,7 @@
             <div class="layui-inline">
               <label class="layui-form-label">bean名称：</label>
               <div class="layui-input-inline">
-                <input name="beanName" type="text" maxlength="200" class="layui-input input-medium"/>
+                <input name="beanName" type="text" maxlength="100" class="layui-input input-medium"/>
               </div>
             </div>
             <div class="layui-inline">
@@ -123,7 +123,7 @@
         ,cols: [[ //表头
           {type: 'numbers', fixed:'left'}
           ,{type: 'checkbox', fixed:'left'}
-          ,{field: 'beanName', title: 'bean名称'}
+          ,{field: 'beanName', sort: true, title: 'bean名称'}
           ,{field: 'methodName', title: '方法名'}
           ,{field: 'params', title: '参数'}
           ,{field: 'cronExpression', title: 'cron表达式'}
@@ -136,7 +136,7 @@
            }}
           ,{field: 'nextExecutionDate', title: '下次执行时间'}
           ,{field: 'remark', title: '备注'}
-          ,{field: 'updateDate', title: '更新时间'}
+          ,{field: 'updateDate', sort: true, title: '更新时间'}
           <shiro:hasPermission name="job:edit">
           ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
           </shiro:hasPermission>

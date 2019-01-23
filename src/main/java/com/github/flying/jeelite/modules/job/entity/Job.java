@@ -42,7 +42,7 @@ public class Job extends BaseEntity<Job> {
 		super(id);
 	}
 
-	@Length(min = 1, max = 200, message = "bean名称长度必须介于 1 和 200 之间")
+	@Length(min = 1, max = 100, message = "bean名称长度必须介于 1 和 100 之间")
 	public String getBeanName() {
 		return beanName;
 	}
@@ -60,7 +60,7 @@ public class Job extends BaseEntity<Job> {
 		this.methodName = methodName;
 	}
 
-	@Length(min = 0, max = 2000, message = "参数长度必须介于 0 和 2000 之间")
+	@Length(min = 0, max = 100, message = "参数长度不能超过100")
 	public String getParams() {
 		return params;
 	}
@@ -86,7 +86,7 @@ public class Job extends BaseEntity<Job> {
 		this.status = status;
 	}
 
-	@Length(min = 0, max = 255, message = "备注长度必须介于 0 和 255 之间")
+	@Length(min = 0, max = 255, message = "备注长度不能超过255")
 	public String getRemark() {
 		return remark;
 	}
