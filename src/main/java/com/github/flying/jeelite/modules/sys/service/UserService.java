@@ -93,7 +93,7 @@ public class UserService extends BaseService<UserDao, User> {
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
 		if (StringUtils.isBlank(user.getId())){
-			super.insert(user);
+			dao.insert(user);
 		}else{
 			// 清除原用户机构用户缓存
 			User oldUser = super.get(user.getId());
@@ -101,7 +101,7 @@ public class UserService extends BaseService<UserDao, User> {
 				CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + oldUser.getOffice().getId());
 			}
 			// 更新用户数据
-			super.updateById(user);
+			dao.updateById(user);
 		}
 		if (StringUtils.isNotBlank(user.getId())){
 			// 更新用户与角色关联

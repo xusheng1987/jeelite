@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.flying.jeelite.modules.job.dao.JobDao">
+
+	<sql id="jobColumns">
+		a.id,
+		a.bean_name,
+		a.method_name,
+		a.params,
+		a.cron_expression,
+		a.status,
+		a.remark,
+		a.create_date,
+		a.update_date
+	</sql>
+
+	<sql id="jobJoins">
+	</sql>
+
+	<select id="get" resultType="Job">
+		SELECT
+			<include refid="jobColumns"/>
+		FROM sys_job a
+		<include refid="jobJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Job">
+		SELECT
+			<include refid="jobColumns"/>
+		FROM sys_job a
+		<include refid="jobJoins"/>
+		<where>
+			<if test="beanName != null and beanName != ''">
+				AND a.bean_name = #{beanName}
+			</if>
+			<if test="methodName != null and methodName != ''">
+				AND a.method_name = #{methodName}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
+				<choose>
+					<when test="page.isAsc == true">
+						ORDER BY ${page.orderByField} ASC
+					</when>
+					<otherwise>
+						ORDER BY ${page.orderByField} DESC
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<update id="delete">
+		DELETE FROM sys_job
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 批量更新状态 -->
+	<update id="updateStatus"> 
+		update sys_job set status = #{status} where id in 
+		<foreach item="jobId" collection="list"  open="(" separator="," close=")">
+			#{jobId}
+		</foreach>
+	</update>
+
+</mapper>

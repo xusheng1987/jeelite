@@ -3,7 +3,6 @@
  */
 package com.github.flying.jeelite.modules.sys.service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -47,8 +46,7 @@ public class DictService extends BaseService<DictDao, Dict> {
 	}
 
 	@Transactional(readOnly = false)
-	public void batchDelete(String ids) {
-		List<String> idList = Arrays.asList(ids.split(","));
+	public void batchDelete(List<String> idList) {
 		super.deleteBatchIds(idList);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}

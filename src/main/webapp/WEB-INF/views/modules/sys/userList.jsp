@@ -105,9 +105,9 @@
             </div>
             <div class="layui-inline" style="margin-left:30px">
               <input id="btnSearch" class="layui-btn layui-btn-normal" type="button" value="查询"/>
-              <input id="btnExport" class="layui-btn layui-btn-normal" type="button" value="导出"/>
+              <input id="btnExport" class="layui-btn" style="background-color:#5FB878" type="button" value="导出"/>
               <shiro:hasPermission name="sys:user:edit">
-			  <input id="btnImport" class="layui-btn layui-btn-normal" type="button" value="导入"/>
+			  <input id="btnImport" class="layui-btn layui-btn-warm" type="button" value="导入"/>
               <input id="btnAdd" class="layui-btn" type="button" value="添加"/>
 			  </shiro:hasPermission>
             </div>
@@ -122,7 +122,6 @@
   </div>
   <script type="text/html" id="bar">
     <a href="javascript:void(0)" class="layui-btn layui-btn-sm" onclick="openDialog('用户修改', '${ctx}/sys/user/form?id={{d.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
-    <a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要删除该用户吗？', '${ctx}/sys/user/delete?id={{d.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
   </script>
   <script type="text/javascript">
   $(document).ready(function() {
@@ -145,7 +144,7 @@
   	      ,{field: 'name', title: '姓名'}
   	      ,{field: 'phone', title: '电话'}
   	      <shiro:hasPermission name="sys:user:edit">
-  	      ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
+  	      ,{fixed:'right', align:'center', width:120, title: '操作', toolbar:'#bar'}
   	      </shiro:hasPermission>
   	    ]]
   	});

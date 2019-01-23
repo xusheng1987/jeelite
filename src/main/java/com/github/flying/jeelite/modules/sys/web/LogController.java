@@ -35,9 +35,10 @@ public class LogController extends BaseController {
 	@RequiresPermissions("sys:log:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(Model model) {
-		Date beginDate = DateUtils.setDays(DateUtils.parseDate(DateUtils.getDate()), 1);
-		model.addAttribute("beginDate", beginDate);
-		model.addAttribute("endDate", DateUtils.parseDate(DateUtils.formatDate(DateUtils.addMonths(beginDate, 1)) + " 23:59:59"));
+		// 默认只查询最近一个月的日志
+		Date endDate = new Date();
+		model.addAttribute("beginDate", DateUtils.addMonths(endDate, -1));
+		model.addAttribute("endDate", endDate);
 		return "modules/sys/logList";
 	}
 

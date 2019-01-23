@@ -28,12 +28,14 @@
               <label class="layui-form-label">日期范围：</label>
               <div class="layui-input-inline input-medium">
                 <input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       value="<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+                       value="<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>"
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'});"/>
               </div>
               <div class="layui-form-mid">-</div>
               <div class="layui-input-inline input-medium">
                 <input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       value="<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+                       value="<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>"
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,minDate:'#F{$dp.$D(\'beginDate\')}',maxDate:'%y-%M-%d'});"/>
               </div>
             </div>
             <div class="layui-inline">

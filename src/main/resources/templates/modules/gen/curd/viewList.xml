@@ -30,8 +30,8 @@
               <div class="layui-input-inline">
                 <select name="${c.javaFieldId}">
                   <option value=""></option>
-                  <c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="e">
-                  <option value="${"$"}{e}">${"$"}{e}</option>
+                  <c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
+                  <option value="${"$"}{dict.value}">${"$"}{dict.label}</option>
                   </c:forEach>
                 </select>
               </div>

@@ -122,7 +122,6 @@ function confirmx(mess, href){
 		} else {
 			$.post(href, function(result) {
 				if (result.code == '200') {
-					layer.closeAll();
 					reloadTable();
 					layer.msg(result.msg, {icon: 1});
 				} else {
@@ -132,6 +131,7 @@ function confirmx(mess, href){
 		}
 	});
 }
+//树结构页面的删除项目
 function deleteItem(mess, href) {
 	layer.confirm(mess, {icon: 3, title:'提示'}, function(index) {
 		$.post(href, function(result) {
@@ -272,20 +272,36 @@ function queryParams() {
     return params;
 }
 
+//获取表格选中行的ID
+function getSelectedIds() {
+	var data = table.checkStatus('table').data;
+	var ids = [];
+	$.each(data, function(index, element) {
+		ids.push(element.id);
+	});
+	return ids;
+}
+
+//批量删除
 function batchDelete(href) {
 	layer.confirm('确认要删除选中的项目吗', {icon: 3, title:'提示'}, function(index){
-		var data = table.checkStatus('table').data;
-		var ids = [];
-		$.each(data, function(index, element) {
-			ids.push(element.id);
-		});
-		$.post(href + "?ids="+ids.join(","), function(result) {
-			if (result.code == '200') {
-				layer.close(index);
-				reloadTable();
-				layer.msg(result.msg, {icon: 1});
-			} else {
-				layer.alert(result.msg, {icon: 2});
+		var ids = getSelectedIds();
+		if (ids.length == 0) {
+			layer.msg('请先选择', {icon: 2});
+			return;
+		}
+		$.ajax({
+			type: "POST",
+			url: href,
+			contentType: "application/json",
+			data: JSON.stringify(ids),
+			success: function(result) {
+				if (result.code == '200') {
+					reloadTable();
+					layer.msg(result.msg, {icon: 1});
+				} else {
+					layer.alert(result.msg, {icon: 2});
+				}
 			}
 		});
 	});

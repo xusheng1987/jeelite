@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -104,11 +105,11 @@ public class DictController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:dict:edit")
 	@RequestMapping(value = "batchDelete")
-	public Result batchDelete(String ids) {
+	public Result batchDelete(@RequestBody List<String> idList) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
-		dictService.batchDelete(ids);
+		dictService.batchDelete(idList);
 		return renderSuccess("批量删除字典成功");
 	}
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.flying.jeelite.modules.job.dao.JobLogDao">
+
+	<sql id="jobLogColumns">
+		a.id,
+		a.job_id,
+		a.bean_name,
+		a.method_name,
+		a.params,
+		a.status,
+		a.error_info,
+		a.cost_time,
+		a.create_date
+	</sql>
+
+	<sql id="jobLogJoins">
+	</sql>
+
+	<select id="get" resultType="JobLog">
+		SELECT
+			<include refid="jobLogColumns"/>
+		FROM sys_job_log a
+		<include refid="jobLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="JobLog">
+		SELECT
+			<include refid="jobLogColumns"/>
+		FROM sys_job_log a
+		<include refid="jobLogJoins"/>
+		<where>
+			
+			<if test="beanName != null and beanName != ''">
+				AND a.bean_name = #{beanName}
+			</if>
+			<if test="methodName != null and methodName != ''">
+				AND a.method_name = #{methodName}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
+				<choose>
+					<when test="page.isAsc == true">
+						ORDER BY ${page.orderByField} ASC
+					</when>
+					<otherwise>
+						ORDER BY ${page.orderByField} DESC
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<update id="delete">
+		DELETE FROM sys_job_log
+		WHERE id = #{id}
+	</update>
+
+</mapper>

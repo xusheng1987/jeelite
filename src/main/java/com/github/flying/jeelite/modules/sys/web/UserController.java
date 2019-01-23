@@ -4,7 +4,6 @@
 package com.github.flying.jeelite.modules.sys.web;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.baomidou.mybatisplus.plugins.Page;
@@ -136,29 +131,11 @@ public class UserController extends BaseController {
 
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
-	@RequestMapping(value = "delete")
-	public Result delete(User user) {
-		if (Global.isDemoMode()) {
-			return renderError("演示模式，不允许操作！");
-		}
-		if (UserUtils.getUser().getId().equals(user.getId())) {
-			return renderError("删除用户失败, 不允许删除当前用户");
-		}
-		if (User.isAdmin(user.getId())) {
-			return renderError("删除用户失败, 不允许删除超级管理员用户");
-		}
-		userService.deleteUser(user);
-		return renderSuccess("删除用户成功");
-	}
-
-	@ResponseBody
-	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "batchDelete")
-	public Result batchDelete(String ids) {
+	public Result batchDelete(@RequestBody List<String> idList) {
 		if (Global.isDemoMode()) {
 			return renderError("演示模式，不允许操作！");
 		}
-		List<String> idList = Arrays.asList(ids.split(","));
 		if (idList.contains(UserUtils.getUser().getId())) {
 			return renderError("批量删除用户失败, 不允许删除当前用户");
 		}
