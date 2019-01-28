@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
-package com.github.flying.jeelite.modules.job.web;
+package com.github.flying.jeelite.modules.monitor.web;
 
 import java.util.Map;
 
@@ -18,8 +18,8 @@ import com.github.flying.jeelite.common.persistence.PageFactory;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
-import com.github.flying.jeelite.modules.job.entity.JobLog;
-import com.github.flying.jeelite.modules.job.service.JobLogService;
+import com.github.flying.jeelite.modules.monitor.entity.JobLog;
+import com.github.flying.jeelite.modules.monitor.service.JobLogService;
 
 /**
  * 定时任务日志Controller
@@ -28,7 +28,7 @@ import com.github.flying.jeelite.modules.job.service.JobLogService;
  * @version 2019-01-11
  */
 @Controller
-@RequestMapping(value = "${adminPath}/job/log")
+@RequestMapping(value = "${adminPath}/monitor/job/log")
 public class JobLogController extends BaseController {
 
 	@Autowired
@@ -46,14 +46,14 @@ public class JobLogController extends BaseController {
 		return entity;
 	}
 
-	@RequiresPermissions("job:view")
+	@RequiresPermissions("monitor:job:view")
 	@RequestMapping(value = {"list", ""})
 	public String list() {
-		return "modules/job/jobLogList";
+		return "modules/monitor/jobLogList";
 	}
 
 	@ResponseBody
-	@RequiresPermissions("job:view")
+	@RequiresPermissions("monitor:job:view")
 	@RequestMapping(value = "data")
 	public Map listData(JobLog jobLog) {
 		if (jobLog.getEndCreateDate() != null) {

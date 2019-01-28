@@ -14,7 +14,7 @@
 		}
 		$.ajax({
 			type: "POST",
-			url: "${ctx}/job/pause",
+			url: "${ctx}/monitor/job/pause",
 			contentType: "application/json",
 			data: JSON.stringify(ids),
 			success: function(result) {
@@ -36,7 +36,7 @@
 		}
 		$.ajax({
 			type: "POST",
-			url: "${ctx}/job/resume",
+			url: "${ctx}/monitor/job/resume",
 			contentType: "application/json",
 			data: JSON.stringify(ids),
 			success: function(result) {
@@ -52,7 +52,7 @@
     //立即执行任务
     function runJob(id) {
     	confirmx('确认要执行该任务吗？', function() {
-			$.post("${ctx}/job/run", {"id":id}, function(result) {
+			$.post("${ctx}/monitor/job/run", {"id":id}, function(result) {
 				if (result.code == '200') {
 					layer.msg(result.msg, {icon: 1});
 				} else {
@@ -95,15 +95,15 @@
             </div>
             <div class="layui-inline">
               <input id="btnSearch" class="layui-btn layui-btn-normal" type="button" value="查询"/>
-              <shiro:hasPermission name="job:edit">
-              <input class="layui-btn" type="button" value="添加" onclick="openDialog('定时任务添加', '${ctx}/job/form')"/>
-              <input class="layui-btn layui-btn-danger" type="button" value="删除" onclick="batchDelete('${ctx}/job/delete')"/>
+              <shiro:hasPermission name="monitor:job:edit">
+              <input class="layui-btn" type="button" value="添加" onclick="openDialog('定时任务添加', '${ctx}/monitor/job/form')"/>
+              <input class="layui-btn layui-btn-danger" type="button" value="删除" onclick="batchDelete('${ctx}/monitor/job/delete')"/>
               <input class="layui-btn layui-btn-warm" type="button" value="暂停" onclick="confirmx('确认要暂停选中的任务吗？', pauseJob)"/>
               <input class="layui-btn" style="background-color:#5FB878" type="button" value="恢复" onclick="confirmx('确认要恢复选中的任务吗？', resumeJob)"/>
               </shiro:hasPermission>
             </div>
             <div class="layui-inline" style="position:absolute;right:20px">
-              <input class="layui-btn layui-btn-normal" type="button" onclick="openIframe('定时任务日志列表', '${ctx}/job/log', '100%', '100%')" value="日志列表"/>
+              <input class="layui-btn layui-btn-normal" type="button" onclick="openIframe('定时任务日志列表', '${ctx}/monitor/job/log', '100%', '100%')" value="日志列表"/>
             </div>
           </div>
         </div>
@@ -113,13 +113,13 @@
   </div>
   <script type="text/html" id="bar">
     <a href="javascript:void(0)" class="layui-btn layui-btn-normal layui-btn-sm" onclick="runJob('{{d.id}}')"><i class="layui-icon layui-icon-triangle-r"></i>执行</a>
-    <a href="javascript:void(0)" class="layui-btn layui-btn-sm" onclick="openDialog('定时任务修改', '${ctx}/job/form?id={{d.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
+    <a href="javascript:void(0)" class="layui-btn layui-btn-sm" onclick="openDialog('定时任务修改', '${ctx}/monitor/job/form?id={{d.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
   </script>
   <script type="text/javascript">
     $(document).ready(function() {
       //执行渲染
       table.render({
-        url: '${ctx}/job/data' //数据接口
+        url: '${ctx}/monitor/job/data' //数据接口
         ,cols: [[ //表头
           {type: 'numbers', fixed:'left'}
           ,{type: 'checkbox', fixed:'left'}
@@ -137,7 +137,7 @@
           ,{field: 'nextExecutionDate', title: '下次执行时间'}
           ,{field: 'remark', title: '备注'}
           ,{field: 'updateDate', sort: true, title: '更新时间'}
-          <shiro:hasPermission name="job:edit">
+          <shiro:hasPermission name="monitor:job:edit">
           ,{fixed:'right', align:'center', width:180, title: '操作', toolbar:'#bar'}
           </shiro:hasPermission>
         ]]

@@ -1,4 +1,4 @@
-package com.github.flying.jeelite.modules.job.utils;
+package com.github.flying.jeelite.modules.monitor.utils;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -14,9 +14,9 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.github.flying.jeelite.common.utils.SpringContextHolder;
 import com.github.flying.jeelite.common.utils.StringUtils;
-import com.github.flying.jeelite.modules.job.dao.JobLogDao;
-import com.github.flying.jeelite.modules.job.entity.Job;
-import com.github.flying.jeelite.modules.job.entity.JobLog;
+import com.github.flying.jeelite.modules.monitor.dao.JobLogDao;
+import com.github.flying.jeelite.modules.monitor.entity.Job;
+import com.github.flying.jeelite.modules.monitor.entity.JobLog;
 
 /**
  * 定时任务

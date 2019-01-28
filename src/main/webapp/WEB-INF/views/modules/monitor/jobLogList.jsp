@@ -59,7 +59,7 @@
     $(document).ready(function() {
       //执行渲染
       table.render({
-        url: '${ctx}/job/log/data' //数据接口
+        url: '${ctx}/monitor/job/log/data' //数据接口
         ,cols: [[ //表头
            {type: 'numbers', fixed:'left'}
           ,{field: 'beanName', sort: true, title: 'bean名称'}

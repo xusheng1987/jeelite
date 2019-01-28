@@ -5,7 +5,7 @@
 	$(document).ready(function() {
 		$("#inputForm").validate({
 			rules: {
-				cronExpression: {remote: "${ctx}/job/checkCronExpression?oldCronExpression=${job.cronExpression}"}
+				cronExpression: {remote: "${ctx}/monitor/job/checkCronExpression?oldCronExpression=${job.cronExpression}"}
 			},
 			messages: {
 				cronExpression: {remote: "cron表达式无效"}
@@ -14,7 +14,7 @@
 	});
 </script>
 <div class="layui-fluid">
-	<form:form id="inputForm" modelAttribute="job" action="${ctx}/job/save" method="post" class="layui-form">
+	<form:form id="inputForm" modelAttribute="job" action="${ctx}/monitor/job/save" method="post" class="layui-form">
 		<form:hidden path="id"/>
 		<div class="layui-form-item">
 			<label class="layui-form-label">bean名称：</label>
@@ -51,7 +51,7 @@
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<shiro:hasPermission name="job:edit"><input id="btnSubmit" class="layui-btn" type="button" value="保 存"/>&nbsp;</shiro:hasPermission>
+				<shiro:hasPermission name="monitor:job:edit"><input id="btnSubmit" class="layui-btn" type="button" value="保 存"/>&nbsp;</shiro:hasPermission>
 				<input id="btnClose" class="layui-btn layui-btn-normal" type="button" value="关 闭"/>
 			</div>
 		</div>

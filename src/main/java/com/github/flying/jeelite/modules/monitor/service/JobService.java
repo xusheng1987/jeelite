@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
-package com.github.flying.jeelite.modules.job.service;
+package com.github.flying.jeelite.modules.monitor.service;
 
 import java.util.Date;
 import java.util.List;
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.flying.jeelite.common.service.BaseService;
-import com.github.flying.jeelite.modules.job.dao.JobDao;
-import com.github.flying.jeelite.modules.job.entity.Job;
-import com.github.flying.jeelite.modules.job.utils.ScheduleUtils;
+import com.github.flying.jeelite.modules.monitor.dao.JobDao;
+import com.github.flying.jeelite.modules.monitor.entity.Job;
+import com.github.flying.jeelite.modules.monitor.utils.ScheduleUtils;
 
 /**
  * 定时任务Service

@@ -1,4 +1,4 @@
-package com.github.flying.jeelite.modules.job.utils;
+package com.github.flying.jeelite.modules.monitor.utils;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.Date;
 import org.quartz.*;
 
 import com.github.flying.jeelite.common.rest.RestException;
-import com.github.flying.jeelite.modules.job.entity.Job;
+import com.github.flying.jeelite.modules.monitor.entity.Job;
 
 /**
  * 定时任务工具类

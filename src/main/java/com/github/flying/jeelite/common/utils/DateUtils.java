@@ -69,27 +69,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	}
 
 	/**
-	 * 得到当前年份字符串 格式（yyyy）
-	 */
-	public static String getYear() {
-		return formatDate(new Date(), "yyyy");
-	}
-
-	/**
-	 * 得到当前月份字符串 格式（MM）
-	 */
-	public static String getMonth() {
-		return formatDate(new Date(), "MM");
-	}
-
-	/**
-	 * 得到当天字符串 格式（dd）
-	 */
-	public static String getDay() {
-		return formatDate(new Date(), "dd");
-	}
-
-	/**
 	 * 得到当前星期字符串 格式（E）星期几
 	 */
 	public static String getWeek() {
@@ -138,30 +117,20 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	}
 
 	/**
-	 * 转换为时间（天,时:分:秒.毫秒）
+	 * 获取两个日期之间的间隔
 	 */
-    public static String formatDateTime(long timeMillis){
-		long day = timeMillis/(24*60*60*1000);
-		long hour = (timeMillis/(60*60*1000)-day*24);
-		long min = ((timeMillis/(60*1000))-day*24*60-hour*60);
-		long s = (timeMillis/1000-day*24*60*60-hour*60*60-min*60);
-		long sss = (timeMillis-day*24*60*60*1000-hour*60*60*1000-min*60*1000-s*1000);
-		return (day>0?day+",":"")+hour+":"+min+":"+s+"."+sss;
-    }
-
-	/**
-	 * 获取两个日期之间的天数
-	 */
-	public static double getDistanceOfTwoDate(Date before, Date after) {
-		long beforeTime = before.getTime();
-		long afterTime = after.getTime();
-		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
-	}
-
-	public static void main(String[] args) throws ParseException {
-//		System.out.println(formatDate(parseDate("2010/3/6")));
-//		System.out.println(getDate("yyyy年MM月dd日 E"));
-//		long time = new Date().getTime()-parseDate("2012-11-19").getTime();
-//		System.out.println(time/(24*60*60*1000));
+	public static String getDistanceOfTwoDate(Date before, Date after) {
+		long msecPerDay = 24 * 60 * 60 * 1000;// 每天的毫秒数
+		long msecPerHour = 60 * 60 * 1000;// 每小时的毫秒数
+		long msecPerMinute = 60 * 1000;// 每分钟的毫秒数
+		// 获得两个时间的差异(毫秒)
+		long timeDiff = after.getTime() - before.getTime();
+		// 计算差多少天
+		long day = timeDiff / msecPerDay;
+		// 计算差多少小时
+		long hour = timeDiff % msecPerDay / msecPerHour;
+		// 计算差多少分钟
+		long min = timeDiff % msecPerDay % msecPerHour / msecPerMinute;
+		return (day > 0 ? day + "天" : "") + hour + "小时" + min + "分钟";
 	}
 }

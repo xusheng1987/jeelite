@@ -1,4 +1,4 @@
-package com.github.flying.jeelite.modules.sys.web;
+package com.github.flying.jeelite.modules.monitor.web;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +29,7 @@ import com.google.common.collect.Maps;
  * @author flying
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/online")
+@RequestMapping(value = "${adminPath}/monitor/online")
 public class OnlineController extends BaseController {
 	
 	@Autowired
@@ -38,16 +38,16 @@ public class OnlineController extends BaseController {
 	/**
 	 * 在线用户列表
 	 */
-	@RequiresPermissions("sys:online:view")
+	@RequiresPermissions("monitor:online:view")
 	@RequestMapping(value = "")
 	public String list() {
-		return "modules/sys/onlineList";
+		return "modules/monitor/onlineList";
 	}
 	
 	/**
 	 * 在线用户列表数据
 	 */
-	@RequiresPermissions("sys:online:view")
+	@RequiresPermissions("monitor:online:view")
 	@RequestMapping(value = "data")
 	@ResponseBody
 	public Map listData() {
@@ -81,7 +81,7 @@ public class OnlineController extends BaseController {
 	/**
 	 * 强制下线用户
 	 */
-	@RequiresPermissions("sys:online:edit")
+	@RequiresPermissions("monitor:online:edit")
 	@RequestMapping(value = "tickOut")
 	@ResponseBody
 	public Result tickOut(String sessionId) {

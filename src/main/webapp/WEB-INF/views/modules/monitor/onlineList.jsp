@@ -15,13 +15,13 @@
     </div>
   </div>
   <script type="text/html" id="bar">
-    <a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要强制下线该用户吗？', '${ctx}/sys/online/tickOut?sessionId={{d.id}}')"><i class="layui-icon layui-icon-delete"></i>强制下线</a>
+    <a href="javascript:void(0)" class="layui-btn layui-btn-danger layui-btn-sm" onclick="confirmx('确认要强制下线该用户吗？', '${ctx}/monitor/online/tickOut?sessionId={{d.id}}')"><i class="layui-icon layui-icon-delete"></i>强制下线</a>
   </script>
   <script type="text/javascript">
 	$(document).ready(function() {
 		//执行渲染
 		table.render({
-		    url: '${ctx}/sys/online/data' //数据接口
+		    url: '${ctx}/monitor/online/data' //数据接口
 		    ,cols: [[ //表头
 		       {field: 'id',title: '会话编号'}
 		      ,{field: 'startTimestamp', title: '创建时间'}
@@ -32,7 +32,7 @@
 		      ,{field: 'ipAddress', title: 'IP地址'}
 		      ,{field: 'browser', title: '浏览器'}
 		      ,{field: 'os', title: '操作系统'}
-	  	      <shiro:hasPermission name="sys:online:edit">
+	  	      <shiro:hasPermission name="monitor:online:edit">
 	  	      ,{fixed:'right', align:'center', width:120, title: '操作', toolbar:'#bar'}
 	  	      </shiro:hasPermission>
 		    ]]

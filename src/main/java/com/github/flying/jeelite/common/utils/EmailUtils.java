@@ -36,6 +36,8 @@ public class EmailUtils {
 	 * @param toAddress 收件人地址
 	 * @param subject 标题
 	 * @param content 内容
+	 * @param attachmentName 附件名称
+	 * @param attachmentUrl 附加下载地址
 	 */
 	public static boolean sendAttachment(String toAddress, String subject, String content, String attachmentName, String attachmentUrl) {
 		return send(FROM_ADDRESS, FROM_PASSWORD, FROM_HOSTNAME, SSL_ON_CONNECT, SSL_SMTP_PORT, toAddress, subject, content, attachmentName, attachmentUrl);

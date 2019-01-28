@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2017-2018 <a href="https://github.com/xusheng1987/jeelite">jeelite</a> All rights reserved.
  */
-package com.github.flying.jeelite.modules.job.entity;
+package com.github.flying.jeelite.modules.monitor.entity;
 
 import java.util.Date;
 
