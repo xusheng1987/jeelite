@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-23 09:50:40
+Date: 2019-01-29 14:33:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -581,14 +581,16 @@ INSERT INTO `sys_menu` VALUES ('5', '4', '0,1,2,3,4,', '查看', '30', null, nul
 INSERT INTO `sys_menu` VALUES ('6', '4', '0,1,2,3,4,', '修改', '40', null, null, null, '0', 'sys:menu:edit', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('67', '2', '0,1,2,', '系统监控', '985', null, null, null, '1', null, '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('68', '67', '0,1,2,67,', '日志查询', '10', '/sys/log', null, 'pencil', '1', 'sys:log:view', '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('69', '67', '0,1,2,67,', '在线用户', '20', '/sys/online', null, null, '1', null, '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('69', '67', '0,1,2,67,', '在线用户', '20', '/monitor/online', null, null, '1', null, '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('7', '3', '0,1,2,3,', '角色管理', '50', '/sys/role/', null, 'lock', '1', null, '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('70', '69', '0,1,2,67,69,', '查看', '30', null, null, null, '0', 'sys:online:view', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('71', '69', '0,1,2,67,69,', '修改', '40', null, null, null, '0', 'sys:online:edit', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('72', '67', '0,1,2,67,', '定时任务', '30', '/job', null, null, '1', null, '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('73', '72', '0,1,2,67,72,', '查看', '30', null, null, null, '0', 'job:view', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('74', '72', '0,1,2,67,72,', '修改', '40', null, null, null, '0', 'job:edit', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('70', '69', '0,1,2,67,69,', '查看', '30', null, null, null, '0', 'monitor:online:view', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('71', '69', '0,1,2,67,69,', '修改', '40', null, null, null, '0', 'monitor:online:edit', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('72', '67', '0,1,2,67,', '定时任务', '30', '/monitor/job', null, null, '1', null, '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('73', '72', '0,1,2,67,72,', '查看', '30', null, null, null, '0', 'monitor:job:view', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('74', '72', '0,1,2,67,72,', '修改', '40', null, null, null, '0', 'monitor:job:edit', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('75', '67', '0,1,2,67,', '连接池监视', '40', '/../druid', null, null, '1', null, '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('76', '67', '0,1,2,67,', '服务器监控', '50', '/monitor/server', null, null, '1', 'monitor:server:view', '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('77', '67', '0,1,2,67,', '接口文档', '60', '/../doc.html', null, null, '1', null, '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('79', '1', '0,1,', '代码生成', '5000', null, null, null, '1', null, '1', '2013-10-16 08:00:00', '1', '2013-10-16 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('8', '7', '0,1,2,3,7,', '查看', '30', null, null, null, '0', 'sys:role:view', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('80', '79', '0,1,79,', '代码生成', '50', null, null, null, '1', null, '1', '2013-10-16 08:00:00', '1', '2013-10-16 08:00:00', null, '0');
@@ -867,7 +869,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', '2', 'admin', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0001', '系统管理员', 'admin@163.com', '8675', '8675', null, '0:0:0:0:0:0:0:1', '2019-01-22 13:07:02', '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', '最高管理员', '0');
+INSERT INTO `sys_user` VALUES ('1', '1', '2', 'admin', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0001', '系统管理员', 'admin@163.com', '8675', '8675', null, '0:0:0:0:0:0:0:1', '2019-01-29 14:22:11', '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', '最高管理员', '0');
 INSERT INTO `sys_user` VALUES ('10', '7', '11', 'zz_jsb', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0010', '郑州技术部', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_user` VALUES ('11', '12', '13', 'js_admin', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0011', '郑州金水区领导', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_user` VALUES ('12', '17', '18', 'zy_admin', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0012', '郑州中原区领导', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
@@ -880,7 +882,6 @@ INSERT INTO `sys_user` VALUES ('6', '1', '6', 'hn_yfb', '02a3f0772fcca9f415adc99
 INSERT INTO `sys_user` VALUES ('7', '7', '8', 'zz_admin', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0007', '郑州领导', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_user` VALUES ('8', '7', '9', 'zz_zhb', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0008', '郑州综合部', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_user` VALUES ('9', '7', '10', 'zz_scb', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0009', '郑州市场部', null, null, null, null, null, null, '0', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
-INSERT INTO `sys_user` VALUES ('99', '7', '10', 'test', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0009', '郑州市场部', null, null, null, null, null, null, '0', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '1');
 
 -- ----------------------------
 -- Table structure for sys_user_role

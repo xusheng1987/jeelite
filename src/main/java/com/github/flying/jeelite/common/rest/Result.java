@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 接口统一返回结果
  *
  */
-@ApiModel(value = "通用返回对象")
+@ApiModel(description = "API接口统一返回对象")
 public class Result<T> {
 	
 	@ApiModelProperty(value="状态码；200：成功，非200：业务错误")

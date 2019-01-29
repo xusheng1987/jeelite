@@ -1,7 +1,5 @@
 package com.github.flying.jeelite.modules.api;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +12,13 @@ import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.rest.RestException;
 import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.web.BaseController;
+import com.github.flying.jeelite.modules.api.dto.UserDto;
 import com.github.flying.jeelite.modules.sys.entity.User;
 import com.github.flying.jeelite.modules.sys.service.UserService;
-import com.google.common.collect.Maps;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(tags = "用户信息接口")
 @RestController
@@ -31,12 +28,10 @@ public class UserApiController extends BaseController {
 	@Autowired
 	private UserService userService;
 
-	@ApiOperation(value = "登录", notes = "输入用户名和密码登录")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "form", dataType = "String"),
-			@ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "form", dataType = "String") })
+	@ApiOperation(value = "登录", notes = "输入用户名和密码登录", produces = "application/json")
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public Result<Map<String, String>> login(@RequestParam String username, @RequestParam String password) {
+	public Result<UserDto> login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
+			@ApiParam(value = "密码", required = true) @RequestParam String password) {
 		User user = userService.getUserByLoginName(username);
 		if (user == null) {
 			throw new RestException("用户不存在");
@@ -48,19 +43,34 @@ public class UserApiController extends BaseController {
 		if (!isCorrect) {
 			throw new RestException("用户名或密码错误");
 		}
-		Map<String, String> map = Maps.newHashMap();
-		map.put("userId", user.getId());
-		return renderSuccess(map);
+		UserDto dto = new UserDto();
+		dto.setUserId(user.getId());
+		dto.setCompanyName(user.getCompany().getName());
+		dto.setOfficeName(user.getOffice().getName());
+		dto.setNo(user.getNo());
+		dto.setName(user.getName());
+		dto.setEmail(user.getEmail());
+		dto.setPhone(user.getPhone());
+		dto.setMobile(user.getMobile());
+		return renderSuccess(dto);
 	}
 
-	@ApiOperation(value = "获取用户信息", notes = "根据userId获取用户信息")
-	@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "path", dataType = "String")
+	@ApiOperation(value = "获取用户信息", notes = "根据userId获取用户信息", produces = "application/json")
 	@RequestMapping(value = "{userId}", method = RequestMethod.GET)
-	public Result<User> userInfo(@PathVariable String userId) {
+	public Result<UserDto> userInfo(@ApiParam(value = "用户Id", required = true) @PathVariable String userId) {
 		User user = userService.getUser(userId);
 		if (user == null) {
 			throw new RestException("用户不存在");
 		}
-		return renderSuccess(user);
+		UserDto dto = new UserDto();
+		dto.setUserId(user.getId());
+		dto.setCompanyName(user.getCompany().getName());
+		dto.setOfficeName(user.getOffice().getName());
+		dto.setNo(user.getNo());
+		dto.setName(user.getName());
+		dto.setEmail(user.getEmail());
+		dto.setPhone(user.getPhone());
+		dto.setMobile(user.getMobile());
+		return renderSuccess(dto);
 	}
 }
