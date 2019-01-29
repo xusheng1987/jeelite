@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-29 14:33:19
+Date: 2019-01-29 14:48:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -590,7 +590,7 @@ INSERT INTO `sys_menu` VALUES ('73', '72', '0,1,2,67,72,', '查看', '30', null,
 INSERT INTO `sys_menu` VALUES ('74', '72', '0,1,2,67,72,', '修改', '40', null, null, null, '0', 'monitor:job:edit', '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('75', '67', '0,1,2,67,', '连接池监视', '40', '/../druid', null, null, '1', null, '1', '2013-10-18 08:00:00', '1', '2013-10-18 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('76', '67', '0,1,2,67,', '服务器监控', '50', '/monitor/server', null, null, '1', 'monitor:server:view', '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('77', '67', '0,1,2,67,', '接口文档', '60', '/../doc.html', null, null, '1', null, '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
+INSERT INTO `sys_menu` VALUES ('77', '67', '0,1,2,67,', '接口文档', '60', '/../doc.html', '_blank', null, '1', null, '1', '2013-06-03 08:00:00', '1', '2013-06-03 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('79', '1', '0,1,', '代码生成', '5000', null, null, null, '1', null, '1', '2013-10-16 08:00:00', '1', '2013-10-16 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('8', '7', '0,1,2,3,7,', '查看', '30', null, null, null, '0', 'sys:role:view', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_menu` VALUES ('80', '79', '0,1,79,', '代码生成', '50', null, null, null, '1', null, '1', '2013-10-16 08:00:00', '1', '2013-10-16 08:00:00', null, '0');
