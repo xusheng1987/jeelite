@@ -29,7 +29,7 @@
 		<commons-email.version>1.5</commons-email.version>
 		<guava.version>21.0</guava.version>
 		<poi.version>3.16</poi.version>
-		<swagger.version>2.9.2</swagger.version>
+		<swagger.version>2.7.0</swagger.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>

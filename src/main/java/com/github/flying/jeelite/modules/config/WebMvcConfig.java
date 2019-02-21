@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.github.flying.jeelite.common.mapper.JsonMapper;
+import com.github.flying.jeelite.modules.sys.interceptor.AuthInterceptor;
 import com.github.flying.jeelite.modules.sys.interceptor.LogInterceptor;
 import com.google.common.collect.Lists;
 
@@ -42,8 +43,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LogInterceptor()).addPathPatterns(adminPath + "/**", "/api/**")
-				.excludePathPatterns(adminPath + "/").excludePathPatterns(adminPath + "/login")
+		registry.addInterceptor(new AuthInterceptor())
+				.addPathPatterns("/api/**")
+				.excludePathPatterns("/api/user/login");
+		registry.addInterceptor(new LogInterceptor())
+				.addPathPatterns(adminPath + "/**", "/api/**")
+				.excludePathPatterns(adminPath + "/")
+				.excludePathPatterns(adminPath + "/login")
 				.excludePathPatterns(adminPath + "/sys/menu/tree")
 				.excludePathPatterns(adminPath + "/sys/menu/treeData");
 	}

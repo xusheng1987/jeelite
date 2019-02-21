@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS sys_log;
 DROP TABLE IF EXISTS sys_role_menu;
 DROP TABLE IF EXISTS sys_menu;
 DROP TABLE IF EXISTS sys_role;
-
+DROP TABLE IF EXISTS sys_user_token;
 
 
 
@@ -168,6 +168,16 @@ CREATE TABLE sys_user_role
 ) COMMENT = '用户-角色';
 
 
+CREATE TABLE sys_user_token
+(
+	id varchar(64) NOT NULL COMMENT '编号',
+	user_id varchar(64) NOT NULL COMMENT '用户ID',
+	token varchar(100),
+	expire_date datetime COMMENT '过期时间',
+	update_date datetime COMMENT '更新时间',
+	PRIMARY KEY (id)
+) COMMENT = '用户token表';
+
 
 /* Create Indexes */
 
@@ -185,3 +195,4 @@ CREATE INDEX sys_user_office_id ON sys_user (office_id ASC);
 CREATE INDEX sys_user_login_name ON sys_user (login_name ASC);
 CREATE INDEX sys_user_company_id ON sys_user (company_id ASC);
 CREATE INDEX sys_user_del_flag ON sys_user (del_flag ASC);
+CREATE UNIQUE INDEX sys_user_token_user_id ON sys_user_token (user_id ASC);

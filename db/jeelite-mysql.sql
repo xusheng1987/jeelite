@@ -466,9 +466,9 @@ CREATE TABLE `sys_job` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `job_bean_name` (`bean_name`) USING BTREE,
-  KEY `job_method_name` (`method_name`) USING BTREE,
-  KEY `job_status` (`status`) USING BTREE
+  KEY `job_bean_name` (`bean_name`),
+  KEY `job_method_name` (`method_name`),
+  KEY `job_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务';
 
 -- ----------------------------
@@ -492,9 +492,9 @@ CREATE TABLE `sys_job_log` (
   `cost_time` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  KEY `job_log_bean_name` (`bean_name`) USING BTREE,
-  KEY `job_log_method_name` (`method_name`) USING BTREE,
-  KEY `job_log_status` (`status`) USING BTREE
+  KEY `job_log_bean_name` (`bean_name`),
+  KEY `job_log_method_name` (`method_name`),
+  KEY `job_log_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务日志';
 
 -- ----------------------------
@@ -882,6 +882,20 @@ INSERT INTO `sys_user` VALUES ('6', '1', '6', 'hn_yfb', '02a3f0772fcca9f415adc99
 INSERT INTO `sys_user` VALUES ('7', '7', '8', 'zz_admin', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0007', '郑州领导', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_user` VALUES ('8', '7', '9', 'zz_zhb', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0008', '郑州综合部', null, null, null, null, null, null, '1', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
 INSERT INTO `sys_user` VALUES ('9', '7', '10', 'zz_scb', '02a3f0772fcca9f415adc990734b45c6f059c7d33ee28362c4852032', '0009', '郑州市场部', null, null, null, null, null, null, '0', '1', '2013-05-27 08:00:00', '1', '2013-05-27 08:00:00', null, '0');
+
+-- ----------------------------
+-- Table structure for sys_user_token
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_token`;
+CREATE TABLE `sys_user_token` (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `user_id` varchar(64) NOT NULL COMMENT '用户ID',
+  `token` varchar(100) DEFAULT NULL,
+  `expire_date` datetime DEFAULT NULL COMMENT '过期时间',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_user_token_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户token表';
 
 -- ----------------------------
 -- Table structure for sys_user_role

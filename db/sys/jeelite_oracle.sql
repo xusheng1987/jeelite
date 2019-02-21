@@ -21,6 +21,7 @@ DROP INDEX sys_user_login_name;
 DROP INDEX sys_user_company_id;
 DROP INDEX sys_user_update_date;
 DROP INDEX sys_user_del_flag;
+DROP INDEX sys_user_token_user_id;
 
 
 
@@ -35,6 +36,7 @@ DROP TABLE sys_log CASCADE CONSTRAINTS;
 DROP TABLE sys_role_menu CASCADE CONSTRAINTS;
 DROP TABLE sys_menu CASCADE CONSTRAINTS;
 DROP TABLE sys_role CASCADE CONSTRAINTS;
+DROP TABLE sys_user_token CASCADE CONSTRAINTS;
 
 
 
@@ -192,6 +194,18 @@ CREATE TABLE sys_user
 );
 
 
+-- 用户token表
+CREATE TABLE sys_user_token
+(
+	id varchar2(64) NOT NULL,
+	user_id varchar2(64) NOT NULL,
+	token varchar2(100),
+	expire_date timestamp,
+	update_date timestamp,
+	PRIMARY KEY (id)
+);
+
+
 -- 用户-角色
 CREATE TABLE sys_user_role
 (
@@ -218,3 +232,4 @@ CREATE INDEX sys_user_office_id ON sys_user (office_id);
 CREATE INDEX sys_user_login_name ON sys_user (login_name);
 CREATE INDEX sys_user_company_id ON sys_user (company_id);
 CREATE INDEX sys_user_del_flag ON sys_user (del_flag);
+CREATE UNIQUE INDEX sys_user_token_user_id ON sys_user_token (user_id);

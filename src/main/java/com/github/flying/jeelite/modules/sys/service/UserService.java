@@ -19,11 +19,14 @@ import com.github.flying.jeelite.common.security.shiro.session.SessionDAO;
 import com.github.flying.jeelite.common.service.BaseService;
 import com.github.flying.jeelite.common.utils.CacheUtils;
 import com.github.flying.jeelite.common.utils.Encodes;
+import com.github.flying.jeelite.common.utils.IdGen;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.Servlets;
 import com.github.flying.jeelite.modules.sys.dao.UserDao;
+import com.github.flying.jeelite.modules.sys.dao.UserTokenDao;
 import com.github.flying.jeelite.modules.sys.entity.Office;
 import com.github.flying.jeelite.modules.sys.entity.User;
+import com.github.flying.jeelite.modules.sys.entity.UserToken;
 import com.github.flying.jeelite.modules.sys.utils.UserUtils;
 
 /**
@@ -41,6 +44,8 @@ public class UserService extends BaseService<UserDao, User> {
 
 	@Autowired
 	private SessionDAO sessionDao;
+	@Autowired
+	private UserTokenDao userTokenDao;
 
 	public SessionDAO getSessionDao() {
 		return sessionDao;
@@ -188,6 +193,53 @@ public class UserService extends BaseService<UserDao, User> {
 	 */
 	public Collection<Session> getActiveSessions(){
 		return sessionDao.getActiveSessions(false);
+	}
+
+	/**
+	 * 根据token查询
+	 */
+	public UserToken getByToken(String token) {
+		return userTokenDao.getByToken(token);
+	}
+
+	/**
+	 * 保存token
+	 */
+	@Transactional(readOnly = false)
+	public UserToken createToken(String userId) {
+		//当前时间
+		Date nowDate = new Date();
+		//过期时间
+		Date expireDate = new Date(nowDate.getTime() + 12 * 3600 * 1000);//12小时后过期
+		String token = IdGen.uuid();
+		UserToken userToken = userTokenDao.getByUserId(userId);
+		if (userToken == null) {
+			userToken = new UserToken();
+			userToken.setUserId(userId);
+			userToken.setToken(token);
+			userToken.setUpdateDate(nowDate);
+			userToken.setExpireDate(expireDate);
+			userTokenDao.insert(userToken);
+		} else {
+			userToken.setToken(token);
+			userToken.setUpdateDate(nowDate);
+			userToken.setExpireDate(expireDate);
+			userTokenDao.updateById(userToken);
+		}
+		return userToken;
+	}
+
+	/**
+	 * 过期token
+	 */
+	@Transactional(readOnly = false)
+	public int expireToken(String userId) {
+		//当前时间
+		Date nowDate = new Date();
+		UserToken userToken = userTokenDao.getByUserId(userId);
+		userToken.setUpdateDate(nowDate);
+		userToken.setExpireDate(nowDate);
+		return userTokenDao.updateById(userToken);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.github.flying.jeelite.modules.api;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +16,9 @@ import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.modules.api.dto.UserDto;
 import com.github.flying.jeelite.modules.sys.entity.User;
+import com.github.flying.jeelite.modules.sys.entity.UserToken;
 import com.github.flying.jeelite.modules.sys.service.UserService;
+import com.google.common.collect.Maps;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +34,7 @@ public class UserApiController extends BaseController {
 
 	@ApiOperation(value = "登录", notes = "输入用户名和密码登录", produces = "application/json")
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public Result<UserDto> login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
+	public Result<Map> login(@ApiParam(value = "用户名", required = true) @RequestParam String username,
 			@ApiParam(value = "密码", required = true) @RequestParam String password) {
 		User user = userService.getUserByLoginName(username);
 		if (user == null) {
@@ -43,16 +47,13 @@ public class UserApiController extends BaseController {
 		if (!isCorrect) {
 			throw new RestException("用户名或密码错误");
 		}
-		UserDto dto = new UserDto();
-		dto.setUserId(user.getId());
-		dto.setCompanyName(user.getCompany().getName());
-		dto.setOfficeName(user.getOffice().getName());
-		dto.setNo(user.getNo());
-		dto.setName(user.getName());
-		dto.setEmail(user.getEmail());
-		dto.setPhone(user.getPhone());
-		dto.setMobile(user.getMobile());
-		return renderSuccess(dto);
+		//保存token
+		UserToken userToken = userService.createToken(user.getId());
+		
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("token", userToken.getToken());
+		map.put("expireDate", userToken.getExpireDate());
+		return renderSuccess(map);
 	}
 
 	@ApiOperation(value = "获取用户信息", notes = "根据userId获取用户信息", produces = "application/json")
