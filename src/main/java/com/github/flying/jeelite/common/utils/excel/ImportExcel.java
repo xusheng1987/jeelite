@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -16,18 +18,14 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
+import com.github.flying.jeelite.common.utils.NumberUtils;
 import com.github.flying.jeelite.common.utils.Reflections;
 import com.github.flying.jeelite.common.utils.excel.annotation.ExcelField;
 import com.github.flying.jeelite.modules.sys.utils.DictUtils;
@@ -56,6 +54,23 @@ public class ImportExcel {
 	 * 标题行号
 	 */
 	private int headerNum;
+	
+	/**
+	 * 公式
+	 */
+	private FormulaEvaluator formulaEvaluator;
+	
+	/**
+	 * 格式化单元格的值，防止精度丢失
+	 */
+	private DecimalFormat numberFormat;
+	
+	private double format(double cellValue) {
+		if (numberFormat == null) {
+			numberFormat = new DecimalFormat("#.000000");
+		}
+		return Double.parseDouble(numberFormat.format(cellValue));
+	}
 
 	/**
 	 * 构造函数
@@ -137,6 +152,7 @@ public class ImportExcel {
 			throw new RuntimeException("文档中没有工作表!");
 		}
 		this.sheet = this.wb.getSheetAt(sheetIndex);
+		this.formulaEvaluator = wb.getCreationHelper().createFormulaEvaluator();
 		this.headerNum = headerNum;
 	}
 
@@ -176,16 +192,42 @@ public class ImportExcel {
 	 * @return 单元格值
 	 */
 	public Object getCellValue(Row row, int column) {
+		Cell cell = row.getCell(column);
+		Object val = getCellValue(cell);
+		return val;
+	}
+	
+	public Object getCellValue(Cell cell) {
 		Object val = "";
 		try {
-			Cell cell = row.getCell(column);
 			if (cell != null) {
 				if (cell.getCellTypeEnum() == CellType.NUMERIC) {
-					val = cell.getNumericCellValue();
+//					if (DateUtil.isCellDateFormatted(cell)) {// 单元格为日期
+//						SimpleDateFormat sdf = null;
+//						short format = cell.getCellStyle().getDataFormat();
+//						if (format == 14 || format == 31 || format == 57 || format == 58
+//								|| (176 <= format && format <= 178) || (182 <= format && format <= 196)
+//								|| (210 <= format && format <= 213) || format == 208) { // 日期
+//							sdf = new SimpleDateFormat("yyyy-MM-dd");
+//						} else if (format == 20 || format == 32 || format == 183 || (200 <= format && format <= 209)) { // 时间
+//							sdf = new SimpleDateFormat("HH:mm");
+//						} else if (format == 22 || format == 179 || format == 180) { // 日期 + 时间
+//							sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//						}
+//						val = sdf.format(cell.getDateCellValue());
+//					} else
+					if (String.valueOf(cell.getNumericCellValue()).indexOf("E") > 0) {// 单元格为电话号码
+						val = new DecimalFormat("#").format(cell.getNumericCellValue());
+					} else {
+						val = cell.getNumericCellValue();
+					}
 				} else if (cell.getCellTypeEnum() == CellType.STRING) {
 					val = cell.getStringCellValue();
 				} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
-					val = cell.getCellFormula();
+					val = getCellValue(formulaEvaluator.evaluateInCell(cell));
+					if (NumberUtils.isCreatable(val.toString())) {
+						val = format(Double.parseDouble(val.toString()));
+					}
 				} else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
 					val = cell.getBooleanCellValue();
 				} else if (cell.getCellTypeEnum() == CellType.ERROR) {
@@ -310,9 +352,8 @@ public class ImportExcel {
 							if (ef.fieldType() != Class.class) {
 								val = ef.fieldType().getMethod("getValue", String.class).invoke(null, val.toString());
 							} else {
-								val = Class
-										.forName(this.getClass().getName().replaceAll(this.getClass().getSimpleName(),
-												"fieldtype." + valType.getSimpleName() + "Type"))
+								val = Class.forName(this.getClass().getName().replaceAll(this.getClass().getSimpleName(),
+										"fieldtype." + valType.getSimpleName() + "Type"))
 										.getMethod("getValue", String.class).invoke(null, val.toString());
 							}
 						}
@@ -324,11 +365,11 @@ public class ImportExcel {
 					if (os[1] instanceof Field) {
 						Reflections.invokeSetter(e, ((Field) os[1]).getName(), val);
 					} else if (os[1] instanceof Method) {
-						String mthodName = ((Method) os[1]).getName();
-						if ("get".equals(mthodName.substring(0, 3))) {
-							mthodName = "set" + StringUtils.substringAfter(mthodName, "get");
+						String methodName = ((Method) os[1]).getName();
+						if ("get".equals(methodName.substring(0, 3))) {
+							methodName = "set" + StringUtils.substringAfter(methodName, "get");
 						}
-						Reflections.invokeMethod(e, mthodName, new Class[] { valType }, new Object[] { val });
+						Reflections.invokeMethod(e, methodName, new Class[] { valType }, new Object[] { val });
 					}
 				}
 				sb.append(val + ", ");
@@ -336,21 +377,6 @@ public class ImportExcel {
 			dataList.add(e);
 		}
 		return dataList;
-	}
-
-	/**
-	 * 导入测试
-	 */
-	public static void main(String[] args) throws Throwable {
-		ImportExcel ei = new ImportExcel("target/export.xlsx", 1);
-		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum(); i++) {
-			Row row = ei.getRow(i);
-			for (int j = 0; j < ei.getLastCellNum(); j++) {
-				Object val = ei.getCellValue(row, j);
-				System.out.print(val + ", ");
-			}
-			System.out.print("\n");
-		}
 	}
 
 }

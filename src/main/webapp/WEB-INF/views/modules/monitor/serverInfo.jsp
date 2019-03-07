@@ -7,7 +7,7 @@
 </head>
 <body>
 <form:form id="inputForm" modelAttribute="sysInfo" action="" class="layui-form">
-<div style="padding: 20px; background-color: #F2F2F2;">
+<div style="padding: 15px; background-color: #F2F2F2;">
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md6">
       <div class="layui-card">

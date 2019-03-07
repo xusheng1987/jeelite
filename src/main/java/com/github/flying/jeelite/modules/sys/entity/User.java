@@ -97,7 +97,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@NotNull(message="归属公司不能为空")
-	@ExcelField(title="归属公司", align=2, sort=20)
+	@ExcelField(title="归属公司", sort=20)
 	public Office getCompany() {
 		return company;
 	}
@@ -107,7 +107,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@NotNull(message="归属部门不能为空")
-	@ExcelField(title="归属部门", align=2, sort=25)
+	@ExcelField(title="归属部门", sort=25)
 	public Office getOffice() {
 		return office;
 	}
@@ -117,7 +117,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@Length(min=1, max=100, message="登录名长度必须介于 1 和 100 之间")
-	@ExcelField(title="登录名", align=2, sort=30)
+	@ExcelField(title="登录名", sort=30)
 	public String getLoginName() {
 		return loginName;
 	}
@@ -137,7 +137,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@Length(min=1, max=100, message="姓名长度必须介于 1 和 100 之间")
-	@ExcelField(title="姓名", align=2, sort=40)
+	@ExcelField(title="姓名", sort=40)
 	public String getName() {
 		return name;
 	}
@@ -147,7 +147,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@Length(min=1, max=100, message="工号长度必须介于 1 和 100 之间")
-	@ExcelField(title="工号", align=2, sort=45)
+	@ExcelField(title="工号", sort=45)
 	public String getNo() {
 		return no;
 	}
@@ -158,7 +158,7 @@ public class User extends DataEntity<User> {
 
 	@Email(message="邮箱格式不正确")
 	@Length(min=0, max=200, message="邮箱长度必须介于 1 和 200 之间")
-	@ExcelField(title="邮箱", align=1, sort=50)
+	@ExcelField(title="邮箱", sort=50)
 	public String getEmail() {
 		return email;
 	}
@@ -168,7 +168,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@Length(min=0, max=200, message="电话长度必须介于 1 和 200 之间")
-	@ExcelField(title="电话", align=2, sort=60)
+	@ExcelField(title="电话", sort=60)
 	public String getPhone() {
 		return phone;
 	}
@@ -178,7 +178,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@Length(min=0, max=200, message="手机长度必须介于 1 和 200 之间")
-	@ExcelField(title="手机", align=2, sort=70)
+	@ExcelField(title="手机", sort=70)
 	public String getMobile() {
 		return mobile;
 	}
@@ -188,18 +188,17 @@ public class User extends DataEntity<User> {
 	}
 
 	@Override
-	@ExcelField(title="备注", align=1, sort=900)
+	@ExcelField(title="备注", sort=900)
 	public String getRemarks() {
 		return remarks;
 	}
 
 	@Override
-	@ExcelField(title="创建时间", type=0, align=1, sort=90)
+	@ExcelField(title="创建时间", sort=90)
 	public Date getCreateDate() {
 		return createDate;
 	}
 
-	@ExcelField(title="最后登录IP", type=1, align=1, sort=100)
 	public String getLoginIp() {
 		return loginIp;
 	}
@@ -208,7 +207,6 @@ public class User extends DataEntity<User> {
 		this.loginIp = loginIp;
 	}
 
-	@ExcelField(title="最后登录日期", type=1, align=1, sort=110)
 	public Date getLoginDate() {
 		return loginDate;
 	}

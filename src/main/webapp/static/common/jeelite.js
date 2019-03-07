@@ -115,14 +115,20 @@ function openIframe(title, url, width, height) {
 }
 
 // 确认对话框
-function confirmx(mess, href){
+function confirmx(mess, href, isTreePage){
 	layer.confirm(mess, {icon: 3, title:'提示'}, function(index) {
 		if (typeof href == 'function') {
 			href();
 		} else {
 			$.post(href, function(result) {
 				if (result.code == '200') {
-					reloadTable();
+					if (isTreePage) {
+						// 刷新树表数据，此方法需要在树表页面单独定义
+						reloadTree();
+					} else {
+						// 刷新表格数据
+						reloadTable();
+					}
 					layer.msg(result.msg, {icon: 1});
 				} else {
 					layer.alert(result.msg, {icon: 2});
@@ -131,18 +137,7 @@ function confirmx(mess, href){
 		}
 	});
 }
-//树结构页面的删除项目
-function deleteItem(mess, href) {
-	layer.confirm(mess, {icon: 3, title:'提示'}, function(index) {
-		$.post(href, function(result) {
-			if (result.code == '200') {
-				location.reload();
-			} else {
-				layer.alert(result.msg, {icon: 2});
-			}
-		});
-	});
-}
+
 // cookie操作
 function cookie(name, value, options) {
     if (typeof value != 'undefined') { // name and value given, set cookie

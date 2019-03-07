@@ -48,9 +48,16 @@ public class MenuController extends BaseController {
 
 	@RequiresPermissions("sys:menu:view")
 	@RequestMapping(value = { "list", "" })
-	public String list(Model model) {
-		model.addAttribute("list", menuService.findAllMenu());
+	public String list() {
 		return "modules/sys/menuList";
+	}
+
+	@ResponseBody
+	@RequiresPermissions("sys:menu:view")
+	@RequestMapping(value = "data")
+	public List<Menu> data() {
+		List<Menu> list = menuService.findAllMenu();
+		return list;
 	}
 
 	@RequiresPermissions("sys:menu:view")

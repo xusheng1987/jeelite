@@ -7,13 +7,17 @@
   <%@include file="/WEB-INF/views/include/treetable.jsp" %>
   <script type="text/javascript">
     $(document).ready(function() {
-      var laytpl = layui.laytpl;
-      var data = ${fns:toJson(list)};
-      laytpl(treeTableTpl.innerHTML).render(data, function(html){
-        $("#treeTableList").html(html);
-      });
-      $("#treeTable").treeTable({expandLevel : 5});
+      reloadTree();
     });
+    function reloadTree() {
+      var laytpl = layui.laytpl;
+      $.get("${ctx}/test/testTree/data", function(data){
+        laytpl(treeTableTpl.innerHTML).render(data, function(html){
+          $("#treeTableList").html(html);
+        });
+        $("#treeTable").treeTable({expandLevel : 5});
+      });
+    }
   </script>
 </head>
 <body>
@@ -57,7 +61,7 @@
         <shiro:hasPermission name="test:testTree:edit">
         <td>
           <a class="layui-btn layui-btn-sm" href="javascript:void(0)" onclick="openDialog('树结构修改', '${ctx}/test/testTree/form?id={{item.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
-          <a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="deleteItem('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{item.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+          <a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('确认要删除该树结构及所有子树结构吗？', '${ctx}/test/testTree/delete?id={{item.id}}', true)"><i class="layui-icon layui-icon-delete"></i>删除</a>
           <a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:void(0)" onclick="openDialog('添加下级树结构', '${ctx}/test/testTree/form?parent.id={{item.id}}')"><i class="layui-icon layui-icon-add-circle-fine"></i>添加下级树结构</a>
         </td>
         </shiro:hasPermission>

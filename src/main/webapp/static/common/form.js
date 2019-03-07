@@ -12,8 +12,8 @@ $(document).ready(function() {
 function save() {
 	submitData(true);
 }
-//isReloadPage：是否重新加载当前页面
-function submitData(isReloadPage) {
+//isTreePage：是否为tree页面
+function submitData(isTreePage) {
 	if($("#inputForm").valid()) {//前端校验
 		var loadIndex = layer.load();
 		// 提交前执行方法，需在各页面单独定义
@@ -22,13 +22,15 @@ function submitData(isReloadPage) {
 		}
 		$.post($("#inputForm").attr("action"), $("#inputForm").serialize(), function (result) {
 			if (result.code == '200') {
-				if (isReloadPage) {
-					location.reload();
+				layer.closeAll();
+				if (isTreePage) {
+					// 刷新树表数据，此方法需要在树表页面单独定义
+					reloadTree();
 				} else {
-					layer.closeAll();
+					// 刷新表格数据
 					reloadTable();
-					layer.msg(result.msg, {icon: 1});
 				}
+				layer.msg(result.msg, {icon: 1});
 			} else {
 				layer.close(loadIndex);
 				layer.alert(result.msg, {icon: 2});

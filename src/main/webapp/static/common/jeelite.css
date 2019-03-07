@@ -39,6 +39,10 @@ body {font-family:"Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Taho
 	height:40px;
 	margin:0;
 }
+.layui-tab-card>.layui-tab-title {
+	z-index:999;
+	background-color:#fff;
+}
 /*.layui-tab ul.layui-tab-title li:nth-child(1) i {display: none;}*/
 
 /*打开页面动画

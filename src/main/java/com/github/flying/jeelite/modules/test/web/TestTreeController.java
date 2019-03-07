@@ -46,10 +46,16 @@ public class TestTreeController extends BaseController {
 
 	@RequiresPermissions("test:testTree:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(Model model) {
-		List<TestTree> list = testTreeService.findAll();
-		model.addAttribute("list", list);
+	public String list() {
 		return "modules/test/testTreeList";
+	}
+
+	@ResponseBody
+	@RequiresPermissions("test:testTree:view")
+	@RequestMapping(value = "data")
+	public List<TestTree> data() {
+		List<TestTree> list = testTreeService.findAll();
+		return list;
 	}
 
 	@RequiresPermissions("test:testTree:view")

@@ -221,7 +221,7 @@
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
 			<artifactId>swagger-bootstrap-ui</artifactId>
-			<version>1.8.9</version>
+			<version>1.9.0</version>
 		</dependency>
 		
 		<!-- google java lib -->

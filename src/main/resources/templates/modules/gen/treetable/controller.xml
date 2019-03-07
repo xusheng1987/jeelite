@@ -53,10 +53,16 @@ public class ${ClassName}Controller extends BaseController {
 
 	@RequiresPermissions("${permissionPrefix}:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(Model model) {
-		List<${ClassName}> list = ${className}Service.findAll();
-		model.addAttribute("list", list);
+	public String list() {
 		return "${lastPackageName}/${viewPrefix}List";
+	}
+
+	@ResponseBody
+	@RequiresPermissions("${permissionPrefix}:view")
+	@RequestMapping(value = "data")
+	public List<${ClassName}> data() {
+		List<${ClassName}> list = ${className}Service.findAll();
+		return list;
 	}
 
 	@RequiresPermissions("${permissionPrefix}:view")

@@ -7,13 +7,17 @@
 	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var laytpl = layui.laytpl;
-			var data = ${fns:toJson(list)};
-			laytpl(treeTableTpl.innerHTML).render(data, function(html){
-				$("#treeTableList").html(html);
-			});
-			$("#treeTable").treeTable({expandLevel : 5});
+			reloadTree();
 		});
+		function reloadTree() {
+			var laytpl = layui.laytpl;
+			$.get("${ctx}/sys/office/data", function(data){
+				laytpl(treeTableTpl.innerHTML).render(data, function(html){
+					$("#treeTableList").html(html);
+				});
+				$("#treeTable").treeTable({expandLevel : 5});
+			});
+		}
 	</script>
 </head>
 <body>
@@ -41,7 +45,7 @@
 			<td>{{item.remarks}}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
 				<a class="layui-btn layui-btn-sm" href="javascript:void(0)" onclick="openDialog('机构修改', '${ctx}/sys/office/form?id={{item.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
-				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="deleteItem('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{item.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('要删除该机构及所有子机构项吗？', '${ctx}/sys/office/delete?id={{item.id}}', true)"><i class="layui-icon layui-icon-delete"></i>删除</a>
 				<a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:void(0)" onclick="openDialog('添加下级机构', '${ctx}/sys/office/form?parent.id={{item.id}}')"><i class="layui-icon layui-icon-add-circle-fine"></i>添加下级机构</a>
 			</td></shiro:hasPermission>
 		</tr>

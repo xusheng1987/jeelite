@@ -205,9 +205,9 @@ public class UserController extends BaseController {
 				}
 			}
 			if (failureNum > 0) {
-				failureMsg.insert(0, "，失败 " + failureNum + " 条用户，导入信息如下：");
+				failureMsg.insert(0, "，失败 " + failureNum + " 条用户数据，导入信息如下：");
 			}
-			return renderSuccess("已成功导入 " + successNum + " 条用户" + failureMsg);
+			return renderSuccess("已成功导入 " + successNum + " 条用户数据" + failureMsg);
 		} catch (Exception e) {
 			return renderError("导入用户失败！失败信息：" + e.getMessage());
 		}

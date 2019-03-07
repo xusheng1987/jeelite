@@ -40,7 +40,7 @@ public class LogInterceptor implements HandlerInterceptor {
 		// 请求耗时
 		Long costTime = System.currentTimeMillis() - startTimeThreadLocal.get();
 		// 保存日志
-		LogUtils.saveLog(request, handler, ex, null, costTime.intValue());
+		LogUtils.saveLog(request, handler, ex == null ? (Exception) request.getAttribute("exception") : ex, null, costTime.intValue());
 		// 删除线程变量中的数据，防止内存泄漏
 		startTimeThreadLocal.remove();
 	}

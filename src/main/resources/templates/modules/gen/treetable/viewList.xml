@@ -13,13 +13,17 @@
   <%@include file="/WEB-INF/views/include/treetable.jsp" %>
   <script type="text/javascript">
     $(document).ready(function() {
-      var laytpl = layui.laytpl;
-      var data = ${"$"}{fns:toJson(list)};
-      laytpl(treeTableTpl.innerHTML).render(data, function(html){
-        $("#treeTableList").html(html);
-      });
-      $("#treeTable").treeTable({expandLevel : 5});
+      reloadTree();
     });
+    function reloadTree() {
+      var laytpl = layui.laytpl;
+      $.get("${r"${ctx}"}/${urlPrefix}/data", function(data){
+        laytpl(treeTableTpl.innerHTML).render(data, function(html){
+          $("#treeTableList").html(html);
+        });
+        $("#treeTable").treeTable({expandLevel : 5});
+      });
+    }
   </script>
 </head>
 <body>
@@ -74,7 +78,7 @@
         <shiro:hasPermission name="${permissionPrefix}:edit">
         <td>
           <a class="layui-btn layui-btn-sm" href="javascript:void(0)" onclick="openDialog('${functionNameSimple}修改', '${r"${ctx}"}/${urlPrefix}/form?id={{item.id}}')"><i class="layui-icon layui-icon-edit"></i>修改</a>
-          <a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="deleteItem('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{item.id}}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+          <a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)" onclick="confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', '${r"${ctx}"}/${urlPrefix}/delete?id={{item.id}}', true)"><i class="layui-icon layui-icon-delete"></i>删除</a>
           <a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:void(0)" onclick="openDialog('添加下级${functionNameSimple}', '${r"${ctx}"}/${urlPrefix}/form?parent.id={{item.id}}')"><i class="layui-icon layui-icon-add-circle-fine"></i>添加下级${functionNameSimple}</a>
         </td>
         </shiro:hasPermission>

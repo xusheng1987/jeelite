@@ -13,17 +13,18 @@
 				// 一级菜单焦点
 				$("#menu li.layui-nav-item").removeClass("layui-this");
 				$(this).parent().addClass("layui-this");
-				// 左侧区域显示
-				$("#left").show();
 				// 显示二级菜单
 				var menuId = "#menu-" + $(this).attr("data-id");
+				// 如果菜单已存在则直接显示
 				if ($(menuId).length > 0){
 					$("#left .layui-side").hide();
 					$(menuId).show();
+					// 默认选中左侧第一个三级菜单
 					$(menuId + " .layui-nav-child a:first span").click();
 				}else{
 					// 获取二级菜单数据
 					$.get($(this).attr("data-href"), function(data){
+						// 未登录或登录超时的情况下，data是登录页面的内容
 						if (data.indexOf("id=\"loginForm\"") != -1){
 							alert('未登录或登录超时。请重新登录，谢谢！');
 							top.location = "${ctx}";
@@ -33,17 +34,11 @@
 						$("#left").append(data);
 						// 使导航的Hover效果生效
 						element.render();
-						// 展现三级
+						// 展现三级菜单
 						$(menuId + " .layui-nav-child a").click(function(){
-							var href = $(this).attr("data-href");
-							if($(href).length > 0){
-								$(href).toggle().parent().toggle();
-								return false;
-							}
-							// <c:if test="${tabmode eq '1'}"> 打开显示页签
-							return addTab($(this)); // </c:if>
+							openMenu($(this));
 						});
-						// 默认选中第一个菜单
+						// 默认选中左侧第一个三级菜单
 						$(menuId + " .layui-nav-child a:first span").click();
 					});
 				}
@@ -51,20 +46,39 @@
 			});
 			// 初始化点击第一个一级菜单
 			$("#menu a.menu:first").click();
-			// <c:if test="${tabmode eq '1'}"> 下拉菜单以选项卡方式打开
+			// 右上角快捷菜单
 			$("#userInfo a").mouseup(function(){
-				return addTab($(this));
-			});// </c:if>
+				openMenu($(this));
+			});
 		});
+		function openMenu($this) {
+			if ($this.attr("target") != "mainFrame") {
+				$this.attr("href", $this.attr("data-href"));
+				return;
+			}
+			// <c:if test="${tabmode eq '0'}"> 显示iframe
+			$this.attr("href", $this.attr("data-href"));
+			// iframe加载完毕以后执行的操作
+			var loadIndex = layer.load();
+			$("#mainFrame").load(function() {
+				layer.close(loadIndex);
+			}); // </c:if>
+			// <c:if test="${tabmode eq '1'}"> 显示页签
+			return addTab($this); // </c:if>
+		}
 		// <c:if test="${tabmode eq '1'}"> 添加一个页签
 		function addTab($this){
 			$(".layui-tab").show();
-			var layId = $this.attr('data-href').substring(7);//取得tab的lay-id
+			var layId = $this.attr('data-id').substring(6);//取得tab的lay-id
 			if (getlayId(layId) == -1) {//判断菜单是否已在tab打开
+				var loadIndex = layer.load();
 				element.tabAdd('tab', {
 					title: '<span>'+$this.text()+'</span>',
-					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-link')+'" scrolling="yes" frameborder="0"></iframe>',
+					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-href')+'" scrolling="yes" frameborder="0"></iframe>',
 					id: layId
+				});
+				$("#mainFrame_" + layId).load(function() {
+					layer.close(loadIndex);
 				});
 			}
 			element.tabChange('tab', layId);
@@ -86,21 +100,19 @@
   <div id="header" class="layui-header">
     <div class="layui-logo">${fns:getConfig('productName')}</div>
     <ul id="menu" class="layui-nav layui-layout-left">
-		<c:set var="firstMenu" value="true"/>
-		<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
+    	<!-- 顶部导航菜单 -->
+		<c:forEach items="${fns:getMenuList()}" var="menu">
 			<c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}">
-						<li class="layui-nav-item ${not empty firstMenu && firstMenu ? ' layui-this' : ''}">
-									<c:if test="${empty menu.href}">
-										<a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}">${menu.name}</a>
-									</c:if>
-									<c:if test="${not empty menu.href}">
-										<a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame">${menu.name}</a>
-									</c:if>
-						</li>
-						<c:if test="${firstMenu}">
-									<c:set var="firstMenuId" value="${menu.id}"/>
-						</c:if>
-						<c:set var="firstMenu" value="false"/>
+				<li class="layui-nav-item">
+    			<!-- 菜单下是功能模块 -->
+				<c:if test="${empty menu.href}">
+					<a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}">${menu.name}</a>
+				</c:if>
+    			<!-- 菜单直接对应单独的页面，一般很少用 -->
+				<c:if test="${not empty menu.href}">
+					<a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame">${menu.name}</a>
+				</c:if>
+				</li>
 			</c:if>
 		</c:forEach>
     </ul>
@@ -111,14 +123,8 @@
           ${fns:getUser().name}
         </a>
         <dl class="layui-nav-child">
-        <c:if test="${tabmode eq '1'}">
-          <dd><a href="javascript:;" data-href=".menu3-29" data-link="${ctx}/sys/user/info">个人信息</a></dd>
-          <dd><a href="javascript:;" data-href=".menu3-30" data-link="${ctx}/sys/user/modifyPwd">修改密码</a></dd>
-        </c:if>
-        <c:if test="${tabmode eq '0'}">
-          <dd><a href="${ctx}/sys/user/info" target="mainFrame">个人信息</a></dd>
-          <dd><a href="${ctx}/sys/user/modifyPwd" target="mainFrame">修改密码</a></dd>
-        </c:if>
+          <dd><a href="javascript:;" data-id="menu3-29" data-href="${ctx}/sys/user/info" target="mainFrame">个人信息</a></dd>
+          <dd><a href="javascript:;" data-id="menu3-30" data-href="${ctx}/sys/user/modifyPwd" target="mainFrame">修改密码</a></dd>
           <dd><a href="javascript:cookie('tabmode','${tabmode eq '1' ? '0' : '1'}');location=location.href">${tabmode eq '1' ? '关闭' : '开启'}页签模式</a></dd>
         </dl>
       </li>

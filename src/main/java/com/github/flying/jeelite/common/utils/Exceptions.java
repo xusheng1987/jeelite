@@ -6,8 +6,6 @@ package com.github.flying.jeelite.common.utils;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 关于异常的工具类.
  * @author calvin
@@ -52,14 +50,6 @@ public class Exceptions {
 			cause = cause.getCause();
 		}
 		return false;
-	}
-
-	/**
-	 * 在request中获取异常类
-	 */
-	public static Throwable getThrowable(HttpServletRequest request){
-		Throwable ex = (Throwable) request.getAttribute("javax.servlet.error.exception");
-		return ex;
 	}
 
 }

@@ -12,7 +12,7 @@
 <body>
 	<div id="content">
 		<div class="layui-row">
-			<div class="layui-col-xs2" style="background-color:#fff">
+			<div class="layui-col-xs2" style="background-color:#fff;margin-top: 15px;margin-left: 10px;padding-bottom:76px">
 				<div style="height:auto;overflow:auto;padding:0 10px 0 10px">
 				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;width:200px;">
 					<legend>组织机构</legend>
@@ -21,8 +21,7 @@
 				</div>
 			</div>
 			<div class="layui-col-xs10" style="position:absolute;right:0;top:0;bottom:0;">
-				<div style="height:100%;overflow:hidden;padding-left:10px">
-				<iframe id="officeContent" src="${ctx}/sys/user/list" style="width:100%;height:100%" scrolling="yes" frameborder="0"></iframe>
+				<div style="height:100%;overflow:hidden;padding-left:10px" id="officeContent">
 				</div>
 			</div>
 		</div>
@@ -31,7 +30,7 @@
 		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
 			callback:{onClick:function(event, treeId, treeNode){
 					var id = treeNode.id == '0' ? '' :treeNode.id;
-					$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
+					loadUserListPage(id, treeNode.name);
 				}
 			}
 		};
@@ -41,7 +40,26 @@
 				$.fn.zTree.init($("#ztree"), setting, data).expandAll(true);
 			});
 		}
+		// 刷新组织机构
 		refreshTree();
+		
+		function loadUserListPage(officeId, officeName) {
+			var param = "";
+			if (officeId) {
+				param = "?office.id="+officeId+"&office.name="+officeName;
+			}
+			// 显示用户列表页面
+			var loadIndex = layer.load();
+			$.get("${ctx}/sys/user/list" + param, function(data){
+				layer.close(loadIndex);
+				$("#officeContent").html(data);
+				form.render();
+			});
+		}
+		$(document).ready(function() {
+			// 加载用户列表页面
+			loadUserListPage();
+		});
 	</script>
 </body>
 </html>

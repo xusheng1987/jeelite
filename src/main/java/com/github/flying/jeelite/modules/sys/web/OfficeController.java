@@ -48,16 +48,23 @@ public class OfficeController extends BaseController {
 	}
 
 	@RequiresPermissions("sys:office:view")
-	@RequestMapping(value = { "" })
+	@RequestMapping(value = "")
 	public String index() {
 		return "modules/sys/officeIndex";
 	}
 
 	@RequiresPermissions("sys:office:view")
-	@RequestMapping(value = { "list" })
-	public String list(Model model) {
-		model.addAttribute("list", officeService.findAll());
+	@RequestMapping(value = "list")
+	public String list() {
 		return "modules/sys/officeList";
+	}
+
+	@ResponseBody
+	@RequiresPermissions("sys:office:view")
+	@RequestMapping(value = "data")
+	public List<Office> data() {
+		List<Office> list = officeService.findAll();
+		return list;
 	}
 
 	@RequiresPermissions("sys:office:view")

@@ -1,7 +1,10 @@
 package com.github.flying.jeelite.common.rest;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -22,12 +25,18 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
+import com.github.flying.jeelite.common.mapper.JsonMapper;
+import com.github.flying.jeelite.common.utils.Exceptions;
+import com.github.flying.jeelite.common.utils.StringUtils;
 
 /**
  * 控制层异常统一处理
@@ -127,4 +136,44 @@ public class RestExceptionHandler {
 		}
 		return new Result(status.value(), status.getReasonPhrase());
 	}
+
+	/**
+	 * 处理其他Exception.
+	 */
+	@ExceptionHandler(Exception.class)
+	public Object handleException(Exception ex, HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) {
+		request.setAttribute("exception", ex);
+		
+		boolean isJsonRequest = false;// 是否返回json数据
+		if (handler != null) {
+			isJsonRequest = handler.getMethod().isAnnotationPresent(ResponseBody.class) ||
+					handler.getBeanType().isAnnotationPresent(RestController.class);
+		}
+		if (isJsonRequest) {//返回json数据
+			try {
+				response.reset();
+				response.setContentType("application/json");
+				response.setCharacterEncoding("utf-8");
+				response.getWriter().print(JsonMapper.toJsonString(new Result(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.toString())));
+				return null;
+			} catch (IOException e) {
+				return null;
+			}
+		} else {//返回错误视图
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			StringBuilder sb = new StringBuilder("错误信息：\n");
+			if (ex != null) {
+				sb.append(Exceptions.getStackTraceAsString(ex));
+			} else {
+				sb.append("未知错误.\n\n");
+			}
+			
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("error/500");
+			mav.addObject("errorMsg", ex == null ? "未知错误" : StringUtils.toHtml(ex.toString()));
+			mav.addObject("detailMsg", StringUtils.toHtml(sb.toString()));
+			return mav;
+		}
+	}
+
 }
