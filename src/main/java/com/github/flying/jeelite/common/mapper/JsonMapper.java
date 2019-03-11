@@ -17,11 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.Lists;
@@ -46,6 +42,8 @@ public class JsonMapper extends ObjectMapper {
 		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
 		// 允许不带引号的字段名称
 		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+		// 格式化输出
+		this.enable(SerializationFeature.INDENT_OUTPUT);
 		// 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
 		this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		// 空值处理为空串
