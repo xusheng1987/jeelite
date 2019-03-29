@@ -252,7 +252,7 @@ public class ImportExcel {
 		Field[] fs = cls.getDeclaredFields();
 		for (Field f : fs) {
 			ExcelField ef = f.getAnnotation(ExcelField.class);
-			if (ef != null && (ef.type() == 0 || ef.type() == 2)) {
+			if (ef != null) {
 				if (groups != null && groups.length > 0) {
 					boolean inGroup = false;
 					for (int g : groups) {
@@ -276,7 +276,7 @@ public class ImportExcel {
 		Method[] ms = cls.getDeclaredMethods();
 		for (Method m : ms) {
 			ExcelField ef = m.getAnnotation(ExcelField.class);
-			if (ef != null && (ef.type() == 0 || ef.type() == 2)) {
+			if (ef != null) {
 				if (groups != null && groups.length > 0) {
 					boolean inGroup = false;
 					for (int g : groups) {
@@ -349,13 +349,9 @@ public class ImportExcel {
 						} else if (valType == Date.class) {
 							val = DateUtil.getJavaDate((Double) val);
 						} else {
-							if (ef.fieldType() != Class.class) {
-								val = ef.fieldType().getMethod("getValue", String.class).invoke(null, val.toString());
-							} else {
-								val = Class.forName(this.getClass().getName().replaceAll(this.getClass().getSimpleName(),
-										"fieldtype." + valType.getSimpleName() + "Type"))
-										.getMethod("getValue", String.class).invoke(null, val.toString());
-							}
+							val = Class.forName(this.getClass().getName().replaceAll(this.getClass().getSimpleName(),
+									"fieldtype." + valType.getSimpleName() + "Type"))
+									.getMethod("getValue", String.class).invoke(null, val.toString());
 						}
 					} catch (Exception ex) {
 						log.warn("Get cell value [" + i + "," + column + "] error: " + ex.toString());
