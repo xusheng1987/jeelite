@@ -73,7 +73,7 @@
 			if (getlayId(layId) == -1) {//判断菜单是否已在tab打开
 				var loadIndex = layer.load();
 				element.tabAdd('tab', {
-					title: '<span>'+$this.text()+'</span>',
+					title: '<i class="'+$this.children("i").attr("class")+'"></i><span>'+$this.text()+'</span>',
 					content: '<iframe id="mainFrame_'+layId+'" name="mainFrame_'+layId+'" src="'+$this.attr('data-href')+'" scrolling="yes" frameborder="0"></iframe>',
 					id: layId
 				});

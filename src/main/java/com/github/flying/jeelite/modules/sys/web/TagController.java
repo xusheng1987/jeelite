@@ -41,6 +41,7 @@ public class TagController extends BaseController {
 	@RequiresPermissions("user")
 	@RequestMapping(value = "iconselect")
 	public String iconselect(HttpServletRequest request, Model model) {
+		model.addAttribute("id", request.getParameter("id"));
 		model.addAttribute("value", request.getParameter("value"));
 		return "modules/sys/tagIconselect";
 	}

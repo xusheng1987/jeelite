@@ -7,6 +7,8 @@
 </head>
 <body>
 <div class="layui-fluid">
+  <div class="layui-card">
+  <div class="layui-card-body">
 	<blockquote class="layui-elem-quote">
 		<div class="layui-row">
 			<div class="layui-col-md4">角色名称: <b>${role.name}</b></div>
@@ -27,6 +29,7 @@
 		</div>
 		<script type="text/javascript">
 			$("#assignButton").click(function(){
+				var loadIndex = layer.load();
 				$.get("${ctx}/sys/role/usertorole?id=${role.id}", function (result) {
 					layer.open({
 						type: 1,
@@ -68,6 +71,9 @@
 						btn2: function(index, layero){//清除按钮的回调
 							clearAssign();
 							return false;
+						},
+						success: function(layero, index){
+							layer.close(loadIndex);
 						}
 					});
 				});
@@ -75,6 +81,8 @@
 		</script>
 	<table class="layui-table"></table>
 	</div>
+  </div>
+  </div>
 </div>
   <script type="text/html" id="bar">
 	<a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0)"

@@ -30,12 +30,12 @@
 			</div>
 			<div class="layui-form-mid layui-word-aux">链接地址打开的目标窗口，默认：mainFrame</div>
 		</div>
-		<!-- <div class="layui-form-item">
+		<div class="layui-form-item">
 			<label class="layui-form-label">图标:</label>
 			<div class="layui-input-inline">
 				<sys:iconselect id="icon" name="icon" value="${menu.icon}"/>
 			</div>
-		</div> -->
+		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">排序:</label>
 			<div class="layui-input-inline">

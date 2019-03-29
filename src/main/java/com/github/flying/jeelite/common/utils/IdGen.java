@@ -9,14 +9,12 @@ import java.util.UUID;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
-import org.springframework.context.annotation.Lazy;
 
 /**
  * 封装各种生成唯一性ID算法的工具类.
  * @author flying
  * @version 2013-01-15
  */
-@Lazy(false)
 public class IdGen implements SessionIdGenerator {
 
 	private static SecureRandom random = new SecureRandom();

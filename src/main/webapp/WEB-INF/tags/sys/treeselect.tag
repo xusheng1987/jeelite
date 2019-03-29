@@ -30,6 +30,7 @@
 		if ($("#${id}Button").hasClass("layui-btn-disabled")){
 			return true;
 		}
+		var loadIndex = layer.load();
 		$.get("${ctx}/tag/treeselect?url="+encodeURIComponent("${url}")+"&checked=${checked}&extId=${extId}&isAll=${isAll}&selectIds="+$("#${id}Id").val(), function (result) {
 			layer.open({
 				type: 1,
@@ -68,6 +69,9 @@
 				btn2: function(index, layero){//清除按钮的回调
 					$("#${id}Id").val("");
 					$("#${id}Name").val("");
+				},
+				success: function(layero, index){
+					layer.close(loadIndex);
 				}
 			}); 
 		});
