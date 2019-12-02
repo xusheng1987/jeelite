@@ -18,17 +18,12 @@ import java.lang.annotation.Target;
 public @interface ExcelField {
 
 	/**
-	 * 导出字段名（默认调用当前字段的“get”方法，如指定导出字段为对象，请填写“对象名.对象属性”，例：“office.name”）
+	 * 字段标题
 	 */
-	String value() default "";
+	String title() default "";
 
 	/**
-	 * 导出字段标题（需要添加批注请用“**”分隔，标题**批注，仅对导出模板有效）
-	 */
-	String title();
-
-	/**
-	 * 导出字段字段排序（升序）
+	 * 字段排序（升序）
 	 */
 	int sort() default 0;
 
@@ -36,9 +31,4 @@ public @interface ExcelField {
 	 * 如果是字典类型，请设置字典的type值
 	 */
 	String dictType() default "";
-
-	/**
-	 * 字段归属组（根据分组导出导入）
-	 */
-	int[] groups() default {};
 }

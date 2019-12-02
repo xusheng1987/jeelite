@@ -65,11 +65,11 @@ public class ImportExcel {
 	 */
 	private DecimalFormat numberFormat;
 	
-	private double format(double cellValue) {
+	private String format(double cellValue) {
 		if (numberFormat == null) {
-			numberFormat = new DecimalFormat("#.000000");
+			numberFormat = new DecimalFormat("#.######");
 		}
-		return Double.parseDouble(numberFormat.format(cellValue));
+		return numberFormat.format(cellValue);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class ImportExcel {
 	 * 获取最后一个数据行号
 	 */
 	public int getLastDataRowNum() {
-		return this.sheet.getLastRowNum() + headerNum;
+		return this.sheet.getLastRowNum();
 	}
 
 	/**
@@ -216,18 +216,15 @@ public class ImportExcel {
 //						}
 //						val = sdf.format(cell.getDateCellValue());
 //					} else
-					if (String.valueOf(cell.getNumericCellValue()).indexOf("E") > 0) {// 单元格为电话号码
-						val = new DecimalFormat("#").format(cell.getNumericCellValue());
+					if (String.valueOf(cell.getNumericCellValue()).indexOf("E") > 0) {// 单元格为科学计数法
+						val = format(cell.getNumericCellValue());
 					} else {
-						val = cell.getNumericCellValue();
+						val = format(cell.getNumericCellValue());
 					}
 				} else if (cell.getCellTypeEnum() == CellType.STRING) {
-					val = cell.getStringCellValue();
+					val = StringUtils.trim(cell.getStringCellValue());
 				} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
 					val = getCellValue(formulaEvaluator.evaluateInCell(cell));
-					if (NumberUtils.isCreatable(val.toString())) {
-						val = format(Double.parseDouble(val.toString()));
-					}
 				} else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
 					val = cell.getBooleanCellValue();
 				} else if (cell.getCellTypeEnum() == CellType.ERROR) {
@@ -244,32 +241,15 @@ public class ImportExcel {
 	 * 获取导入数据列表
 	 *
 	 * @param cls 导入对象类型
-	 * @param groups 导入分组
 	 */
-	public <E> List<E> getDataList(Class<E> cls, int... groups) throws InstantiationException, IllegalAccessException {
+	public <E> List<E> getDataList(Class<E> cls) throws InstantiationException, IllegalAccessException {
 		List<Object[]> annotationList = Lists.newArrayList();
 		// Get annotation field
 		Field[] fs = cls.getDeclaredFields();
 		for (Field f : fs) {
 			ExcelField ef = f.getAnnotation(ExcelField.class);
 			if (ef != null) {
-				if (groups != null && groups.length > 0) {
-					boolean inGroup = false;
-					for (int g : groups) {
-						if (inGroup) {
-							break;
-						}
-						for (int efg : ef.groups()) {
-							if (g == efg) {
-								inGroup = true;
-								annotationList.add(new Object[] { ef, f });
-								break;
-							}
-						}
-					}
-				} else {
-					annotationList.add(new Object[] { ef, f });
-				}
+				annotationList.add(new Object[] { ef, f });
 			}
 		}
 		// Get annotation method
@@ -277,23 +257,7 @@ public class ImportExcel {
 		for (Method m : ms) {
 			ExcelField ef = m.getAnnotation(ExcelField.class);
 			if (ef != null) {
-				if (groups != null && groups.length > 0) {
-					boolean inGroup = false;
-					for (int g : groups) {
-						if (inGroup) {
-							break;
-						}
-						for (int efg : ef.groups()) {
-							if (g == efg) {
-								inGroup = true;
-								annotationList.add(new Object[] { ef, m });
-								break;
-							}
-						}
-					}
-				} else {
-					annotationList.add(new Object[] { ef, m });
-				}
+				annotationList.add(new Object[] { ef, m });
 			}
 		}
 		// Field sorting
@@ -305,7 +269,7 @@ public class ImportExcel {
 		});
 		// Get excel data
 		List<E> dataList = Lists.newArrayList();
-		for (int i = this.getDataRowNum(); i < this.getLastDataRowNum(); i++) {
+		for (int i = this.getDataRowNum(); i <= this.getLastDataRowNum(); i++) {
 			E e = cls.newInstance();
 			int column = 0;
 			Row row = this.getRow(i);
