@@ -17,8 +17,11 @@
 	</appender>
 
 	<!-- project default level -->
-	<logger name="com.github.flying.jeelite" level="DEBUG" />
+	<logger name="com.github.flying.jeelite" level="INFO" />
 	<logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" level="WARN" />
+    <logger name="org.apache.shiro.cache.ehcache.EhCacheManager" level="WARN" />
+    <logger name="org.springframework.scheduling.quartz" level="WARN" />
+    <logger name="org.quartz" level="WARN" />
 
 	<root level="INFO">
 		<appender-ref ref="console" />
