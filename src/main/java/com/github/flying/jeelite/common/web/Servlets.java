@@ -112,11 +112,14 @@ public class Servlets {
 	 * 获取当前请求对象
 	 */
 	public static HttpServletRequest getRequest(){
-		try{
-			return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		}catch(Exception e){
-			return null;
-		}
+		return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+	}
+
+	/**
+	 * 获取当前响应对象
+	 */
+	public static HttpServletResponse getResponse(){
+		return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
 	}
 
 	/**
