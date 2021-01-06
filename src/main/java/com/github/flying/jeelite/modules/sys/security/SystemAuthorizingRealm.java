@@ -10,6 +10,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.flying.jeelite.common.utils.StringUtils;
+import com.github.flying.jeelite.common.utils.useragent.UserAgent;
+import com.github.flying.jeelite.common.utils.useragent.UserAgentUtils;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -25,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.utils.Encodes;
 import com.github.flying.jeelite.common.utils.IPUtils;
-import com.github.flying.jeelite.common.utils.UserAgentUtils;
 import com.github.flying.jeelite.common.web.Servlets;
 import com.github.flying.jeelite.modules.sys.entity.Menu;
 import com.github.flying.jeelite.modules.sys.entity.User;
@@ -77,8 +79,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			Principal principal = new Principal(user);
 			principal.setHost(StringUtils.getRemoteAddr(request));//主机
 			principal.setIpAddress(IPUtils.getIpInfo(principal.getHost()));//IP地址
-			principal.setBrowser(UserAgentUtils.getBrowser(request));//浏览器类型
-			principal.setOs(UserAgentUtils.getOperatingSystem(request));//操作系统
+			UserAgent ua = UserAgentUtils.parse(request);
+			principal.setBrowser(ua.getBrowser().toString() + " " + ua.getVersion());//浏览器类型
+			principal.setOs(ua.getOs().toString());//操作系统
 			return new SimpleAuthenticationInfo(principal, user.getPassword().substring(16),
 					ByteSource.Util.bytes(salt), getName());
 		} else {
