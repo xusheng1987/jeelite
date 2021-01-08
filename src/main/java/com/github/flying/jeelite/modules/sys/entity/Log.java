@@ -6,9 +6,10 @@ package com.github.flying.jeelite.modules.sys.entity;
 import java.util.Date;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.flying.jeelite.common.persistence.BaseEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 import com.github.flying.jeelite.common.utils.StringUtils;
 
 /**
@@ -35,7 +36,7 @@ public class Log extends BaseEntity<Log> {
 	@TableField(exist=false)
 	private Date endDate; // 结束日期
 
-	@TableField(el = "createBy.id")
+	@TableField(typeHandler = CommonTypeHandler.class)
 	private User createBy; // 创建者
 	private Date createDate; // 创建日期
 	private Integer costTime; // 请求耗时(毫秒)

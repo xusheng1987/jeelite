@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.rest.RestException;
 import com.github.flying.jeelite.common.security.Digests;
 import com.github.flying.jeelite.common.security.shiro.session.SessionDAO;
@@ -65,10 +65,10 @@ public class UserService extends BaseService<UserDao, User> {
 		return UserUtils.getByLoginName(loginName);
 	}
 
-	public Page<User> findUser(Page<User> page, User user) {
+	public Page<User> findPage(User user) {
 		// 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 		user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
-		return super.findPage(page, user);
+		return super.findPage(user);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class UserService extends BaseService<UserDao, User> {
 
 	@Transactional(readOnly = false)
 	public void batchDelete(List<String> idList) {
-		super.deleteBatchIds(idList);
+		dao.deleteBatchIds(idList);
 		for(String id:idList) {
 			// 清除用户缓存
 			UserUtils.clearCache(UserUtils.get(id));

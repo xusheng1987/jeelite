@@ -7,10 +7,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.flying.jeelite.common.persistence.TreeEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 
 /**
  * 机构Entity
@@ -21,7 +22,7 @@ import com.github.flying.jeelite.common.persistence.TreeEntity;
 public class Office extends TreeEntity<Office> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="parent_id", el = "parent.id")
+	@TableField(value="parent_id", typeHandler = CommonTypeHandler.class)
 	private Office parent;	// 父级编号
 	private String code; 	// 机构编码
 	private String type; 	// 机构类型（1：公司；2：部门；3：小组）

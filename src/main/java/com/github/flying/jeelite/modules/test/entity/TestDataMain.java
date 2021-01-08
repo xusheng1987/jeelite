@@ -8,10 +8,11 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.persistence.DataEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 import com.github.flying.jeelite.modules.sys.entity.Office;
 import com.github.flying.jeelite.modules.sys.entity.User;
 
@@ -25,9 +26,9 @@ import com.github.flying.jeelite.modules.sys.entity.User;
 public class TestDataMain extends DataEntity<TestDataMain> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value = "user_id", el = "user.id")
+	@TableField(value = "user_id", typeHandler = CommonTypeHandler.class)
 	private User user; // 归属用户
-	@TableField(value = "office_id", el = "office.id")
+	@TableField(value = "office_id", typeHandler = CommonTypeHandler.class)
 	private Office office; // 归属部门
 	private String name; // 名称
 	private String sex; // 性别

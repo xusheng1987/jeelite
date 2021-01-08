@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.flying.jeelite.common.persistence.BaseEntity;
 import com.github.flying.jeelite.modules.monitor.utils.ScheduleUtils;
 

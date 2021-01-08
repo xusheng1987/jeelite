@@ -5,33 +5,26 @@
 	<select id="findList" resultType="GenTable">
 		SELECT *
 		FROM gen_table a
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-		<if test="name != null and name != ''">
-			AND a.name = #{name}
+		WHERE a.del_flag = #{param.DEL_FLAG_NORMAL}
+		<if test="param.name != null and param.name != ''">
+			AND a.name = #{param.name}
 		</if>
-		<if test="nameLike != null and nameLike != ''">
+		<if test="param.nameLike != null and param.nameLike != ''">
 			AND a.name LIKE
-				<if test="dbName == 'oracle'">'%'||#{nameLike}||'%'</if>
-				<if test="dbName == 'mysql'">concat('%',#{nameLike},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{param.nameLike}||'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{param.nameLike},'%')</if>
 		</if>
-		<if test="comments != null and comments != ''">
+		<if test="param.comments != null and param.comments != ''">
 			AND a.comments LIKE
-				<if test="dbName == 'oracle'">'%'||#{comments}||'%'</if>
-				<if test="dbName == 'mysql'">concat('%',#{comments},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{param.comments}||'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{param.comments},'%')</if>
 		</if>
-		<if test="parentTable != null and parentTable != ''">
-			AND a.parent_table = #{parentTable}
+		<if test="param.parentTable != null and param.parentTable != ''">
+			AND a.parent_table = #{param.parentTable}
 		</if>
 		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${page.orderByField} DESC
-					</otherwise>
-				</choose>
+			<when test="_parameter.containsKey('page') and page !=null and page.orderBy != null and page.orderBy !=''">
+				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
 				ORDER BY a.name ASC

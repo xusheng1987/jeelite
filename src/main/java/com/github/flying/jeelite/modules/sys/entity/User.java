@@ -11,12 +11,13 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.persistence.DataEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 import com.github.flying.jeelite.common.utils.Collections3;
 import com.github.flying.jeelite.common.utils.excel.annotation.ExcelField;
 
@@ -29,9 +30,9 @@ import com.github.flying.jeelite.common.utils.excel.annotation.ExcelField;
 public class User extends DataEntity<User> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="company_id", el = "company.id")
+	@TableField(value="company_id", typeHandler = CommonTypeHandler.class)
 	private Office company;	// 归属公司
-	@TableField(value="office_id", el = "office.id")
+	@TableField(value="office_id", typeHandler = CommonTypeHandler.class)
 	private Office office;	// 归属部门
 	private String loginName;// 登录名
 	private String password;// 密码

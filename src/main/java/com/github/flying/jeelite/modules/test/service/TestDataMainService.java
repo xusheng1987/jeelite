@@ -36,8 +36,8 @@ public class TestDataMainService extends BaseService<TestDataMainDao, TestDataMa
 
 	@Override
 	@Transactional(readOnly = false)
-	public void save(TestDataMain testDataMain) {
-		super.save(testDataMain);
+	public int save(TestDataMain testDataMain) {
+		int row = super.save(testDataMain);
 		for (TestDataChild testDataChild : testDataMain.getTestDataChildList()) {
 			if (testDataChild.getId() == null) {
 				continue;
@@ -45,21 +45,23 @@ public class TestDataMainService extends BaseService<TestDataMainDao, TestDataMa
 			if (TestDataChild.DEL_FLAG_NORMAL.equals(testDataChild.getDelFlag())) {
 				if (StringUtils.isBlank(testDataChild.getId())) {
 					testDataChild.setTestDataMain(testDataMain);
-					testDataChildDao.insert(testDataChild);
+					row += testDataChildDao.insert(testDataChild);
 				} else {
-					testDataChildDao.updateById(testDataChild);
+					row += testDataChildDao.updateById(testDataChild);
 				}
 			} else {
-				testDataChildDao.delete(testDataChild);
+				row += testDataChildDao.delete(testDataChild);
 			}
 		}
+		return row;
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(TestDataMain testDataMain) {
-		super.delete(testDataMain);
-		testDataChildDao.delete(new TestDataChild(testDataMain));
+	public int delete(TestDataMain testDataMain) {
+		int row = super.delete(testDataMain);
+		row += testDataChildDao.delete(new TestDataChild(testDataMain));
+		return row;
 	}
 
 }

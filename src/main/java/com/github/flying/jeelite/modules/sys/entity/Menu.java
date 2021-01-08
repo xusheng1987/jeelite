@@ -7,11 +7,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.flying.jeelite.common.persistence.TreeEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 
 /**
  * 菜单Entity
@@ -22,7 +23,7 @@ import com.github.flying.jeelite.common.persistence.TreeEntity;
 public class Menu extends TreeEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="parent_id", el = "parent.id")
+	@TableField(value="parent_id", typeHandler = CommonTypeHandler.class)
 	private Menu parent;	// 父级菜单
 	private String href; 	// 链接
 	private String target; 	// 目标（ mainFrame、_blank、_self、_parent、_top）

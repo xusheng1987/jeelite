@@ -5,10 +5,11 @@ package com.github.flying.jeelite.modules.test.entity;
 
 import javax.validation.constraints.NotNull;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.flying.jeelite.common.persistence.TreeEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 
 /**
  * 树结构生成Entity
@@ -20,7 +21,7 @@ import com.github.flying.jeelite.common.persistence.TreeEntity;
 public class TestTree extends TreeEntity<TestTree> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value = "parent_id", el = "parent.id")
+	@TableField(value = "parent_id", typeHandler = CommonTypeHandler.class)
 	private TestTree parent; // 父级编号
 
 	public TestTree() {

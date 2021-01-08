@@ -16,11 +16,11 @@
 			<label class="layui-form-label">${c.comments}：</label>
 			<#if c.showType == "input">
 			<div class="layui-input-inline">
-				<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input <#if c.isNull != "1">required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
+				<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-input<#if c.isNull != "1"> required</#if><#if c.javaType == "Long" || c.javaType == "Integer"> digits</#if><#if c.javaType == "Double"> number</#if>"/>
 			</div>
 			<#elseif c.showType == "textarea">
 			<div class="layui-input-inline">
-				<form:textarea path="${c.javaFieldId}" htmlEscape="false" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-textarea <#if c.isNull != "1">required</#if>"/>
+				<form:textarea path="${c.javaFieldId}" htmlEscape="false" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="layui-textarea<#if c.isNull != "1"> required</#if>"/>
 			</div>
 			<#elseif c.showType == "select">
 			<div class="layui-input-inline">
@@ -43,7 +43,7 @@
 			</div>
 			<#elseif c.showType == "dateselect">
 			<div class="layui-input-inline">
-				<input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate <#if c.isNull != "1">required</#if>"
+				<input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate<#if c.isNull != "1"> required</#if>"
 					value="<fmt:formatDate value="${"$"}{${className}.${c.javaFieldId}}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>

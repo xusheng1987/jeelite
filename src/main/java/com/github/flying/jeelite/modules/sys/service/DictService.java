@@ -33,22 +33,25 @@ public class DictService extends BaseService<DictDao, Dict> {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void save(Dict dict) {
-		super.save(dict);
+	public int save(Dict dict) {
+		int row = super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+		return row;
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(Dict dict) {
-		super.delete(dict);
+	public int delete(Dict dict) {
+		int row = super.delete(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+		return row;
 	}
 
 	@Transactional(readOnly = false)
-	public void batchDelete(List<String> idList) {
-		super.deleteBatchIds(idList);
+	public int batchDelete(List<String> idList) {
+		int row = dao.deleteBatchIds(idList);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+		return row;
 	}
 
 }

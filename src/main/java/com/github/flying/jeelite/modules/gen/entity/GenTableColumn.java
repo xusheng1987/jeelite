@@ -7,10 +7,11 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.persistence.DataEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 import com.github.flying.jeelite.common.utils.StringUtils;
 
 /**
@@ -22,7 +23,7 @@ import com.github.flying.jeelite.common.utils.StringUtils;
 public class GenTableColumn extends DataEntity<GenTableColumn> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="gen_table_id", el = "genTable.id")
+	@TableField(value="gen_table_id", typeHandler = CommonTypeHandler.class)
 	private GenTable genTable;	// 归属表
 	private String name; 		// 列名
 	private String comments;	// 描述

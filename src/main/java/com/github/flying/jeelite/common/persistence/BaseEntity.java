@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import com.github.flying.jeelite.common.config.Global;
@@ -31,7 +31,7 @@ public abstract class BaseEntity<T> implements Serializable {
 	/**
 	 * 实体编号（唯一标识）
 	 */
-	@TableId
+	@TableId(type=IdType.ASSIGN_ID)
 	protected String id;
 
 	/**
@@ -44,7 +44,7 @@ public abstract class BaseEntity<T> implements Serializable {
 	 * 当前实体分页对象
 	 */
 	@TableField(exist=false)
-	protected Page<T> page;
+	protected Page page;
 
 	/**
 	 * 自定义SQL（SQL标识，SQL内容）
@@ -84,14 +84,14 @@ public abstract class BaseEntity<T> implements Serializable {
 
 	@JsonIgnore
 	@XmlTransient
-	public Page<T> getPage() {
+	public Page getPage() {
 		if (page == null){
-			page = new Page<T>();
+			page = new Page();
 		}
 		return page;
 	}
 
-	public void setPage(Page<T> page) {
+	public void setPage(Page page) {
 		this.page = page;
 	}
 

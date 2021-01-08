@@ -63,12 +63,12 @@
 		LEFT JOIN sys_user_role ur ON ur.role_id = a.id
 		LEFT JOIN sys_user u ON u.id = ur.user_id
 		LEFT JOIN sys_role_office ro ON ro.role_id = a.id
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.useable=#{useable}
-		<if test="user != null and user.id != null and user.id != ''">
-			AND u.id = #{user.id}
+		WHERE a.del_flag = #{param.DEL_FLAG_NORMAL} AND a.useable=#{param.useable}
+		<if test="param.user != null and param.user.id != null and param.user.id != ''">
+			AND u.id = #{param.user.id}
 		</if>
 		<!-- 数据范围过滤 -->
-		${sqlMap.dsf}
+		${param.sqlMap.dsf}
 		ORDER BY o.code, a.name
 	</select>
 

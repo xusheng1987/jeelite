@@ -13,8 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.github.flying.jeelite.common.persistence.PageFactory;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.modules.sys.entity.Log;
@@ -49,7 +48,7 @@ public class LogController extends BaseController {
 		if (log.getEndDate() != null) {
 			log.setEndDate(DateUtils.parseDate(DateUtils.formatDate(log.getEndDate()) + " 23:59:59"));
 		}
-		Page<Log> page = logService.findPage(new PageFactory<Log>().defaultPage(), log);
+		Page<Log> page = logService.findPage(log);
 		return jsonPage(page);
 	}
 

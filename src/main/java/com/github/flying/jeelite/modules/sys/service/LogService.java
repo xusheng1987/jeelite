@@ -6,7 +6,7 @@ package com.github.flying.jeelite.modules.sys.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.service.BaseService;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.modules.sys.dao.LogDao;
@@ -23,7 +23,7 @@ import com.github.flying.jeelite.modules.sys.entity.Log;
 public class LogService extends BaseService<LogDao, Log> {
 
 	@Override
-	public Page<Log> findPage(Page<Log> page, Log log) {
+	public Page<Log> findPage(Log log) {
 
 		// 设置默认时间范围，默认当前月
 		if (log.getBeginDate() == null) {
@@ -33,7 +33,7 @@ public class LogService extends BaseService<LogDao, Log> {
 			log.setEndDate(DateUtils.addMonths(log.getBeginDate(), 1));
 		}
 
-		return super.findPage(page, log);
+		return super.findPage(log);
 	}
 
 }

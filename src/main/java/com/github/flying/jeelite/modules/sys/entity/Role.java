@@ -8,11 +8,12 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.persistence.DataEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 
 /**
  * 角色Entity
@@ -23,7 +24,7 @@ import com.github.flying.jeelite.common.persistence.DataEntity;
 public class Role extends DataEntity<Role> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value="office_id", el = "office.id")
+	@TableField(value="office_id", typeHandler = CommonTypeHandler.class)
 	private Office office;	// 归属机构
 	private String name; 	// 角色名称
 	private String dataScope;// 数据范围

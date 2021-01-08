@@ -54,13 +54,14 @@ public class JobService extends BaseService<JobDao, Job> {
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public void save(Job job) {
+	public int save(Job job) {
 		job.setStatus(Job.JOB_STATUS_NORMAL);
 		job.setCreateDate(new Date());
 		job.setUpdateDate(new Date());
-		dao.insert(job);
+		int row = dao.insert(job);
 
 		ScheduleUtils.createJob(scheduler, job);
+		return row;
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class JobService extends BaseService<JobDao, Job> {
 		for (String jobId : jobIds) {
 			ScheduleUtils.deleteJob(scheduler, jobId);
 		}
-		super.deleteBatchIds(jobIds);
+		dao.deleteBatchIds(jobIds);
 	}
 
 	/**

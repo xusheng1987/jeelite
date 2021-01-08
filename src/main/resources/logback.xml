@@ -22,6 +22,7 @@
     <logger name="org.apache.shiro.cache.ehcache.EhCacheManager" level="WARN" />
     <logger name="org.springframework.scheduling.quartz" level="WARN" />
     <logger name="org.quartz" level="WARN" />
+    <logger name="druid.sql.Statement" level="DEBUG" />
 
 	<root level="INFO">
 		<appender-ref ref="console" />

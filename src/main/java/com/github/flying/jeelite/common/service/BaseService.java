@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.persistence.BaseEntity;
 import com.github.flying.jeelite.common.persistence.CrudDao;
+import com.github.flying.jeelite.common.persistence.PageFactory;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.modules.sys.entity.Role;
 import com.github.flying.jeelite.modules.sys.entity.User;
@@ -26,7 +26,7 @@ import com.github.flying.jeelite.modules.sys.entity.User;
  * @version 2014-05-16
  */
 @Transactional(readOnly = true)
-public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>> extends ServiceImpl<M, T> {
+public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>> {
 
 	/**
 	 * 持久层对象
@@ -102,6 +102,13 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	}
 
 	/**
+	 * 根据主键获取单表数据
+	 */
+	public T getById(String id) {
+		return dao.selectById(id);
+	}
+
+	/**
 	 * 获取单条数据
 	 */
 	public T get(String id) {
@@ -118,26 +125,29 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	/**
 	 * 查询分页数据
 	 */
-	public Page<T> findPage(Page<T> page, T entity) {
-		entity.setPage(page);
-		page.setRecords(dao.findList(page, entity));
-		return page;
+	public Page<T> findPage(T entity) {
+		Page page = new PageFactory<T>().defaultPage();
+		return dao.findList(page, entity);
 	}
 
 	/**
 	 * 保存数据
 	 */
 	@Transactional(readOnly = false)
-	public void save(T entity) {
-		super.insertOrUpdate(entity);
+	public int save(T entity) {
+		if (StringUtils.isEmpty(entity.getId())) {
+			return dao.insert(entity);
+		} else {
+			return dao.updateById(entity);
+		}
 	}
 
 	/**
 	 * 删除数据（逻辑删除，更新del_flag字段为1）
 	 */
 	@Transactional(readOnly = false)
-	public void delete(T entity) {
-		super.deleteById(entity.getId());// 使用mybatis-plus自带的逻辑删除
+	public int delete(T entity) {
+		return dao.deleteById(entity.getId());// 使用mybatis-plus自带的逻辑删除
 	}
 
 }

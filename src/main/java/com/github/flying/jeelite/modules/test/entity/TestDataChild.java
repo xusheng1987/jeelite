@@ -5,9 +5,10 @@ package com.github.flying.jeelite.modules.test.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.flying.jeelite.common.persistence.DataEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 
 /**
  * 主子表生成Entity
@@ -19,7 +20,7 @@ import com.github.flying.jeelite.common.persistence.DataEntity;
 public class TestDataChild extends DataEntity<TestDataChild> {
 
 	private static final long serialVersionUID = 1L;
-	@TableField(value = "test_data_main_id", el = "testDataMain.id")
+	@TableField(value = "test_data_main_id", typeHandler = CommonTypeHandler.class)
 	private TestDataMain testDataMain; // 业务主表 父类
 	private String name; // 名称
 

@@ -18,10 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
 import com.github.flying.jeelite.common.config.Global;
-import com.github.flying.jeelite.common.persistence.PageFactory;
 import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.IdGen;
@@ -77,7 +76,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = "data")
 	public Map listData(User user) {
-		Page<User> page = userService.findUser(new PageFactory<User>().defaultPage(), user);
+		Page<User> page = userService.findPage(user);
 		return jsonPage(page);
 	}
 

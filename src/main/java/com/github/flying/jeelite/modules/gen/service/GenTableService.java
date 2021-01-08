@@ -36,7 +36,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	@Override
 	public GenTable get(String id) {
-		GenTable genTable = super.selectById(id);
+		GenTable genTable = dao.selectById(id);
 		GenTableColumn genTableColumn = new GenTableColumn();
 		genTableColumn.setGenTable(new GenTable(genTable.getId()));
 		genTable.setColumnList(genTableColumnDao.findList(genTableColumn));
@@ -127,30 +127,32 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void save(GenTable genTable) {
-		super.save(genTable);
+	public int save(GenTable genTable) {
+		int row = super.save(genTable);
 		// 保存列
 		for (GenTableColumn column : genTable.getColumnList()) {
 			column.setGenTable(genTable);
 			if (StringUtils.isBlank(column.getId())) {
-				genTableColumnDao.insert(column);
+				row += genTableColumnDao.insert(column);
 			} else {
-				genTableColumnDao.updateById(column);
+				row += genTableColumnDao.updateById(column);
 			}
 		}
+		return row;
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(GenTable genTable) {
-		super.delete(genTable);
-		genTableColumnDao.deleteByGenTableId(genTable.getId());
+	public int delete(GenTable genTable) {
+		int row = super.delete(genTable);
+		row += genTableColumnDao.deleteByGenTableId(genTable.getId());
+		return row;
 	}
 
 	@Transactional(readOnly = false)
 	public void batchDelete(String ids) {
 		List<String> idList = Arrays.asList(ids.split(","));
-		super.deleteBatchIds(idList);
+		dao.deleteBatchIds(idList);
 		for (String id:idList) {
 			genTableColumnDao.deleteByGenTableId(id);
 		}

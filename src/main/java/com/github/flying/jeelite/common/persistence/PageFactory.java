@@ -2,7 +2,7 @@ package com.github.flying.jeelite.common.persistence;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.Servlets;
 
@@ -17,18 +17,17 @@ public class PageFactory<T> {
 		int pageNo = Integer.valueOf(request.getParameter("pageNo"));//当前页码
 		String field = StringUtils.toUnderScoreCase(request.getParameter("field"));//排序字段(需要驼峰命名转换)
 		String order = request.getParameter("order");//排序方式(asc,desc)
-		if (StringUtils.isEmpty(field)) {
-			Page<T> page = new Page<>(pageNo, limit);
-			page.setOpenSort(false);
-			return page;
-		} else {
-			Page<T> page = new Page<>(pageNo, limit, field);
+		Page<T> page = new Page<T>();
+		page.setCurrent(Long.valueOf(pageNo));
+		page.setSize(limit);
+		if (StringUtils.isNotEmpty(field)) {
 			if ("asc".equals(order)) {
-				page.setAsc(true);
+				page.addOrder(OrderItem.asc(field));
 			} else {
-				page.setAsc(false);
+				page.addOrder(OrderItem.desc(field));
 			}
-			return page;
+			page.setOrderBy(field + " " + order);
 		}
+		return page;
 	}
 }

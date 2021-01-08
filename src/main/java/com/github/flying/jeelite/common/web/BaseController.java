@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
 import com.github.flying.jeelite.common.mapper.JsonMapper;
 import com.github.flying.jeelite.common.rest.Result;

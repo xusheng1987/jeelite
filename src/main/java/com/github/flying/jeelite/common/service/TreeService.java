@@ -25,7 +25,7 @@ public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>>
 
 	@Override
 	@Transactional(readOnly = false)
-	public void save(T entity) {
+	public int save(T entity) {
 		Class<T> entityClass = Reflections.getClassGenricType(getClass(), 1);
 
 		// 如果没有设置父节点，则代表为跟节点，有则获取父节点实体
@@ -53,7 +53,7 @@ public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>>
 		entity.setParentIds(entity.getParent().getParentIds() + entity.getParent().getId() + ",");
 
 		// 保存或更新实体
-		super.save(entity);
+		int row = super.save(entity);
 
 		// 更新子节点 parentIds
 		T o = null;
@@ -67,10 +67,10 @@ public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>>
 		for (T e : list) {
 			if (e.getParentIds() != null && oldParentIds != null) {
 				e.setParentIds(e.getParentIds().replace(oldParentIds, entity.getParentIds()));
-				dao.updateParentIds(e);
+				row += dao.updateParentIds(e);
 			}
 		}
-
+		return row;
 	}
 
 	/**
@@ -78,8 +78,8 @@ public abstract class TreeService<M extends TreeDao<T>, T extends TreeEntity<T>>
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(T entity) {
-		dao.delete(entity);
+	public int delete(T entity) {
+		return dao.delete(entity);
 	}
 
 	/**

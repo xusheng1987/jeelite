@@ -5,9 +5,10 @@ package com.github.flying.jeelite.modules.gen.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.flying.jeelite.common.persistence.DataEntity;
+import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
 
 /**
  * 生成方案Entity
@@ -25,7 +26,7 @@ public class GenScheme extends DataEntity<GenScheme> {
 	private String functionName;		// 生成功能名
 	private String functionNameSimple;		// 生成功能名（简写）
 	private String functionAuthor;		// 生成功能作者
-	@TableField(value="gen_table_id", el = "genTable.id")
+	@TableField(value="gen_table_id", typeHandler = CommonTypeHandler.class)
 	private GenTable genTable;		// 业务表名
 
 	@TableField(exist=false)

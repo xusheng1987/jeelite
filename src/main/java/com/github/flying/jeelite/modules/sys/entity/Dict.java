@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.flying.jeelite.common.persistence.DataEntity;
 
 /**

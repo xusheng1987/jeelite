@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.persistence.DataEntity;
 import com.github.flying.jeelite.common.utils.StringUtils;
@@ -170,8 +170,9 @@ public class GenTable extends DataEntity<GenTable> {
 			}
 		}
 		// 导入mybatis-plus的依赖包
-		importList.add("com.baomidou.mybatisplus.annotations.TableField");
-		importList.add("com.baomidou.mybatisplus.annotations.TableName");
+		importList.add("com.baomidou.mybatisplus.annotation.TableField");
+		importList.add("com.baomidou.mybatisplus.annotation.TableName");
+		importList.add("com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler");
 		return importList;
 	}
 

@@ -5,7 +5,7 @@ package com.github.flying.jeelite.modules.sys.entity;
 
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.flying.jeelite.common.persistence.BaseEntity;
 
 /**

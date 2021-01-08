@@ -5,8 +5,11 @@ package com.github.flying.jeelite.common.persistence;
 
 import java.util.List;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import org.apache.ibatis.annotations.Param;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.flying.jeelite.common.persistence.Page;
+
 
 /**
  * DAO支持类实现
@@ -23,12 +26,12 @@ public interface CrudDao<T> extends BaseMapper<T> {
 	/**
 	 * 查询数据列表
 	 */
-	List<T> findList(T entity);
+	List<T> findList(@Param("param") T entity);
 
 	/**
 	 * 分页查询数据列表
 	 */
-	List<T> findList(Pagination page, T entity);
+	Page<T> findList(@Param("page") Page page, @Param("param") T entity);
 
 	/**
 	 * 查询所有数据列表

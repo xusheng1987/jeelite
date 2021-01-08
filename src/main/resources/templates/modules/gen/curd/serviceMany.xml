@@ -48,8 +48,8 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 
 	@Override
 	@Transactional(readOnly = false)
-	public void save(${ClassName} ${className}) {
-		super.save(${className});
+	public int save(${ClassName} ${className}) {
+		int row = super.save(${className});
 	<#list table.childList as c>
 		for (${c.className?cap_first} ${c.className?uncap_first} : ${className}.get${c.className?cap_first}List()) {
 			if (${c.className?uncap_first}.getId() == null) {
@@ -64,24 +64,26 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 							</#if>
 						</#list>
 					</#if>
-					${c.className?uncap_first}Dao.insert(${c.className?uncap_first});
+					row += ${c.className?uncap_first}Dao.insert(${c.className?uncap_first});
 				} else {
-					${c.className?uncap_first}Dao.updateById(${c.className?uncap_first});
+					row += ${c.className?uncap_first}Dao.updateById(${c.className?uncap_first});
 				}
 			} else {
-				${c.className?uncap_first}Dao.delete(${c.className?uncap_first});
+				row += ${c.className?uncap_first}Dao.delete(${c.className?uncap_first});
 			}
 		}
 	</#list>
+	   return row;
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(${ClassName} ${className}) {
-		super.delete(${className});
+	public int delete(${ClassName} ${className}) {
+		int row = super.delete(${className});
 	<#list table.childList as c>
-		${c.className?uncap_first}Dao.delete(new ${c.className?cap_first}(${className}));
+		row += ${c.className?uncap_first}Dao.delete(new ${c.className?cap_first}(${className}));
 	</#list>
+       return row;
 	}
 
 }]]>

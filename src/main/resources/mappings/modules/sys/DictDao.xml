@@ -6,14 +6,14 @@
 		SELECT
 			*
 		FROM sys_dict
-		WHERE del_flag = #{DEL_FLAG_NORMAL}
-		<if test="type != null and type != ''">
-			AND type = #{type}
+		WHERE del_flag = #{param.DEL_FLAG_NORMAL}
+		<if test="param.type != null and param.type != ''">
+			AND type = #{param.type}
 		</if>
-		<if test="description != null and description != ''">
+		<if test="param.description != null and param.description != ''">
 			AND description LIKE
-					<if test="dbName == 'oracle'">'%'||#{description}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{description}, '%')</if>
+					<if test="dbName == 'oracle'">'%'||#{param.description}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{param.description}, '%')</if>
 		</if>
 		ORDER BY type, sort, update_date DESC
 	</select>

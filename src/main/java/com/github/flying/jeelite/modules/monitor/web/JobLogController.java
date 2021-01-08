@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.github.flying.jeelite.common.persistence.PageFactory;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
@@ -59,7 +58,7 @@ public class JobLogController extends BaseController {
 		if (jobLog.getEndCreateDate() != null) {
 			jobLog.setEndCreateDate(DateUtils.parseDate(DateUtils.formatDate(jobLog.getEndCreateDate()) + " 23:59:59"));
 		}
-		Page<JobLog> page = jobLogService.findPage(new PageFactory<JobLog>().defaultPage(), jobLog);
+		Page<JobLog> page = jobLogService.findPage(jobLog);
 		return jsonPage(page);
 	}
 

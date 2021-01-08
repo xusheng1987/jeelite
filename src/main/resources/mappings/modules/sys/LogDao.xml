@@ -13,22 +13,22 @@
 		JOIN sys_user u ON u.id = a.create_by
 		JOIN sys_office c ON c.id = u.company_id
 		JOIN sys_office o ON o.id = u.office_id
-		WHERE a.create_date BETWEEN #{beginDate} AND #{endDate}
-		<if test="title != null and title != ''">
+		WHERE a.create_date BETWEEN #{param.beginDate} AND #{param.endDate}
+		<if test="param.title != null and param.title != ''">
 			AND a.title LIKE
-					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
+					<if test="dbName == 'oracle'">'%'||#{param.title}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{param.title}, '%')</if>
 		</if>
-		<if test="createBy != null and createBy.id != null and createBy.id != ''">
-			AND a.create_by = #{createBy.id}
+		<if test="param.createBy != null and param.createBy.id != null and param.createBy.id != ''">
+			AND a.create_by = #{param.createBy.id}
 		</if>
-		<if test="requestUri != null and requestUri != ''">
+		<if test="param.requestUri != null and param.requestUri != ''">
 			AND a.request_uri LIKE
-					<if test="dbName == 'oracle'">'%'||#{requestUri}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{requestUri}, '%')</if>
+					<if test="dbName == 'oracle'">'%'||#{param.requestUri}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{param.requestUri}, '%')</if>
 		</if>
-		<if test="exception != null and exception != ''">
-			AND a.type = #{TYPE_EXCEPTION}
+		<if test="param.exception != null and param.exception != ''">
+			AND a.type = #{param.TYPE_EXCEPTION}
 		</if>
 		ORDER BY a.create_date DESC
 	</select>

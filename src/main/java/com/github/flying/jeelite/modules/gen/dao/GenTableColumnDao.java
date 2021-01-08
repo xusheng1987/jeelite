@@ -15,5 +15,5 @@ import com.github.flying.jeelite.modules.gen.entity.GenTableColumn;
 @MyBatisDao
 public interface GenTableColumnDao extends CrudDao<GenTableColumn> {
 
-	void deleteByGenTableId(String genTableId);
+	int deleteByGenTableId(String genTableId);
 }

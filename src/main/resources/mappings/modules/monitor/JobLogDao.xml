@@ -32,29 +32,22 @@
 		<include refid="jobLogJoins"/>
 		<where>
 			
-			<if test="beanName != null and beanName != ''">
-				AND a.bean_name = #{beanName}
+			<if test="param.beanName != null and param.beanName != ''">
+				AND a.bean_name = #{param.beanName}
 			</if>
-			<if test="methodName != null and methodName != ''">
-				AND a.method_name = #{methodName}
+			<if test="param.methodName != null and param.methodName != ''">
+				AND a.method_name = #{param.methodName}
 			</if>
-			<if test="status != null and status != ''">
-				AND a.status = #{status}
+			<if test="param.status != null and param.status != ''">
+				AND a.status = #{param.status}
 			</if>
-			<if test="beginCreateDate != null and endCreateDate != null">
-				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			<if test="param.beginCreateDate != null and param.endCreateDate != null">
+				AND a.create_date BETWEEN #{param.beginCreateDate} AND #{param.endCreateDate}
 			</if>
 		</where>
 		<choose>
-			<when test="page !=null and page.orderByField != null and page.orderByField !=''">
-				<choose>
-					<when test="page.isAsc == true">
-						ORDER BY ${page.orderByField} ASC
-					</when>
-					<otherwise>
-						ORDER BY ${page.orderByField} DESC
-					</otherwise>
-				</choose>
+			<when test="_parameter.containsKey('page') and page !=null and page.orderBy != null and page.orderBy !=''">
+				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
 			</otherwise>

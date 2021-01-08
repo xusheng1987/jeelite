@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.config.Global;
-import com.github.flying.jeelite.common.persistence.PageFactory;
 import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
@@ -40,7 +39,7 @@ public class DictController extends BaseController {
 	@ModelAttribute
 	public Dict get(@RequestParam(required = false) String id) {
 		if (StringUtils.isNotBlank(id)) {
-			return dictService.selectById(id);
+			return dictService.getById(id);
 		} else {
 			return new Dict();
 		}
@@ -58,7 +57,7 @@ public class DictController extends BaseController {
 	@RequiresPermissions("sys:dict:view")
 	@RequestMapping(value = "data")
 	public Map listData(Dict dict) {
-		Page<Dict> page = dictService.findPage(new PageFactory<Dict>().defaultPage(), dict);
+		Page<Dict> page = dictService.findPage(dict);
 		return jsonPage(page);
 	}
 

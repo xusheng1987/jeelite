@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.github.flying.jeelite.common.persistence.PageFactory;
+import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.rest.Result;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
@@ -59,7 +58,7 @@ public class GenSchemeController extends BaseController {
 	@RequiresPermissions("gen:genScheme:view")
 	@RequestMapping(value = "data")
 	public Map data(GenScheme genScheme) {
-		Page<GenScheme> page = genSchemeService.findPage(new PageFactory<GenScheme>().defaultPage(), genScheme);
+		Page<GenScheme> page = genSchemeService.findPage(genScheme);
 		return jsonPage(page);
 	}
 
