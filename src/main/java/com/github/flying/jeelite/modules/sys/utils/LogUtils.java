@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.method.HandlerMethod;
 
 import com.google.common.collect.Lists;
@@ -37,6 +38,7 @@ public class LogUtils {
 
 	private static LogDao logDao = SpringContextHolder.getBean(LogDao.class);
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
+	private static TaskExecutor taskExecutor = SpringContextHolder.getBean(TaskExecutor.class);
 
 	/**
 	 * 保存日志
@@ -63,7 +65,8 @@ public class LogUtils {
 			log.setCreateDate(new Date());
 			log.setCostTime(costTime);
 			// 异步保存日志
-			new SaveLogThread(log, handler, ex).start();
+			taskExecutor.execute(new SaveLogThread(log, handler, ex));
+			//new SaveLogThread(log, handler, ex).start();
 //		}
 	}
 
