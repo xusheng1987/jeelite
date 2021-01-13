@@ -31,7 +31,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import com.github.flying.jeelite.common.beanvalidator.BeanValidators;
 import com.github.flying.jeelite.common.mapper.JsonMapper;
@@ -79,7 +78,6 @@ public class RestExceptionHandler {
 	 * standard Spring MVC 异常
 	 */
 	@ExceptionHandler(value={
-			NoSuchRequestHandlingMethodException.class,
 			HttpRequestMethodNotSupportedException.class,
 			HttpMediaTypeNotSupportedException.class,
 			HttpMediaTypeNotAcceptableException.class,
@@ -99,9 +97,7 @@ public class RestExceptionHandler {
 	@ResponseBody
 	public final Result handleStandardException(Exception ex) {
 		HttpStatus status;
-		if (ex instanceof NoSuchRequestHandlingMethodException) {
-			status = HttpStatus.NOT_FOUND;
-		} else if (ex instanceof HttpRequestMethodNotSupportedException) {
+		if (ex instanceof HttpRequestMethodNotSupportedException) {
 			status = HttpStatus.METHOD_NOT_ALLOWED;
 		} else if (ex instanceof HttpMediaTypeNotSupportedException) {
 			status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;

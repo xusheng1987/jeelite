@@ -35,12 +35,16 @@ public class SocketClientDemo {
 			public void call(Object... args) {
 				// 客户端一旦连接成功，开始发起登录请求
 				LoginRequest message = new LoginRequest(12, "这是客户端消息体");
-				socket.emit("login", new JSONObject(JsonMapper.toJsonString(message)), new Ack() {
-					@Override
-					public void call(Object... args1) {
-						logger.info("回执消息=" + Arrays.toString(args1));
-					}
-				});
+				try {
+					socket.emit("login", new JSONObject(JsonMapper.toJsonString(message)), new Ack() {
+						@Override
+						public void call(Object... args1) {
+							logger.info("回执消息=" + Arrays.toString(args1));
+						}
+					});
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}).on("login", new Emitter.Listener() {
 			@Override

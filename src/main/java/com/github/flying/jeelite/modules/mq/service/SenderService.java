@@ -1,7 +1,7 @@
 package com.github.flying.jeelite.modules.mq.service;
 
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
