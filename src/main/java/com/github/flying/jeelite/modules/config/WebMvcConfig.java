@@ -11,7 +11,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.github.flying.jeelite.common.mapper.JsonMapper;
 import com.github.flying.jeelite.modules.sys.interceptor.AuthInterceptor;
@@ -19,7 +19,7 @@ import com.github.flying.jeelite.modules.sys.interceptor.LogInterceptor;
 import com.google.common.collect.Lists;
 
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Value("${adminPath}")
 	private String adminPath;
@@ -35,7 +35,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		jackson2HttpMessageConverter.setPrettyPrint(false);
 		jackson2HttpMessageConverter.setObjectMapper(JsonMapper.getInstance());
 		converters.add(stringHttpMessageConverter);
-		converters.add(jackson2HttpMessageConverter);
+		converters.add(0, jackson2HttpMessageConverter);
 	}
 
 	/**
