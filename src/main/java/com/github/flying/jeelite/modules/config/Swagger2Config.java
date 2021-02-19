@@ -38,7 +38,7 @@ public class Swagger2Config {
 		return new ApiInfoBuilder()
 				.title("Jeelite RESTful API文档")
 				.contact(new Contact("flying", "", ""))
-				.version(Global.getConfig("version"))
+				.version(Global.getVersion())
 				.build();
 	}
 	

@@ -41,6 +41,41 @@
 		ORDER BY a.sort ASC
 	</select>
 
+	<select id="findTableColumnList" resultType="GenTableColumn">
+		<if test="dbName == 'oracle'">
+			SELECT
+				t.COLUMN_NAME AS name,
+				(CASE WHEN t.NULLABLE = 'Y' THEN '1' ELSE '0' END) AS isNull,
+				(t.COLUMN_ID * 10) AS sort,
+				c.COMMENTS AS comments,
+				decode(t.DATA_TYPE,'DATE',t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'VARCHAR2', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'VARCHAR', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'NVARCHAR2', t.DATA_TYPE || '(' || t.DATA_LENGTH/2 || ')',
+					'CHAR', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'NUMBER',t.DATA_TYPE || (nvl2(t.DATA_PRECISION,nvl2(decode(t.DATA_SCALE,0,null,t.DATA_SCALE),
+						'(' || t.DATA_PRECISION || ',' || t.DATA_SCALE || ')',
+						'(' || t.DATA_PRECISION || ')'),'(18)')),t.DATA_TYPE) AS jdbcType
+			FROM user_tab_columns t, user_col_comments c
+			WHERE t.TABLE_NAME = c.table_name
+				AND t.COLUMN_NAME = c.column_name
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.COLUMN_ID
+		</if>
+		<if test="dbName == 'mysql'">
+			SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull,
+				(t.ORDINAL_POSITION * 10) AS sort,t.COLUMN_COMMENT AS comments,t.COLUMN_TYPE AS jdbcType
+			FROM information_schema.`COLUMNS` t
+			WHERE t.TABLE_SCHEMA = (select database())
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = (#{name})
+			</if>
+			ORDER BY t.ORDINAL_POSITION
+		</if>
+	</select>
+
 	<update id="deleteByGenTableId">
 		UPDATE gen_table_column SET
 			del_flag = '1'

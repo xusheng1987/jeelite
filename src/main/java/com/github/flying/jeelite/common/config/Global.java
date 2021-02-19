@@ -5,37 +5,34 @@ package com.github.flying.jeelite.common.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Maps;
-import com.github.flying.jeelite.common.utils.PropertiesLoader;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.Servlets;
 
 /**
- * 全局配置类
+ * 全局配置类，注意@Value注解要放在set方法上，并且去掉static修饰符
  *
  * @author flying
  * @version 2014-06-25
  */
+@Component
 public class Global {
-
-	/**
-	 * 当前对象实例
-	 */
-	private static Global global = new Global();
-
-	/**
-	 * 保存全局属性值
-	 */
-	private static Map<String, String> map = Maps.newHashMap();
-
-	/**
-	 * 属性文件加载对象
-	 */
-	private static PropertiesLoader loader = new PropertiesLoader("application.properties");
+	private static String adminPath;// 管理后台基础路径
+	private static String productName;// 产品名称
+	private static String copyrightYear;// 版权
+	private static String version;// 版本
+	private static String demoMode;// 是否演示模式
+	private static String captchaEnabled;// 是否启用验证码
+	private static String multiAccountLogin;// 是否允许多账号同时登录
+	private static String jdbcType;// 数据库类型
+	private static String staticFile;// 静态文件后缀
+	private static String sessionForceLogoutKey;// 会话强制退出标记key
+	private static String userfilesBaseDir;// 上传文件绝对路径
+	private static String projectPath;// 工程路径
 
 	/**
 	 * 是/否
@@ -54,72 +51,112 @@ public class Global {
 	 */
 	public static final String USERFILES_BASE_URL = "/userfiles/";
 
-	/**
-	 * 获取当前对象实例
-	 */
-	public static Global getInstance() {
-		return global;
-	}
-
-	/**
-	 * 获取配置
-	 *
-	 * @see ${fns:getConfig('adminPath')}
-	 */
-	public static String getConfig(String key) {
-		String value = map.get(key);
-		if (value == null) {
-			value = loader.getProperty(key);
-			map.put(key, value != null ? value : StringUtils.EMPTY);
-		}
-		return value;
-	}
-
-	/**
-	 * 获取管理端根路径
-	 */
 	public static String getAdminPath() {
-		return getConfig("adminPath");
+		return adminPath;
+	}
+
+	@Value("${adminPath}")
+	public void setAdminPath(String adminPath) {
+		Global.adminPath = adminPath;
+	}
+
+	public static String getProductName() {
+		return productName;
+	}
+
+	@Value("${productName}")
+	public void setProductName(String productName) {
+		Global.productName = productName;
+	}
+
+	public static String getCopyrightYear() {
+		return copyrightYear;
+	}
+
+	@Value("${copyrightYear}")
+	public void setCopyrightYear(String copyrightYear) {
+		Global.copyrightYear = copyrightYear;
+	}
+
+	public static String getVersion() {
+		return version;
+	}
+
+	@Value("${version}")
+	public void setVersion(String version) {
+		Global.version = version;
 	}
 
 	/**
 	 * 是否是演示模式，演示模式下不能修改用户、角色、密码、菜单、授权
 	 */
 	public static Boolean isDemoMode() {
-		String dm = getConfig("demoMode");
-		return "true".equals(dm) || "1".equals(dm);
+		return "true".equals(demoMode) || "1".equals(demoMode);
 	}
 
-	/**
-	 * 页面获取常量
-	 *
-	 * @see ${fns:getConst('YES')}
-	 */
-	public static Object getConst(String field) {
-		try {
-			return Global.class.getField(field).get(null);
-		} catch (Exception e) {
-			// 异常代表无配置，这里什么也不做
-		}
-		return null;
+	@Value("${demoMode}")
+	public void setDemoMode(String demoMode) {
+		Global.demoMode = demoMode;
 	}
 
-	/**
-	 * 获取session强制退出标记key
-	 */
+	public static String getCaptchaEnabled() {
+		return captchaEnabled;
+	}
+
+	@Value("${captchaEnabled}")
+	public void setCaptchaEnabled(String captchaEnabled) {
+		Global.captchaEnabled = captchaEnabled;
+	}
+
+	public static String getMultiAccountLogin() {
+		return multiAccountLogin;
+	}
+
+	@Value("${user.multiAccountLogin}")
+	public void setMultiAccountLogin(String multiAccountLogin) {
+		Global.multiAccountLogin = multiAccountLogin;
+	}
+
+	public static String getJdbcType() {
+		return jdbcType;
+	}
+
+	@Value("${jdbc.type}")
+	public void setJdbcType(String jdbcType) {
+		Global.jdbcType = jdbcType;
+	}
+
+	public static String getStaticFile() {
+		return staticFile;
+	}
+
+	@Value("${web.staticFile}")
+	public void setStaticFile(String staticFile) {
+		Global.staticFile = staticFile;
+	}
+
 	public static String getSessionForceLogoutKey() {
-		return getConfig("session.forceLogoutKey");
+		return sessionForceLogoutKey;
+	}
+
+	@Value("${session.forceLogoutKey}")
+	public void setSessionForceLogoutKey(String sessionForceLogoutKey) {
+		Global.sessionForceLogoutKey = sessionForceLogoutKey;
 	}
 
 	/**
 	 * 获取上传文件的根目录
 	 */
 	public static String getUserfilesBaseDir() {
-		String dir = getConfig("userfiles.basedir");
-		if (StringUtils.isBlank(dir)) {
-			dir = Servlets.getRequest().getSession().getServletContext().getRealPath("/");
+		if (StringUtils.isBlank(userfilesBaseDir)) {
+			userfilesBaseDir = Servlets.getRequest().getSession().getServletContext().getRealPath("/");
 		}
-		return dir;
+		return userfilesBaseDir;
+	}
+
+	@Value("${userfiles.basedir}")
+	public void setUserfilesBaseDir(String userfilesBaseDir) {
+		Global.userfilesBaseDir = userfilesBaseDir;
 	}
 
 	/**
@@ -127,7 +164,6 @@ public class Global {
 	 */
 	public static String getProjectPath() {
 		// 如果配置了工程路径，则直接返回，否则自动获取。
-		String projectPath = Global.getConfig("projectPath");
 		if (StringUtils.isNotBlank(projectPath)) {
 			return projectPath;
 		}
@@ -151,6 +187,11 @@ public class Global {
 			e.printStackTrace();
 		}
 		return projectPath;
+	}
+
+	@Value("${projectPath}")
+	public void setProjectPath(String projectPath) {
+		Global.projectPath = projectPath;
 	}
 
 }

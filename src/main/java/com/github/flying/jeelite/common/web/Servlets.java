@@ -27,7 +27,7 @@ public class Servlets {
 	/**
 	 *  静态文件后缀
 	 */
-	private final static String[] STATIC_FILES = StringUtils.split(Global.getConfig("web.staticFile"), ",");
+	private final static String[] STATIC_FILES = StringUtils.split(Global.getStaticFile(), ",");
 
 	/**
 	 * 设置客户端缓存过期时间 的Header.

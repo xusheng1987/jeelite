@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.flying.jeelite.common.service.BaseService;
 import com.github.flying.jeelite.common.utils.StringUtils;
-import com.github.flying.jeelite.modules.gen.dao.GenDataBaseDictDao;
 import com.github.flying.jeelite.modules.gen.dao.GenTableColumnDao;
 import com.github.flying.jeelite.modules.gen.dao.GenTableDao;
 import com.github.flying.jeelite.modules.gen.entity.GenTable;
@@ -31,8 +30,6 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 
 	@Autowired
 	private GenTableColumnDao genTableColumnDao;
-	@Autowired
-	private GenDataBaseDictDao genDataBaseDictDao;
 
 	@Override
 	public GenTable get(String id) {
@@ -51,7 +48,8 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 	 * 获取物理数据表列表
 	 */
 	public List<GenTable> findTableListFormDb(GenTable genTable) {
-		return genDataBaseDictDao.findTableList(genTable);
+		List<GenTable> list = dao.findTableList(genTable);
+		return list;
 	}
 
 	/**
@@ -74,7 +72,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 		// 如果有表名，则获取物理表
 		if (StringUtils.isNotBlank(genTable.getName())) {
 
-			List<GenTable> list = genDataBaseDictDao.findTableList(genTable);
+			List<GenTable> list = dao.findTableList(genTable);
 			if (list.size() > 0) {
 
 				// 如果是新增，初始化表属性
@@ -88,7 +86,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 				}
 
 				// 添加新列
-				List<GenTableColumn> columnList = genDataBaseDictDao.findTableColumnList(genTable);
+				List<GenTableColumn> columnList = genTableColumnDao.findTableColumnList(genTable);
 				for (GenTableColumn column : columnList) {
 					boolean b = false;
 					for (GenTableColumn e : genTable.getColumnList()) {
@@ -115,7 +113,7 @@ public class GenTableService extends BaseService<GenTableDao, GenTable> {
 				}
 
 				// 获取主键
-				genTable.setPkList(genDataBaseDictDao.findTablePK(genTable));
+				genTable.setPkList(dao.findTablePK(genTable));
 
 				// 初始化列属性字段
 				GenUtils.initColumnField(genTable);

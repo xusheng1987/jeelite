@@ -279,7 +279,7 @@ public class UserController extends BaseController {
 		currentUser.setRemarks(user.getRemarks());
 		currentUser.setPhoto(user.getPhoto());
 		userService.updateUserInfo(currentUser);
-		return renderSuccess();
+		return renderSuccess("用户信息保存成功");
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class UserController extends BaseController {
 		} else {
 			return renderError("修改密码失败，旧密码错误");
 		}
-		return renderSuccess();
+		return renderSuccess("修改密码成功");
 	}
 
 	@RequiresPermissions("user")

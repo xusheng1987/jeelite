@@ -18,13 +18,6 @@
     <function-signature>java.lang.String getAdminPath()</function-signature>
     <example>${fns:getAdminPath()}</example>
   </function>
-  <function>
-    <description>获取配置</description>
-    <name>getConfig</name>
-    <function-class>com.github.flying.jeelite.common.config.Global</function-class>
-    <function-signature>java.lang.String getConfig(java.lang.String)</function-signature>
-    <example>${fns:getConfig(key)}</example>
-  </function>
 
   <!-- UserUtils -->
   <function>

@@ -31,11 +31,51 @@
 			</otherwise>
 		</choose>
 	</select>
+
 	<select id="findAllList" resultType="GenTable">
 		SELECT *
 		FROM gen_table a
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.name ASC
+	</select>
+
+	<select id="findTableList" resultType="GenTable">
+		<if test="dbName == 'oracle'">
+			SELECT
+				t.TABLE_NAME AS name,
+				c.COMMENTS AS comments
+			FROM user_tables t, user_tab_comments c
+			WHERE t.table_name = c.table_name
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.TABLE_NAME
+		</if>
+		<if test="dbName == 'mysql'">
+			SELECT t.table_name AS name,t.TABLE_COMMENT AS comments
+			FROM information_schema.`TABLES` t
+			WHERE t.TABLE_SCHEMA = (select database())
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = (#{name})
+			</if>
+			ORDER BY t.TABLE_NAME
+		</if>
+	</select>
+
+	<select id="findTablePK" resultType="string">
+		<if test="dbName == 'oracle'">
+			SELECT lower(cu.COLUMN_NAME) AS columnName
+			FROM user_cons_columns cu, user_constraints au
+			WHERE cu.constraint_name = au.constraint_name
+				AND au.constraint_type = 'P'
+				AND au.table_name = upper(#{name})
+		</if>
+		<if test="dbName == 'mysql'">
+			SELECT lower(au.COLUMN_NAME) AS columnName
+			FROM information_schema.`COLUMNS` au
+			WHERE au.TABLE_SCHEMA = (select database())
+			AND au.COLUMN_KEY='PRI' AND au.TABLE_NAME = (#{name})
+		</if>
 	</select>
 
 </mapper>

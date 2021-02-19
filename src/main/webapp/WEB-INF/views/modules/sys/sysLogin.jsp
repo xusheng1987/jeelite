@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>${fns:getConfig('productName')} 登录</title>
+	<title>${productName} 登录</title>
 	<meta name="decorator" content="default"/>
 	<link rel="stylesheet" href="${ctxStatic}/common/login.css" media="all">
 	<script type="text/javascript">
@@ -44,7 +44,7 @@
               <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
               <input type="password" name="password" id="password" lay-verify="required" placeholder="密码" autocomplete="new-password" class="layui-input">
             </div>
-            <c:if test="${fns:getConfig('captchaEnabled') == 'true'}">
+            <c:if test="${captchaEnabled == 'true'}">
             <div class="layui-form-item" id="validateCodeItem">
                 <div class="layui-col-xs7">
                   <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"></label>
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div class="layadmin-user-login-footer">
-          Copyright &copy; 2017-${fns:getConfig('copyrightYear')} <a href="https://github.com/xusheng1987/jeelite">${fns:getConfig('productName')}</a> - Powered By jeelite</a> ${fns:getConfig('version')}
+          Copyright &copy; 2017-${copyrightYear} <a href="https://github.com/xusheng1987/jeelite">${productName}</a> - Powered By jeelite</a> ${version}
         </div>
       </div>
 </body>

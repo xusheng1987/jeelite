@@ -113,7 +113,7 @@ public abstract class BaseEntity<T> implements Serializable {
 	 */
 	@JsonIgnore
 	public String getDbName(){
-		return Global.getConfig("jdbc.type");
+		return Global.getJdbcType();
 	}
 
     @Override

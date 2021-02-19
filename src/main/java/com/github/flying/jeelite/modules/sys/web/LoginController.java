@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.github.flying.jeelite.common.config.Global;
 import com.github.flying.jeelite.common.utils.CookieUtils;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.common.web.Servlets;
@@ -32,7 +33,7 @@ public class LoginController extends BaseController {
 	 * 管理登录
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public String login(HttpServletRequest request, HttpServletResponse response) {
+	public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 
 		// 默认不显示页签
@@ -41,6 +42,10 @@ public class LoginController extends BaseController {
 			CookieUtils.setCookie(response, "tabmode", "0");
 		}
 
+		model.addAttribute("productName", Global.getProductName());
+		model.addAttribute("captchaEnabled", Global.getCaptchaEnabled());
+		model.addAttribute("copyrightYear", Global.getCopyrightYear());
+		model.addAttribute("version", Global.getVersion());
 		// 如果已经登录，则跳转到管理首页
 		if (principal != null) {
 			return "redirect:" + adminPath;
@@ -55,6 +60,10 @@ public class LoginController extends BaseController {
 	public String loginFail(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 
+		model.addAttribute("productName", Global.getProductName());
+		model.addAttribute("captchaEnabled", Global.getCaptchaEnabled());
+		model.addAttribute("copyrightYear", Global.getCopyrightYear());
+		model.addAttribute("version", Global.getVersion());
 		// 如果已经登录，则跳转到管理首页
 		if (principal != null) {
 			return "redirect:" + adminPath;
@@ -76,7 +85,7 @@ public class LoginController extends BaseController {
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "")
-	public String index(HttpServletRequest request, HttpServletResponse response) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 
 		// 登录操作如果是Ajax操作，直接返回登录信息字符串。
@@ -84,6 +93,7 @@ public class LoginController extends BaseController {
 			return renderString(response, principal);
 		}
 
+		model.addAttribute("productName", Global.getProductName());
 		return "modules/sys/sysIndex";
 	}
 }

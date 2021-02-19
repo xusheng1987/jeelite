@@ -3,8 +3,11 @@
  */
 package com.github.flying.jeelite.modules.gen.dao;
 
+import java.util.List;
+
 import com.github.flying.jeelite.common.persistence.CrudDao;
 import com.github.flying.jeelite.common.persistence.annotation.MyBatisDao;
+import com.github.flying.jeelite.modules.gen.entity.GenTable;
 import com.github.flying.jeelite.modules.gen.entity.GenTableColumn;
 
 /**
@@ -14,6 +17,11 @@ import com.github.flying.jeelite.modules.gen.entity.GenTableColumn;
  */
 @MyBatisDao
 public interface GenTableColumnDao extends CrudDao<GenTableColumn> {
+
+	/**
+	 * 获取数据表字段
+	 */
+	List<GenTableColumn> findTableColumnList(GenTable genTable);
 
 	int deleteByGenTableId(String genTableId);
 }

@@ -59,7 +59,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		// 校验登录验证码
-		if (Global.TRUE.equals(Global.getConfig("captchaEnabled"))) {
+		if (Global.TRUE.equals(Global.getCaptchaEnabled())) {
 			Session session = UserUtils.getSession();
 			String code = (String) session.getAttribute(ValidateCodeController.VALIDATE_CODE);
 			if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)) {
@@ -115,7 +115,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		Principal principal = (Principal) getAvailablePrincipal(principals);
 		// 获取当前已登录的用户
-		if (!Global.TRUE.equals(Global.getConfig("user.multiAccountLogin"))) {
+		if (!Global.TRUE.equals(Global.getMultiAccountLogin())) {
 			Collection<Session> sessions = userService.getSessionDao().getActiveSessions(true, principal,
 					UserUtils.getSession());
 			if (sessions.size() > 0) {
