@@ -14,9 +14,9 @@
 		a.is_show,
 		a.permission,
 		a.remarks,
-		a.create_by AS "createBy.id",
+		a.create_by,
 		a.create_date,
-		a.update_by AS "updateBy.id",
+		a.update_by,
 		a.update_date,
 		a.del_flag,
 		p.name AS "parent.name"

@@ -18,8 +18,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 	@Override
 	public void insertFill(MetaObject metaObject) {
 		User user = UserUtils.getUser();
-		setFieldValByName("updateBy", user, metaObject);
-		setFieldValByName("createBy", user, metaObject);
+		setFieldValByName("updateBy", user.getId(), metaObject);
+		setFieldValByName("createBy", user.getId(), metaObject);
 		Date date = new Date();
 		setFieldValByName("updateDate", date, metaObject);
 		setFieldValByName("createDate", date, metaObject);
@@ -28,7 +28,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 	@Override
 	public void updateFill(MetaObject metaObject) {
 		User user = UserUtils.getUser();
-		setFieldValByName("updateBy", user, metaObject);
+		setFieldValByName("updateBy", user.getId(), metaObject);
 		setFieldValByName("updateDate", new Date(), metaObject);
 	}
 }

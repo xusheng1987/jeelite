@@ -73,7 +73,7 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 			}
 		}
 	</#list>
-	   return row;
+		return row;
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class ${ClassName}Service extends BaseService<${ClassName}Dao, ${ClassNam
 	<#list table.childList as c>
 		row += ${c.className?uncap_first}Dao.delete(new ${c.className?cap_first}(${className}));
 	</#list>
-       return row;
+		return row;
 	}
 
 }]]>

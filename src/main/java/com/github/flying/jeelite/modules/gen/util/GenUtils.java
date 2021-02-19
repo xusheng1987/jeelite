@@ -137,12 +137,6 @@ public class GenUtils {
 				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
 				column.setShowType("officeselect");
 			}
-			// 创建者、更新者
-			else if (StringUtils.startsWithIgnoreCase(column.getName(), "create_by")
-					|| StringUtils.startsWithIgnoreCase(column.getName(), "update_by")){
-				column.setJavaType(User.class.getName());
-				column.setJavaField(column.getJavaField() + ".id");
-			}
 			// 创建时间、更新时间
 			else if (StringUtils.startsWithIgnoreCase(column.getName(), "create_date")
 					|| StringUtils.startsWithIgnoreCase(column.getName(), "update_date")){
@@ -273,7 +267,7 @@ public class GenUtils {
 		model.put("viewPrefix", model.get("urlPrefix"));
 		model.put("permissionPrefix", model.get("moduleName")+":"+model.get("className"));
 
-		model.put("dbType", Global.getConfig("jdbc.type"));
+		model.put("dbType", Global.getJdbcType());
 
 		model.put("table", genScheme.getGenTable());
 

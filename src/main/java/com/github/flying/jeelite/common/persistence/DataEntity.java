@@ -11,8 +11,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.flying.jeelite.common.persistence.typeHandler.CommonTypeHandler;
-import com.github.flying.jeelite.modules.sys.entity.User;
 
 /**
  * 数据Entity类
@@ -25,14 +23,14 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	protected String remarks;	// 备注
 
-	@TableField(fill = FieldFill.INSERT, typeHandler = CommonTypeHandler.class)
-	protected User createBy;	// 创建者
+	@TableField(fill = FieldFill.INSERT)
+	protected String createBy;	// 创建者
 
 	@TableField(fill = FieldFill.INSERT)
 	protected Date createDate;	// 创建日期
 
-	@TableField(fill = FieldFill.INSERT_UPDATE, typeHandler = CommonTypeHandler.class)
-	protected User updateBy;	// 更新者
+	@TableField(fill = FieldFill.INSERT_UPDATE)
+	protected String updateBy;	// 更新者
 
 	@TableField(fill = FieldFill.INSERT_UPDATE)
 	protected Date updateDate;	// 更新日期
@@ -59,11 +57,11 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	}
 
 	@JsonIgnore
-	public User getCreateBy() {
+	public String getCreateBy() {
 		return createBy;
 	}
 
-	public void setCreateBy(User createBy) {
+	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
 	}
 
@@ -76,11 +74,11 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	}
 
 	@JsonIgnore
-	public User getUpdateBy() {
+	public String getUpdateBy() {
 		return updateBy;
 	}
 
-	public void setUpdateBy(User updateBy) {
+	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
 	}
 

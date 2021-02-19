@@ -6,9 +6,9 @@
 		a.id AS "id",
 		a.test_data_main_id AS "testDataMain.id",
 		a.name AS "name",
-		a.create_by AS "createBy.id",
+		a.create_by,
 		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
+		a.update_by,
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag"
