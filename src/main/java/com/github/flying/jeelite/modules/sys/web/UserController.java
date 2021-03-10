@@ -30,7 +30,6 @@ import com.github.flying.jeelite.common.utils.excel.JxlsUtils;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.modules.sys.entity.Role;
 import com.github.flying.jeelite.modules.sys.entity.User;
-import com.github.flying.jeelite.modules.sys.service.RoleService;
 import com.github.flying.jeelite.modules.sys.service.UserService;
 import com.github.flying.jeelite.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
@@ -47,13 +46,11 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private RoleService roleService;
 
 	@ModelAttribute
 	public User get(@RequestParam(required = false) String id) {
 		if (StringUtils.isNotBlank(id)) {
-			return userService.getUser(id);
+			return UserUtils.get(id);
 		} else {
 			return new User();
 		}
@@ -90,7 +87,7 @@ public class UserController extends BaseController {
 			user.setOffice(UserUtils.getUser().getOffice());
 		}
 		model.addAttribute("user", user);
-		model.addAttribute("allRoles", roleService.findAllRole());
+		model.addAttribute("allRoles", UserUtils.getRoleList());
 		return "modules/sys/userForm";
 	}
 
@@ -113,7 +110,7 @@ public class UserController extends BaseController {
 		// 角色数据有效性验证，过滤不在授权内的角色
 		List<Role> roleList = Lists.newArrayList();
 		List<String> roleIdList = user.getRoleIdList();
-		for (Role r : roleService.findAllRole()) {
+		for (Role r : UserUtils.getRoleList()) {
 			if (roleIdList.contains(r.getId())) {
 				roleList.add(r);
 			}
@@ -240,7 +237,7 @@ public class UserController extends BaseController {
 	public String checkLoginName(String oldLoginName, String loginName) {
 		if (loginName != null && loginName.equals(oldLoginName)) {
 			return "true";
-		} else if (loginName != null && userService.getUserByLoginName(loginName) == null) {
+		} else if (loginName != null && UserUtils.getByLoginName(loginName) == null) {
 			return "true";
 		}
 		return "false";

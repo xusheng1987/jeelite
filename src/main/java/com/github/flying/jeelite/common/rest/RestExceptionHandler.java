@@ -57,7 +57,7 @@ public class RestExceptionHandler {
 	@ExceptionHandler(RestException.class)
 	@ResponseBody
 	public final Result handleRestException(RestException ex) {
-		return new Result(ex.status.value(), ex.getMessage());
+		return new Result(ex.status, ex.getMessage());
 	}
 
 	/**

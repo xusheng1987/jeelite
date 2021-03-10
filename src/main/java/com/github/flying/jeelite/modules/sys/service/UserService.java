@@ -3,11 +3,9 @@
  */
 package com.github.flying.jeelite.modules.sys.service;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.rest.RestException;
 import com.github.flying.jeelite.common.security.Digests;
-import com.github.flying.jeelite.common.security.shiro.session.SessionDAO;
 import com.github.flying.jeelite.common.service.BaseService;
 import com.github.flying.jeelite.common.utils.CacheUtils;
 import com.github.flying.jeelite.common.utils.Encodes;
@@ -43,27 +40,7 @@ public class UserService extends BaseService<UserDao, User> {
 	public static final int SALT_SIZE = 8;
 
 	@Autowired
-	private SessionDAO sessionDao;
-	@Autowired
 	private UserTokenDao userTokenDao;
-
-	public SessionDAO getSessionDao() {
-		return sessionDao;
-	}
-
-	/**
-	 * 获取用户
-	 */
-	public User getUser(String id) {
-		return UserUtils.get(id);
-	}
-
-	/**
-	 * 根据登录名获取用户
-	 */
-	public User getUserByLoginName(String loginName) {
-		return UserUtils.getByLoginName(loginName);
-	}
 
 	public Page<User> findPage(User user) {
 		// 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
@@ -186,13 +163,6 @@ public class UserService extends BaseService<UserDao, User> {
 		byte[] salt = Encodes.decodeHex(password.substring(0,16));
 		byte[] hashPassword = Digests.sha1(plain.getBytes(), salt, HASH_INTERATIONS);
 		return password.equals(Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword));
-	}
-
-	/**
-	 * 获得活动会话
-	 */
-	public Collection<Session> getActiveSessions(){
-		return sessionDao.getActiveSessions(false);
 	}
 
 	/**

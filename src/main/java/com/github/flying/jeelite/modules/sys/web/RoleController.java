@@ -68,7 +68,7 @@ public class RoleController extends BaseController {
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = "data")
 	public Map listData() {
-		List<Role> list = roleService.findAllRole();
+		List<Role> list = UserUtils.getRoleList();
 		return jsonPage(list.size(), list);
 	}
 
@@ -177,7 +177,7 @@ public class RoleController extends BaseController {
 			return renderError("演示模式，不允许操作！");
 		}
 		Role role = roleService.get(roleId);
-		User user = userService.getUser(userId);
+		User user = UserUtils.get(userId);
 		if (UserUtils.getUser().getId().equals(userId)) {
 			return renderError("无法从角色【" + role.getName() + "】中移除用户【" + user.getName() + "】自己！");
 		}
@@ -204,7 +204,7 @@ public class RoleController extends BaseController {
 		StringBuilder msg = new StringBuilder();
 		int newNum = 0;
 		for (int i = 0; i < idsArr.length; i++) {
-			User user = roleService.assignUserToRole(role, userService.getUser(idsArr[i]));
+			User user = roleService.assignUserToRole(role, UserUtils.get(idsArr[i]));
 			if (null != user) {
 				msg.append("<br/>新增用户【" + user.getName() + "】到角色【" + role.getName() + "】！");
 				newNum++;

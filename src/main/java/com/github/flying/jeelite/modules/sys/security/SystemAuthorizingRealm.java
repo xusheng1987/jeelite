@@ -26,6 +26,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.flying.jeelite.common.config.Global;
+import com.github.flying.jeelite.common.security.shiro.session.SessionDAO;
 import com.github.flying.jeelite.common.utils.Encodes;
 import com.github.flying.jeelite.common.utils.IPUtils;
 import com.github.flying.jeelite.common.web.Servlets;
@@ -46,6 +47,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private SessionDAO sessionDao;
 
 	public SystemAuthorizingRealm() {
 		this.setCachingEnabled(false);
@@ -68,7 +71,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 
 		// 校验用户名密码
-		User user = userService.getUserByLoginName(token.getUsername());
+		User user = UserUtils.getByLoginName(token.getUsername());
 		if (user != null) {
 			if (Global.NO.equals(user.getLoginFlag())) {
 				throw new AuthenticationException("msg:该已帐号禁止登录");
@@ -116,13 +119,13 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		Principal principal = (Principal) getAvailablePrincipal(principals);
 		// 获取当前已登录的用户
 		if (!Global.TRUE.equals(Global.getMultiAccountLogin())) {
-			Collection<Session> sessions = userService.getSessionDao().getActiveSessions(true, principal,
+			Collection<Session> sessions = sessionDao.getActiveSessions(true, principal,
 					UserUtils.getSession());
 			if (sessions.size() > 0) {
 				// 如果是登录进来的，则踢出已在线用户
 				if (UserUtils.getSubject().isAuthenticated()) {
 					for (Session session : sessions) {
-						userService.getSessionDao().delete(session);
+						sessionDao.delete(session);
 					}
 				}
 				// 记住我进来的，并且当前用户已登录，则退出当前用户提示信息。
@@ -132,7 +135,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 				}
 			}
 		}
-		User user = userService.getUserByLoginName(principal.getLoginName());
+		User user = UserUtils.getByLoginName(principal.getLoginName());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();

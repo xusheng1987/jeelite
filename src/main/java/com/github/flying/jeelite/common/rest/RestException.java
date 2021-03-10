@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 public class RestException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	public HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+	public int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
 
 	public RestException() {
 	}
 
-	public RestException(HttpStatus status) {
+	public RestException(int status) {
 		this.status = status;
 	}
 
@@ -21,7 +21,7 @@ public class RestException extends RuntimeException {
 		super(message);
 	}
 
-	public RestException(HttpStatus status, String message) {
+	public RestException(int status, String message) {
 		super(message);
 		this.status = status;
 	}

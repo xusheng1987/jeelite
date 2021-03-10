@@ -48,7 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		// 查询token信息
 		UserToken userToken = userTokenDao.getByToken(token);
 		if (userToken == null || userToken.getExpireDate().getTime() < System.currentTimeMillis()) {
-			throw new RestException(HttpStatus.UNAUTHORIZED, "token失效，请重新登录");
+			throw new RestException(HttpStatus.UNAUTHORIZED.value(), "token失效，请重新登录");
 		}
 
 		// 设置userId到request里，后续根据userId，获取用户信息

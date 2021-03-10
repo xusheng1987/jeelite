@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.flying.jeelite.common.persistence.Page;
 import com.github.flying.jeelite.common.service.BaseService;
 import com.github.flying.jeelite.modules.gen.dao.GenSchemeDao;
 import com.github.flying.jeelite.modules.gen.dao.GenTableColumnDao;
@@ -36,11 +35,6 @@ public class GenSchemeService extends BaseService<GenSchemeDao, GenScheme> {
 	private GenTableDao genTableDao;
 	@Autowired
 	private GenTableColumnDao genTableColumnDao;
-
-	public Page<GenScheme> find(GenScheme genScheme) {
-		GenUtils.getTemplatePath();
-		return super.findPage(genScheme);
-	}
 
 	@Transactional(readOnly = false)
 	public String saveScheme(GenScheme genScheme) {

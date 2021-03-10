@@ -9,12 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.flying.jeelite.common.rest.RestException;
 import com.github.flying.jeelite.common.service.BaseService;
-import com.github.flying.jeelite.common.utils.CacheUtils;
-import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.modules.sys.dao.RoleDao;
-import com.github.flying.jeelite.modules.sys.dao.UserDao;
 import com.github.flying.jeelite.modules.sys.entity.Role;
 import com.github.flying.jeelite.modules.sys.entity.User;
 import com.github.flying.jeelite.modules.sys.utils.UserUtils;
@@ -30,16 +26,12 @@ import com.github.flying.jeelite.modules.sys.utils.UserUtils;
 public class RoleService extends BaseService<RoleDao, Role> {
 
 	@Autowired
-	private UserDao userDao;
+	private UserService userService;
 
 	public Role getRoleByName(String name) {
 		Role r = new Role();
 		r.setName(name);
 		return dao.getByName(r);
-	}
-
-	public List<Role> findAllRole() {
-		return UserUtils.getRoleList();
 	}
 
 	@Transactional(readOnly = false)
@@ -72,7 +64,7 @@ public class RoleService extends BaseService<RoleDao, Role> {
 		for (Role e : roles) {
 			if (e.getId().equals(role.getId())) {
 				roles.remove(e);
-				saveUser(user);
+				userService.saveUser(user);
 				return true;
 			}
 		}
@@ -89,35 +81,8 @@ public class RoleService extends BaseService<RoleDao, Role> {
 			return null;
 		}
 		user.getRoleList().add(role);
-		saveUser(user);
+		userService.saveUser(user);
 		return user;
-	}
-
-	@Transactional(readOnly = false)
-	public void saveUser(User user) {
-		if (StringUtils.isBlank(user.getId())) {
-			userDao.insert(user);
-		} else {
-			// 清除原用户机构用户缓存
-			User oldUser = userDao.get(user.getId());
-			if (oldUser.getOffice() != null && oldUser.getOffice().getId() != null) {
-				CacheUtils.remove(UserUtils.USER_CACHE,
-						UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + oldUser.getOffice().getId());
-			}
-			// 更新用户数据
-			userDao.updateById(user);
-		}
-		if (StringUtils.isNotBlank(user.getId())) {
-			// 更新用户与角色关联
-			userDao.deleteUserRole(user);
-			if (user.getRoleList() != null && user.getRoleList().size() > 0) {
-				userDao.insertUserRole(user);
-			} else {
-				throw new RestException(user.getLoginName() + "没有设置角色！");
-			}
-			// 清除用户缓存
-			UserUtils.clearCache(user);
-		}
 	}
 
 }
