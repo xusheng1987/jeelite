@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>${productName} 登录</title>
+	<title>Jeelite 快速开发平台登录</title>
 	<meta name="decorator" content="default"/>
 	<link rel="stylesheet" href="${ctxStatic}/common/login.css" media="all">
 	<script type="text/javascript">
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div class="layadmin-user-login-footer">
-          Copyright &copy; 2017-${copyrightYear} <a href="https://github.com/xusheng1987/jeelite">${productName}</a> - Powered By jeelite</a> ${version}
+          Copyright &copy; 2017-2021 - Powered By <a href="https://github.com/xusheng1987/jeelite" target="_blank">Jeelite 快速开发平台</a> ${version}
         </div>
       </div>
 </body>

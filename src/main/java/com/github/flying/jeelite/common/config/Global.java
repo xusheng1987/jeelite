@@ -22,8 +22,6 @@ import com.github.flying.jeelite.common.web.Servlets;
 @Component
 public class Global {
 	private static String adminPath;// 管理后台基础路径
-	private static String productName;// 产品名称
-	private static String copyrightYear;// 版权
 	private static String version;// 版本
 	private static String demoMode;// 是否演示模式
 	private static String captchaEnabled;// 是否启用验证码
@@ -58,24 +56,6 @@ public class Global {
 	@Value("${adminPath}")
 	public void setAdminPath(String adminPath) {
 		Global.adminPath = adminPath;
-	}
-
-	public static String getProductName() {
-		return productName;
-	}
-
-	@Value("${productName}")
-	public void setProductName(String productName) {
-		Global.productName = productName;
-	}
-
-	public static String getCopyrightYear() {
-		return copyrightYear;
-	}
-
-	@Value("${copyrightYear}")
-	public void setCopyrightYear(String copyrightYear) {
-		Global.copyrightYear = copyrightYear;
 	}
 
 	public static String getVersion() {

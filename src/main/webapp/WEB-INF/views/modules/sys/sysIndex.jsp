@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>${productName}</title>
+	<title>Jeelite 快速开发平台</title>
 	<meta name="decorator" content="default"/><c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
 	<script type="text/javascript">
 		var element;
@@ -98,7 +98,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin" id="main">
   <div id="header" class="layui-header">
-    <div class="layui-logo">${productName}</div>
+    <div class="layui-logo">Jeelite 快速开发平台</div>
     <ul id="menu" class="layui-nav layui-layout-left">
     	<!-- 顶部导航菜单 -->
 		<c:forEach items="${fns:getMenuList()}" var="menu">

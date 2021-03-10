@@ -42,6 +42,8 @@ public class JsonMapper extends ObjectMapper {
 		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
 		// 允许不带引号的字段名称
 		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+		// 忽略transient修饰的字段
+		//this.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
 		// 格式化输出
 		this.enable(SerializationFeature.INDENT_OUTPUT);
 		// 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性

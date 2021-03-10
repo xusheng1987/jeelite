@@ -42,9 +42,7 @@ public class LoginController extends BaseController {
 			CookieUtils.setCookie(response, "tabmode", "0");
 		}
 
-		model.addAttribute("productName", Global.getProductName());
 		model.addAttribute("captchaEnabled", Global.getCaptchaEnabled());
-		model.addAttribute("copyrightYear", Global.getCopyrightYear());
 		model.addAttribute("version", Global.getVersion());
 		// 如果已经登录，则跳转到管理首页
 		if (principal != null) {
@@ -60,9 +58,7 @@ public class LoginController extends BaseController {
 	public String loginFail(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 
-		model.addAttribute("productName", Global.getProductName());
 		model.addAttribute("captchaEnabled", Global.getCaptchaEnabled());
-		model.addAttribute("copyrightYear", Global.getCopyrightYear());
 		model.addAttribute("version", Global.getVersion());
 		// 如果已经登录，则跳转到管理首页
 		if (principal != null) {
@@ -85,7 +81,7 @@ public class LoginController extends BaseController {
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "")
-	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response) {
 		Principal principal = UserUtils.getPrincipal();
 
 		// 登录操作如果是Ajax操作，直接返回登录信息字符串。
@@ -93,7 +89,6 @@ public class LoginController extends BaseController {
 			return renderString(response, principal);
 		}
 
-		model.addAttribute("productName", Global.getProductName());
 		return "modules/sys/sysIndex";
 	}
 }
