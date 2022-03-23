@@ -9,6 +9,6 @@
 </head>
 <body>
 	<sitemesh:write property='body'/>
-	<script src="${ctxStatic}/layui/layui.all.js" type="text/javascript"></script>
+	<script src="${ctxStatic}/layui/layui.js?v=2.6.8" type="text/javascript"></script>
 </body>
 </html>
