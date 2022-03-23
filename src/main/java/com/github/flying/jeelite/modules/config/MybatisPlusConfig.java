@@ -1,26 +1,26 @@
 package com.github.flying.jeelite.modules.config;
 
+import java.util.Properties;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
-
+import com.github.pagehelper.PageInterceptor;
 
 @Configuration
 @MapperScan("com.github.flying.jeelite.modules.*.dao")
 public class MybatisPlusConfig {
 
-	/**
-	 * 分页插件，自动识别数据库类型
-	 */
-	@Bean
-	public PaginationInterceptor paginationInterceptor() {
-		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-		// 开启 count 的 join 优化,只针对部分 left join
-		paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
-		return paginationInterceptor;
-	}
-
+    /**
+     * pagehelper的分页插件
+     */
+    @Bean
+    public PageInterceptor pageInterceptor() {
+        Properties properties = new Properties();
+        properties.setProperty("supportMethodsArguments", "true");//支持通过Mapper接口参数来传递分页参数
+        PageInterceptor pageInterceptor = new PageInterceptor();
+        pageInterceptor.setProperties(properties);
+        return pageInterceptor;
+    }
 }

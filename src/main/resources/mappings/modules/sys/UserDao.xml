@@ -60,39 +60,39 @@
 			<include refid="userColumns"/>
 		FROM sys_user a
 		<include refid="userJoins"/>
-		<if test="param.role != null and param.role.id != null and param.role.id != ''">
-			JOIN sys_user_role ur ON ur.user_id = a.id AND ur.role_id = #{param.role.id}
+		<if test="role != null and role.id != null and role.id != ''">
+			JOIN sys_user_role ur ON ur.user_id = a.id AND ur.role_id = #{role.id}
 		</if>
-		WHERE a.del_flag = #{param.DEL_FLAG_NORMAL}
-		<if test="param.company != null and param.company.id != null and param.company.id != ''">
-			AND (c.id = #{param.company.id} OR c.parent_ids LIKE
-					<if test="dbName == 'oracle'">'%,'||#{param.company.id}||',%')</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{param.company.id}, ',%'))</if>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="company != null and company.id != null and company.id != ''">
+			AND (c.id = #{company.id} OR c.parent_ids LIKE
+					<if test="dbName == 'oracle'">'%,'||#{company.id}||',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{company.id}, ',%'))</if>
 		</if>
-		<if test="param.office != null and param.office.id != null and param.office.id != ''">
-			AND (o.id = #{param.office.id} OR o.parent_ids LIKE
-					<if test="dbName == 'oracle'">'%,'||#{param.office.id}||',%')</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{param.office.id}, ',%'))</if>
+		<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
 		</if>
 		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
-		<if test="!param.currentUser.admin">
+		<if test="!currentUser.admin">
 			AND a.id != '1'
 		</if>
-		<if test="param.loginName != null and param.loginName != ''">
+		<if test="loginName != null and loginName != ''">
 			AND a.login_name like
-					<if test="dbName == 'oracle'">'%'||#{param.loginName}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{param.loginName}, '%')</if>
+					<if test="dbName == 'oracle'">'%'||#{loginName}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
 		</if>
-		<if test="param.name != null and param.name != ''">
+		<if test="name != null and name != ''">
 			AND a.name like
-					<if test="dbName == 'oracle'">'%'||#{param.name}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{param.name}, '%')</if>
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
 		</if>
 		<!-- 数据范围过滤 -->
-		${param.sqlMap.dsf}
+		${sqlMap.dsf}
 		<choose>
-			<when test="_parameter.containsKey('page') and page !=null and page.orderBy != null and page.orderBy !=''">
-				ORDER BY ${page.orderBy}
+			<when test="orderBy != null and orderBy !=''">
+				ORDER BY ${orderBy}
 			</when>
 			<otherwise>
 				ORDER BY c.code, o.code, a.name

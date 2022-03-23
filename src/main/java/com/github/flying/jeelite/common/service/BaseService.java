@@ -5,6 +5,8 @@ package com.github.flying.jeelite.common.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,11 @@ import com.github.flying.jeelite.common.persistence.Page;
 import com.google.common.collect.Lists;
 import com.github.flying.jeelite.common.persistence.BaseEntity;
 import com.github.flying.jeelite.common.persistence.CrudDao;
-import com.github.flying.jeelite.common.persistence.PageFactory;
 import com.github.flying.jeelite.common.utils.StringUtils;
+import com.github.flying.jeelite.common.web.Servlets;
 import com.github.flying.jeelite.modules.sys.entity.Role;
 import com.github.flying.jeelite.modules.sys.entity.User;
+import com.github.pagehelper.PageInfo;
 
 /**
  * Service基类
@@ -126,8 +129,25 @@ public abstract class BaseService<M extends CrudDao<T>, T extends BaseEntity<T>>
 	 * 查询分页数据
 	 */
 	public Page<T> findPage(T entity) {
-		Page page = new PageFactory<T>().defaultPage();
-		return dao.findList(page, entity);
+	    HttpServletRequest request = Servlets.getRequest();
+	    Integer limit = Integer.valueOf(request.getParameter("limit"));//每页数据量
+	    Integer pageNo = Integer.valueOf(request.getParameter("pageNo"));//当前页码
+        String field = StringUtils.toUnderScoreCase(request.getParameter("field"));//排序字段(需要驼峰命名转换)
+        String order = request.getParameter("order");//排序方式(asc,desc)
+        entity.setPageNum(pageNo);
+        entity.setPageSize(limit);
+        if (StringUtils.isNotEmpty(field)) {
+            entity.setOrderBy(field + " " + order);
+        }
+        //当entity中的 pageNum!= null并且pageSize!= null时，会自动分页
+	    List<T> list = dao.findList(entity);
+	    //用PageInfo对结果进行包装
+	    PageInfo pageInfo = new PageInfo(list);
+		Page<T> page = new Page<T>();
+		page.setTotal(pageInfo.getTotal());
+		page.setPages(pageInfo.getPages());
+		page.setRecords(list);
+		return page;
 	}
 
 	/**

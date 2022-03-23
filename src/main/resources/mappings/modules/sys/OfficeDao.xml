@@ -43,10 +43,10 @@
 			<include refid="officeColumns"/>
 		FROM sys_office a
 		<include refid="officeJoins"/>
-		WHERE a.del_flag = #{param.DEL_FLAG_NORMAL}
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<!-- 数据范围过滤 -->
-		${param.sqlMap.dsf}
-		OR a.id = #{param.currentUser.office.id}
+		${sqlMap.dsf}
+		OR a.id = #{currentUser.office.id}
 		ORDER BY a.code
 	</select>
 

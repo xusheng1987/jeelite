@@ -38,22 +38,22 @@
 		FROM test_data_main a
 		<include refid="testDataMainJoins"/>
 		<where>
-			a.del_flag = #{param.DEL_FLAG_NORMAL}
-			<if test="param.user != null and param.user.id != null and param.user.id != ''">
-				AND a.user_id = #{param.user.id}
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
 			</if>
-			<if test="param.name != null and param.name != ''">
+			<if test="name != null and name != ''">
 				AND a.name LIKE
-					<if test="dbName == 'oracle'">'%'||#{param.name}||'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{param.name},'%')</if>
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
-			<if test="param.sex != null and param.sex != ''">
-				AND a.sex = #{param.sex}
+			<if test="sex != null and sex != ''">
+				AND a.sex = #{sex}
 			</if>
 		</where>
 		<choose>
-			<when test="_parameter.containsKey('page') and page !=null and page.orderBy != null and page.orderBy !=''">
-				ORDER BY ${page.orderBy}
+			<when test="orderBy != null and orderBy !=''">
+				ORDER BY ${orderBy}
 			</when>
 			<otherwise>
 				ORDER BY a.update_date DESC

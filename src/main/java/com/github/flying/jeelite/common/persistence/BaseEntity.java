@@ -40,11 +40,21 @@ public abstract class BaseEntity<T> implements Serializable {
 	@TableField(exist=false)
 	protected User currentUser;
 
-	/**
-	 * 当前实体分页对象
-	 */
-	@TableField(exist=false)
-	protected Page page;
+    /**
+     * 当前页码
+     */
+    @TableField(exist=false)
+	protected Integer pageNum;
+    /**
+     * 页面大小
+     */
+    @TableField(exist=false)
+	protected Integer pageSize;
+    /**
+     * 排序
+     */
+    @TableField(exist=false)
+	protected String orderBy;
 
 	/**
 	 * 自定义SQL（SQL标识，SQL内容）
@@ -82,20 +92,31 @@ public abstract class BaseEntity<T> implements Serializable {
 		this.currentUser = currentUser;
 	}
 
-	@JsonIgnore
-	@XmlTransient
-	public Page getPage() {
-		if (page == null){
-			page = new Page();
-		}
-		return page;
-	}
+	public Integer getPageNum() {
+        return pageNum;
+    }
 
-	public void setPage(Page page) {
-		this.page = page;
-	}
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
 
-	@JsonIgnore
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    @JsonIgnore
 	@XmlTransient
 	public Map<String, String> getSqlMap() {
 		if (sqlMap == null){

@@ -18,11 +18,11 @@
 		SELECT
 			<include refid="genSchemeColumns"/>
 		FROM gen_scheme a
-		WHERE a.del_flag = #{param.DEL_FLAG_NORMAL}
-		<if test="param.name != null and param.name != ''">
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
 			AND a.name LIKE
-				<if test="dbName == 'oracle'">'%'||#{param.name}||'%'</if>
-				<if test="dbName == 'mysql'">concat('%',#{param.name},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 		</if>
 		ORDER BY a.update_date DESC
 	</select>

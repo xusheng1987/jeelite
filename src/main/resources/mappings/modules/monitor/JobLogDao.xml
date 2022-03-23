@@ -32,22 +32,22 @@
 		<include refid="jobLogJoins"/>
 		<where>
 			
-			<if test="param.beanName != null and param.beanName != ''">
-				AND a.bean_name = #{param.beanName}
+			<if test="beanName != null and beanName != ''">
+				AND a.bean_name = #{beanName}
 			</if>
-			<if test="param.methodName != null and param.methodName != ''">
-				AND a.method_name = #{param.methodName}
+			<if test="methodName != null and methodName != ''">
+				AND a.method_name = #{methodName}
 			</if>
-			<if test="param.status != null and param.status != ''">
-				AND a.status = #{param.status}
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
 			</if>
-			<if test="param.beginCreateDate != null and param.endCreateDate != null">
-				AND a.create_date BETWEEN #{param.beginCreateDate} AND #{param.endCreateDate}
+			<if test="beginCreateDate != null and endCreateDate != null">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
 			</if>
 		</where>
 		<choose>
-			<when test="_parameter.containsKey('page') and page !=null and page.orderBy != null and page.orderBy !=''">
-				ORDER BY ${page.orderBy}
+			<when test="orderBy != null and orderBy !=''">
+				ORDER BY ${orderBy}
 			</when>
 			<otherwise>
 			</otherwise>

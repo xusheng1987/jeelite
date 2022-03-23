@@ -32,14 +32,14 @@
 		FROM test_data_child a
 		<include refid="testDataChildJoins"/>
 		<where>
-			a.del_flag = #{param.DEL_FLAG_NORMAL}
-			<if test="param.testDataMain != null and param.testDataMain.id != null and param.testDataMain.id != ''">
-				AND a.test_data_main_id = #{param.testDataMain.id}
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="testDataMain != null and testDataMain.id != null and testDataMain.id != ''">
+				AND a.test_data_main_id = #{testDataMain.id}
 			</if>
-			<if test="param.name != null and param.name != ''">
+			<if test="name != null and name != ''">
 				AND a.name LIKE
-					<if test="dbName == 'oracle'">'%'||#{param.name}||'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{param.name},'%')</if>
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 		</where>
 	</select>

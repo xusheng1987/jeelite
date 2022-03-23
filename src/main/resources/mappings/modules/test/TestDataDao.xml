@@ -38,28 +38,28 @@
 		FROM test_data a
 		<include refid="testDataJoins"/>
 		<where>
-			a.del_flag = #{param.DEL_FLAG_NORMAL}
-			<if test="param.user != null and param.user.id != null and param.user.id != ''">
-				AND a.user_id = #{param.user.id}
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
 			</if>
-			<if test="param.office != null and param.office.id != null and param.office.id != ''">
-				AND a.office_id = #{param.office.id}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
 			</if>
-			<if test="param.name != null and param.name != ''">
+			<if test="name != null and name != ''">
 				AND a.name LIKE
-					<if test="dbName == 'oracle'">'%'||#{param.name}||'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{param.name},'%')</if>
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
-			<if test="param.sex != null and param.sex != ''">
-				AND a.sex = #{param.sex}
+			<if test="sex != null and sex != ''">
+				AND a.sex = #{sex}
 			</if>
-			<if test="param.beginInDate != null and param.endInDate != null">
-				AND a.in_date BETWEEN #{param.beginInDate} AND #{param.endInDate}
+			<if test="beginInDate != null and endInDate != null">
+				AND a.in_date BETWEEN #{beginInDate} AND #{endInDate}
 			</if>
 		</where>
 		<choose>
-			<when test="_parameter.containsKey('page') and page !=null and page.orderBy != null and page.orderBy !=''">
-				ORDER BY ${page.orderBy}
+			<when test="orderBy != null and orderBy !=''">
+				ORDER BY ${orderBy}
 			</when>
 			<otherwise>
 				ORDER BY a.update_date DESC

@@ -5,8 +5,6 @@ package com.github.flying.jeelite.common.persistence;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 
@@ -25,12 +23,7 @@ public interface CrudDao<T> extends BaseMapper<T> {
 	/**
 	 * 查询数据列表
 	 */
-	List<T> findList(@Param("param") T entity);
-
-	/**
-	 * 分页查询数据列表
-	 */
-	Page<T> findList(@Param("page") Page page, @Param("param") T entity);
+	List<T> findList(T entity);
 
 	/**
 	 * 查询所有数据列表
