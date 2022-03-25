@@ -52,7 +52,7 @@
 			});
 		});
 		function openMenu($this) {
-			if ($this.attr("target") != "mainFrame") {
+			if ($this.attr("target") && $this.attr("target") != "mainFrame") {
 				$this.attr("href", $this.attr("data-href"));
 				return;
 			}

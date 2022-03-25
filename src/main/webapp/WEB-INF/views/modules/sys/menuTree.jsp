@@ -15,7 +15,8 @@
 			<c:forEach items="${menuList}" var="menu2">
 			<c:if test="${menu2.parent.id eq menu.id&&menu2.isShow eq '1'}">
             <dd>
-            <a data-id="menu3-${menu2.id}" href="javascript:;" data-href="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}" target="${not empty menu2.target ? menu2.target : 'mainFrame'}" >
+            <a data-id="menu3-${menu2.id}" href="javascript:;" data-href="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}"
+               <c:if test="${tabmode eq '0' || (not empty menu2.target && menu2.target ne 'mainFrame')}">target="${not empty menu2.target ? menu2.target : 'mainFrame'}"</c:if> >
             <i class="${not empty menu2.icon ? menu2.icon : 'fa fa-circle-thin'}"></i>&nbsp;&nbsp;<span>${menu2.name}</span></a>
             </dd>
             </c:if></c:forEach>
