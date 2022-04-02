@@ -282,7 +282,7 @@ function batchDelete(href) {
 	layer.confirm('确认要删除选中的项目吗', {icon: 3, title:'提示'}, function(index){
 		var ids = getSelectedIds();
 		if (ids.length == 0) {
-			layer.msg('请先选择', {icon: 2});
+			layer.alert('请先选择', {icon: 2});
 			return;
 		}
 		$.ajax({

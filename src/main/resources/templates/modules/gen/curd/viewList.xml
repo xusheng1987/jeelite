@@ -50,17 +50,17 @@
             <#elseif c.showType == "dateselect" && c.queryType == "between">
               <div class="layui-input-inline" style="width:180px;">
                 <input name="begin${c.simpleJavaField?cap_first}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
               </div>
               <div class="layui-form-mid">-</div>
               <div class="layui-input-inline" style="width:180px;">
                 <input name="end${c.simpleJavaField?cap_first}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
               </div>
             <#elseif c.showType == "dateselect">
               <div class="layui-input-inline" style="width:180px;">
                 <input name="${c.javaFieldId}" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
               </div>
             <#elseif c.showType == "userselect">
               <sys:treeselect id="${c.simpleJavaField}Search" name="${c.javaFieldId}" value="" labelName="${c.javaFieldName}" labelValue=""

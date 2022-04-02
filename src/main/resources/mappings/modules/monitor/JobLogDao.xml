@@ -41,9 +41,16 @@
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
-			<if test="beginCreateDate != null and endCreateDate != null">
-				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
-			</if>
+            <if test="beginCreateDate != null">
+                AND a.create_date >=
+                    <if test="dbName == 'oracle'">TO_DATE(#{beginCreateDate},'yyyy-mm-dd')</if>
+                    <if test="dbName == 'mysql'">#{beginCreateDate}</if>
+            </if>
+            <if test="endCreateDate != null">
+                AND a.create_date <![CDATA[ < ]]>
+                    <if test="dbName == 'oracle'">TO_DATE(#{endCreateDate}, 'yyyy-mm-dd') + 1</if>
+                    <if test="dbName == 'mysql'">date_add(#{endCreateDate},interval 1 day)</if>
+            </if>
 		</where>
 		<choose>
 			<when test="orderBy != null and orderBy !=''">

@@ -45,9 +45,6 @@ public class LogController extends BaseController {
 	@RequiresPermissions("sys:log:view")
 	@RequestMapping(value = "data")
 	public Map listData(Log log) {
-		if (log.getEndDate() != null) {
-			log.setEndDate(DateUtils.parseDate(DateUtils.formatDate(log.getEndDate()) + " 23:59:59"));
-		}
 		Page<Log> page = logService.findPage(log);
 		return jsonPage(page);
 	}

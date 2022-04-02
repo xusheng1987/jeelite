@@ -69,13 +69,19 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			<#list table.columnList as c>
 				<#if (c.isQuery?? && c.isQuery == "1") || (table.parentExists && table.parentTableFk == c.name)>
 					<#if c.queryType ?? && c.queryType == 'between'>
-			<if test="begin${c.simpleJavaField?cap_first} != null and end${c.simpleJavaField?cap_first} != null<#if c.simpleJavaField != c.javaFieldId> and begin${c.javaFieldId?cap_first} != null and end${c.javaFieldId?cap_first} != null</#if><#if c.simpleJavaType == 'String' || c.simpleJavaType == 'Office' || c.simpleJavaType == 'User'> and begin${c.javaFieldId?cap_first} != '' and end${c.javaFieldId?cap_first} != ''</#if>">
+			<if test="begin${c.simpleJavaField?cap_first} != null">
+				AND a.${c.name} >=
+				<if test="dbName == 'oracle'">TO_DATE(${"#"}{begin${c.simpleJavaField?cap_first}},'yyyy-mm-dd')</if>
+				<if test="dbName == 'mysql'">${"#"}{begin${c.simpleJavaField?cap_first}}</if>
+			</if>
+			<if test="end${c.simpleJavaField?cap_first} != null">
+				AND a.${c.name} ${"&lt;"}
+				<if test="dbName == 'oracle'">TO_DATE(${"#"}{end${c.simpleJavaField?cap_first}}, 'yyyy-mm-dd') + 1</if>
+				<if test="dbName == 'mysql'">date_add(${"#"}{end${c.simpleJavaField?cap_first}},interval 1 day)</if>
+			</if>
 					<#else>
 			<if test="${c.simpleJavaField} != null<#if c.simpleJavaField != c.javaFieldId> and ${c.javaFieldId} != null</#if><#if c.simpleJavaType == 'String' || c.simpleJavaType == 'Office' || c.simpleJavaType == 'User'> and ${c.javaFieldId} != ''</#if>">
-					</#if>
-					<#if c.queryType ?? && c.queryType == 'between'>
-				AND a.${c.name} BETWEEN ${"#"}{begin${c.simpleJavaField?cap_first}} AND ${"#"}{end${c.simpleJavaField?cap_first}}
-					<#elseif c.queryType ?? && c.queryType == 'like'>
+					<#if c.queryType ?? && c.queryType == 'like'>
 				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}||'%'</if>
 					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}},'%')</if>
@@ -91,6 +97,7 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 				AND a.${c.name} ${c.queryType} ${"#"}{${c.javaFieldId}}
 					</#if>
 			</if>
+					</#if>
 				</#if>
 			</#list>
 		</where>

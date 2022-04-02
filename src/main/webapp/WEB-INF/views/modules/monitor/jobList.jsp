@@ -9,7 +9,7 @@
     function pauseJob() {
 		var ids = getSelectedIds();
 		if (ids.length == 0) {
-			layer.msg('请先选择任务', {icon: 2});
+			layer.alert('请先选择任务', {icon: 2});
 			return;
 		}
 		$.ajax({
@@ -31,7 +31,7 @@
     function resumeJob() {
 		var ids = getSelectedIds();
 		if (ids.length == 0) {
-			layer.msg('请先选择任务', {icon: 2});
+			layer.alert('请先选择任务', {icon: 2});
 			return;
 		}
 		$.ajax({

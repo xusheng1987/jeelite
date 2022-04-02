@@ -13,23 +13,34 @@
 		JOIN sys_user u ON u.id = a.create_by
 		JOIN sys_office c ON c.id = u.company_id
 		JOIN sys_office o ON o.id = u.office_id
-		WHERE a.create_date BETWEEN #{beginDate} AND #{endDate}
-		<if test="title != null and title != ''">
-			AND a.title LIKE
-					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
-		</if>
-		<if test="createBy != null and createBy.id != null and createBy.id != ''">
-			AND a.create_by = #{createBy.id}
-		</if>
-		<if test="requestUri != null and requestUri != ''">
-			AND a.request_uri LIKE
-					<if test="dbName == 'oracle'">'%'||#{requestUri}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{requestUri}, '%')</if>
-		</if>
-		<if test="exception != null and exception != ''">
-			AND a.type = #{TYPE_EXCEPTION}
-		</if>
+		<where>
+			<if test="beginDate != null">
+				AND a.create_date >=
+						<if test="dbName == 'oracle'">TO_DATE(#{beginDate},'yyyy-mm-dd')</if>
+						<if test="dbName == 'mysql'">#{beginDate}</if>
+			</if>
+			<if test="endDate != null">
+				AND a.create_date <![CDATA[ < ]]>
+						<if test="dbName == 'oracle'">TO_DATE(#{endDate}, 'yyyy-mm-dd') + 1</if>
+						<if test="dbName == 'mysql'">date_add(#{endDate},interval 1 day)</if>
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+						<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+						<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="requestUri != null and requestUri != ''">
+				AND a.request_uri LIKE
+						<if test="dbName == 'oracle'">'%'||#{requestUri}||'%'</if>
+						<if test="dbName == 'mysql'">CONCAT('%', #{requestUri}, '%')</if>
+			</if>
+			<if test="exception != null and exception != ''">
+				AND a.type = #{TYPE_EXCEPTION}
+			</if>
+		</where>
 		ORDER BY a.create_date DESC
 	</select>
 

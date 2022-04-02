@@ -40,12 +40,12 @@
               <label class="layui-form-label">加入日期：</label>
               <div class="layui-input-inline" style="width:180px">
                 <input name="beginInDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
               </div>
               <div class="layui-form-mid">-</div>
               <div class="layui-input-inline" style="width:180px">
                 <input name="endInDate" type="text" readonly="readonly" maxlength="20" class="layui-input Wdate"
-                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
               </div>
             </div>
             <div class="layui-inline">

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.flying.jeelite.common.persistence.Page;
-import com.github.flying.jeelite.common.utils.DateUtils;
 import com.github.flying.jeelite.common.utils.StringUtils;
 import com.github.flying.jeelite.common.web.BaseController;
 import com.github.flying.jeelite.modules.monitor.entity.JobLog;
@@ -55,9 +54,6 @@ public class JobLogController extends BaseController {
 	@RequiresPermissions("monitor:job:view")
 	@RequestMapping(value = "data")
 	public Map listData(JobLog jobLog) {
-		if (jobLog.getEndCreateDate() != null) {
-			jobLog.setEndCreateDate(DateUtils.parseDate(DateUtils.formatDate(jobLog.getEndCreateDate()) + " 23:59:59"));
-		}
 		Page<JobLog> page = jobLogService.findPage(jobLog);
 		return jsonPage(page);
 	}

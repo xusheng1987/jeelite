@@ -53,9 +53,16 @@
 			<if test="sex != null and sex != ''">
 				AND a.sex = #{sex}
 			</if>
-			<if test="beginInDate != null and endInDate != null">
-				AND a.in_date BETWEEN #{beginInDate} AND #{endInDate}
+			<if test="beginInDate != null">
+				AND a.in_date >=
+                    <if test="dbName == 'oracle'">TO_DATE(#{beginInDate},'yyyy-mm-dd')</if>
+                    <if test="dbName == 'mysql'">#{beginInDate}</if>
 			</if>
+            <if test="endInDate != null">
+                AND a.in_date <![CDATA[ < ]]>
+                    <if test="dbName == 'oracle'">TO_DATE(#{endInDate}, 'yyyy-mm-dd') + 1</if>
+                    <if test="dbName == 'mysql'">date_add(#{endInDate},interval 1 day)</if>
+            </if>
 		</where>
 		<choose>
 			<when test="orderBy != null and orderBy !=''">
