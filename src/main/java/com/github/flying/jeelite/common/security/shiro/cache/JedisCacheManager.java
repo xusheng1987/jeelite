@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Sets;
 import com.github.flying.jeelite.common.utils.JedisUtils;
+import com.github.flying.jeelite.common.utils.SpringContextHolder;
+import com.github.flying.jeelite.common.utils.redis.JedisClient;
 import com.github.flying.jeelite.common.web.Servlets;
-
-import redis.clients.jedis.Jedis;
 
 /**
  * 自定义授权缓存管理类
@@ -53,14 +53,15 @@ public class JedisCacheManager implements CacheManager {
 	public class JedisCache<K, V> implements Cache<K, V> {
 
 		private Logger logger = LoggerFactory.getLogger(getClass());
+	    private JedisClient jedisClient = SpringContextHolder.getBean(JedisClient.class);
 
 		private String cacheKeyName = null;
 
 		public JedisCache(String cacheKeyName) {
 			this.cacheKeyName = cacheKeyName;
-			// if (!JedisUtils.exists(cacheKeyName)){
+			// if (!jedisClient.exists(cacheKeyName)){
 			// Map<String, Object> map = Maps.newHashMap();
-			// JedisUtils.setObjectMap(cacheKeyName, map, 60 * 60 * 24);
+			// jedisClient.setObjectMap(cacheKeyName, map, 60 * 60 * 24);
 			// }
 		}
 
@@ -80,15 +81,11 @@ public class JedisCacheManager implements CacheManager {
 			}
 
 			V value = null;
-			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				value = (V) JedisUtils
-						.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
+				value = (V) jedisClient.getHashObject(cacheKeyName, key);
 			} catch (Exception e) {
 				logger.error("get {} {} {}", cacheKeyName, key, request != null ? request.getRequestURI() : "", e);
 			} finally {
-				JedisUtils.returnResource(jedis);
 			}
 
 			if (request != null && value != null) {
@@ -104,107 +101,51 @@ public class JedisCacheManager implements CacheManager {
 				return null;
 			}
 
-			Jedis jedis = null;
-			try {
-				jedis = JedisUtils.getResource();
-				jedis.hset(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key),
-						JedisUtils.toBytes(value));
-			} catch (Exception e) {
-				logger.error("put {} {}", cacheKeyName, key, e);
-			} finally {
-				JedisUtils.returnResource(jedis);
-			}
+            jedisClient.setHashObject(cacheKeyName, key, value);
 			return value;
 		}
 
 		@Override
 		public V remove(K key) throws CacheException {
-			V value = null;
-			Jedis jedis = null;
-			try {
-				jedis = JedisUtils.getResource();
-				value = (V) JedisUtils
-						.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
-				jedis.hdel(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key));
-			} catch (Exception e) {
-				logger.warn("remove {} {}", cacheKeyName, key, e);
-			} finally {
-				JedisUtils.returnResource(jedis);
-			}
+			V value = (V) jedisClient.getHashObject(cacheKeyName, key);
+            jedisClient.mapObjectRemove(cacheKeyName, key);
 			return value;
 		}
 
 		@Override
 		public void clear() throws CacheException {
-			Jedis jedis = null;
-			try {
-				jedis = JedisUtils.getResource();
-				jedis.hdel(JedisUtils.getBytesKey(cacheKeyName));
-			} catch (Exception e) {
-				logger.error("clear {}", cacheKeyName, e);
-			} finally {
-				JedisUtils.returnResource(jedis);
-			}
+            jedisClient.mapObjectClear(cacheKeyName);
 		}
 
 		@Override
 		public int size() {
-			int size = 0;
-			Jedis jedis = null;
-			try {
-				jedis = JedisUtils.getResource();
-				size = jedis.hlen(JedisUtils.getBytesKey(cacheKeyName)).intValue();
-				return size;
-			} catch (Exception e) {
-				logger.error("clear {}", cacheKeyName, e);
-			} finally {
-				JedisUtils.returnResource(jedis);
-			}
-			return size;
+			return jedisClient.getHashObjectSize(cacheKeyName);
 		}
 
 		@Override
 		public Set<K> keys() {
 			Set<K> keys = Sets.newHashSet();
-			Jedis jedis = null;
-			try {
-				jedis = JedisUtils.getResource();
-				Set<byte[]> set = jedis.hkeys(JedisUtils.getBytesKey(cacheKeyName));
-				for (byte[] key : set) {
-					Object obj = JedisUtils.getObjectKey(key);
-					if (obj != null) {
-						keys.add((K) obj);
-					}
-				}
-				return keys;
-			} catch (Exception e) {
-				logger.error("keys {}", cacheKeyName, e);
-			} finally {
-				JedisUtils.returnResource(jedis);
-			}
-			return keys;
+            Set<byte[]> set = jedisClient.getHashObjectKeys(cacheKeyName);
+            for (byte[] key : set) {
+                Object obj = JedisUtils.getObjectKey(key);
+                if (obj != null) {
+                    keys.add((K) obj);
+                }
+            }
+            return keys;
 		}
 
 		@Override
 		public Collection<V> values() {
 			Collection<V> vals = Collections.emptyList();
-			Jedis jedis = null;
-			try {
-				jedis = JedisUtils.getResource();
-				Collection<byte[]> col = jedis.hvals(JedisUtils.getBytesKey(cacheKeyName));
-				for (byte[] val : col) {
-					Object obj = JedisUtils.toObject(val);
-					if (obj != null) {
-						vals.add((V) obj);
-					}
-				}
-				return vals;
-			} catch (Exception e) {
-				logger.error("values {}", cacheKeyName, e);
-			} finally {
-				JedisUtils.returnResource(jedis);
-			}
-			return vals;
+            Collection<byte[]> col = jedisClient.getHashObjectValues(cacheKeyName);
+            for (byte[] val : col) {
+                Object obj = JedisUtils.toObject(val);
+                if (obj != null) {
+                    vals.add((V) obj);
+                }
+            }
+            return vals;
 		}
 	}
 }
