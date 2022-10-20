@@ -9,7 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import com.github.flying.jeelite.common.utils.StringUtils;
@@ -23,7 +23,7 @@ import redis.clients.jedis.JedisCluster;
  * Redis集群模式
  */
 @Component
-@ConditionalOnProperty(name = "redis.cluster.enabled", havingValue = "true")
+@ConditionalOnExpression("${redis.enabled} && ${redis.cluster.enabled}")
 public class JedisClientCluster implements JedisClient {
     private Logger logger = LoggerFactory.getLogger(JedisClientCluster.class);
     @Autowired

@@ -55,7 +55,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	}
 
 	/**
-	 * 定义无Controller的path<->view直接映射
+	 * 定义无Controller的path<->view直接映射，即默认首页
 	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

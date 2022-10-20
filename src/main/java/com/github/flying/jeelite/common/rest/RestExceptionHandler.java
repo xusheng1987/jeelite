@@ -138,7 +138,9 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(Exception.class)
 	public Object handleException(Exception ex, HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) {
-		request.setAttribute("exception", ex);
+        if (ex != null) {
+            ex.printStackTrace();
+        }
 		
 		boolean isJsonRequest = false;// 是否返回json数据
 		if (handler != null) {
@@ -156,6 +158,7 @@ public class RestExceptionHandler {
 				return null;
 			}
 		} else {//返回错误视图
+	        request.setAttribute("exception", ex);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			StringBuilder sb = new StringBuilder("错误信息：\n");
 			if (ex != null) {
